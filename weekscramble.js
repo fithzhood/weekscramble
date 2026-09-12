@@ -198,7 +198,7 @@ const CORPO_TESTA_BASE = 1.6;
 const CORPO_GIORNO_BASE = 1.45;
 const CORPO_GIORNO_MIN = 0.95;
 const CORPO_ATTIVITA_BASE = 1.35;
-const CORPO_ATTIVITA_MIN = 1.2;    // sotto questo il nome si taglia, non si stringe
+const CORPO_ATTIVITA_MIN = 0.95;   // sotto questo il nome si taglia, non si stringe
 const QUOTA_MIN = 0.24;            // della larghezza della tabella
 const QUOTA_MAX = 0.44;
 
@@ -312,40 +312,56 @@ function adattaTesti() {
 
     const caselle = Array.prototype.slice.call(
         document.querySelectorAll('#weekTable td input[type="text"]'));
-    let serveNome = 0;
+    const larghezze = [];
     caselle.forEach(function (c) {
-        if (c.value) serveNome = Math.max(serveNome, larghezzaTesto(c.value, c));
+        if (c.value) larghezze.push(larghezzaTesto(c.value, c));
     });
-    if (!serveNome) serveNome = serveGiorno;   // settimana vuota: qualcosa di sensato
 
     const utile = larga - contorniGiorno - contorniAtt;
     if (utile <= 0) return;
 
-    let spazioGiorno;
+    // Il bersaglio per i nomi non e' il piu' lungo della settimana: uno solo
+    // lunghissimo farebbe rimpicciolire tutti gli altri per niente, visto che
+    // tanto verrebbe tagliato lo stesso. Si prende quello al 60esimo
+    // percentile, cosi' i nomi corti restano interi e si tagliano solo i lunghi.
+    const ordinate = larghezze.slice().sort(function (a, b) { return a - b; });
+    const bersaglio = ordinate.length
+        ? ordinate[Math.min(ordinate.length - 1, Math.floor(ordinate.length * 0.6))]
+        : serveGiorno;
+
+    const minGiorno = CORPO_GIORNO_MIN / CORPO_GIORNO_BASE;
+    const minNome = CORPO_ATTIVITA_MIN / CORPO_ATTIVITA_BASE;
+
+    let fattoreGiorno = 1;
     let fattoreNome = 1;
 
-    if (serveGiorno + serveNome <= utile) {
-        // Ci stanno tutti e due a corpo pieno: il giorno prende il suo e basta.
-        spazioGiorno = serveGiorno;
-    } else {
-        // Non ci stanno: si toglie al giorno, che tanto resta intero perche' a
-        // stringersi e' il corpo, non il testo. Solo se il giorno e' gia' al
-        // minimo si comincia a stringere il nome.
-        const minimoGiorno = serveGiorno * (CORPO_GIORNO_MIN / CORPO_GIORNO_BASE);
-        spazioGiorno = Math.max(minimoGiorno, Math.min(serveGiorno, utile - serveNome));
-        const restaAlNome = utile - spazioGiorno;
-        fattoreNome = Math.max(CORPO_ATTIVITA_MIN / CORPO_ATTIVITA_BASE,
-                               Math.min(1, restaAlNome / serveNome));
+    if (serveGiorno + bersaglio > utile) {
+        // Si stringono tutti e due nella stessa misura: e' il riparto piu'
+        // onesto. Se uno tocca il suo minimo, quello che avanza va all'altro.
+        const k = utile / (serveGiorno + bersaglio);
+        fattoreGiorno = Math.max(minGiorno, k);
+        fattoreNome = Math.max(minNome, k);
+        if (fattoreGiorno * serveGiorno + fattoreNome * bersaglio > utile) {
+            // Non bastano nemmeno ai minimi: i giorni hanno la precedenza,
+            // devono restare interi; i nomi si tagliano, per questo c'e' il
+            // fumetto che li mostra per intero.
+            fattoreGiorno = Math.max(minGiorno,
+                Math.min(1, (utile - bersaglio * minNome) / serveGiorno));
+            fattoreNome = minNome;
+        }
     }
 
+    const spazioGiorno = serveGiorno * fattoreGiorno;
     const colonna = Math.min(larga * QUOTA_MAX,
                              Math.max(larga * QUOTA_MIN, spazioGiorno + contorniGiorno));
     testa.style.width = colonna.toFixed(0) + 'px';
 
-    const fattoreGiorno = Math.min(1.18, (colonna - contorniGiorno) / serveGiorno);
-    if (Math.abs(fattoreGiorno - 1) > 0.01) {
+    // Deciso quanto e' larga la colonna, il corpo del giorno si adatta a quella
+    // (puo' anche crescere un po', se il carattere del tema e' stretto).
+    const fattoreFinale = Math.min(1.18, (colonna - contorniGiorno) / serveGiorno);
+    if (Math.abs(fattoreFinale - 1) > 0.01) {
         stile.setProperty('--corpo-giorno',
-            (CORPO_GIORNO_BASE * fattoreGiorno).toFixed(3) + 'rem');
+            (CORPO_GIORNO_BASE * fattoreFinale).toFixed(3) + 'rem');
     }
     if (fattoreNome < 0.99) {
         stile.setProperty('--corpo-attivita',
