@@ -5210,7 +5210,9 @@ body {
    larga ottanta pixel, dove di "Sudoku" restavano due lettere e i puntini.
    Resta dove c'e' spazio — titolo, intestazioni, pulsanti — mentre il testo
    della tabella e della lista passa a VT323, che e' pixel anche lui ma stretto
-   e alto, cioe' fatto apposta per stare in poco. */
+   e alto, cioe' fatto apposta per stare in poco. Anche le intestazioni: Press
+   Start 2P non ha la A accentata e si leggeva "ATTIVITA". */
+.gameboy-theme #weekTable th,
 .gameboy-theme #weekTable td,
 .gameboy-theme #weekTable td input[type="text"],
 .gameboy-theme .weight-display,
