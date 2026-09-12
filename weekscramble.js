@@ -181,7 +181,10 @@ function getRandomTheme() {
 const GIORNI_SETTIMANA = ['Lunedì', 'Martedì', 'Mercoledì',
     'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
 const CORPO_GIORNO_BASE = 1.45;   // rem
-const QUOTA_MIN = 0.26;           // della larghezza della tabella
+const CORPO_ATTIVITA_BASE = 1.35; // rem
+const CORPO_ATTIVITA_MIN = 0.85;  // sotto questo si taglia, non si stringe piu'
+const CRESCITA_MAX = 1.18;        // quanto puo' crescere il corpo dei giorni
+const QUOTA_MIN = 0.28;           // della larghezza della tabella
 const QUOTA_MAX = 0.46;
 
 let pennello = null;
@@ -212,16 +215,49 @@ function adattaTesti() {
     const massima = larga * QUOTA_MAX;
     const servono = piuLungo + bordi;
 
-    if (servono <= massima) {
-        testa.style.width = Math.max(servono, minima).toFixed(0) + 'px';
-    } else {
-        // Nemmeno alla larghezza massima ci sta: si stringe il corpo, che e'
-        // meglio di un giorno tagliato a meta'.
-        testa.style.width = massima.toFixed(0) + 'px';
-        const fattore = (massima - bordi) / piuLungo;
+    // La colonna prende quello che serve al giorno piu' lungo, fra un minimo e
+    // un massimo. Poi il corpo si adatta a quella colonna: cresce un po' se il
+    // carattere del tema e' stretto e avanza spazio, si stringe se e' largo.
+    // Cosi' ogni tema ha le sue proporzioni invece di subire quelle di un
+    // altro: fra "Mountains of Christmas" e "Press Start 2P" la stessa parola
+    // e' larga il doppio.
+    const colonna = Math.min(massima, Math.max(servono, minima));
+    testa.style.width = colonna.toFixed(0) + 'px';
+
+    const fattore = Math.min(CRESCITA_MAX, (colonna - bordi) / piuLungo);
+    if (Math.abs(fattore - 1) > 0.01) {
         document.body.style.setProperty(
             '--corpo-giorno', (CORPO_GIORNO_BASE * fattore).toFixed(3) + 'rem');
     }
+
+    // Decisa la colonna, si vede quanto resta ai nomi. Loro possono essere
+    // tagliati, ma prima conviene stringerli un po': meglio "Retrogaming"
+    // intero piccolo che "Retrogam..." grande. Sotto un certo corpo no, si
+    // taglia e basta.
+    requestAnimationFrame(adattaNomi);
+}
+
+function adattaNomi() {
+    const caselle = Array.prototype.slice.call(
+        document.querySelectorAll('#weekTable td input[type="text"]'));
+    if (!caselle.length) return;
+
+    document.body.style.setProperty('--corpo-attivita', CORPO_ATTIVITA_BASE + 'rem');
+    const stile = getComputedStyle(caselle[0]);
+    const disponibile = caselle[0].clientWidth
+        - parseFloat(stile.paddingLeft) - parseFloat(stile.paddingRight) - 2;
+    if (disponibile <= 0) return;
+
+    let piuLungo = 0;
+    caselle.forEach(function (c) {
+        if (c.value) piuLungo = Math.max(piuLungo, larghezzaTesto(c.value, stile));
+    });
+    if (piuLungo <= disponibile) return;
+
+    const fattore = Math.max(CORPO_ATTIVITA_MIN / CORPO_ATTIVITA_BASE,
+                             disponibile / piuLungo);
+    document.body.style.setProperty(
+        '--corpo-attivita', (CORPO_ATTIVITA_BASE * fattore).toFixed(3) + 'rem');
 }
 
 function setTheme(themeName) {

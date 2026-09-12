@@ -5112,7 +5112,7 @@ body {
 
 #weekTable td input[type="text"] {
     font-size: var(--corpo-attivita, 1.35rem) !important;
-    width: calc(100% - 86px) !important;
+    width: calc(100% - 76px) !important;
     min-width: 0 !important;
     padding: 8px 6px !important;
     margin-right: 4px !important;
@@ -5120,13 +5120,13 @@ body {
 
 .table-weight-control .weight-display {
     font-size: min(1.2rem, 4.2vw) !important;
-    min-width: 24px !important;
+    min-width: 20px !important;
 }
 
 .table-weight-control .weight-button {
     font-size: min(1rem, 3.6vw) !important;
-    padding: 2px 6px !important;
-    min-width: 24px !important;
+    padding: 2px 4px !important;
+    min-width: 22px !important;
 }
 
 .app-header h1 {
