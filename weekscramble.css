@@ -2,6 +2,7 @@
    stava a meta' file, dove il browser la ignora: i caratteri dei temi non
    venivano mai caricati e ogni tema ripiegava sul carattere di sistema. */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Fredoka:wght@400;600&family=Nunito:wght@400;700&family=Caveat:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Mountains+of+Christmas:wght@400;700&family=Press+Start+2P&family=Bangers&family=Permanent+Marker&family=Russo+One&family=Dancing+Script:wght@400;700&family=Pacifico&family=Roboto+Mono&family=Quicksand:wght@400;700&family=Lobster&family=VT323&family=Comfortaa:wght@400;700&family=Architects+Daughter&family=Mali&display=swap');
 
 /* All'inizio del file, aggiungiamo le variabili CSS per i colori */
@@ -4881,4 +4882,185 @@ body {
 .table-weight-control .weight-display {
     font-size: 15px !important;
     font-weight: bold;
+}
+
+/* ===== Quattro temi in piu' (settembre 2026) ============================
+   Scritti dopo aver sistemato gli altri, quindi seguono la regola imparata li':
+   ogni tema dichiara TUTTE le variabili che il foglio usa, e le coppie
+   fondo/scritta sono scelte a due a due, mai lo stesso colore per entrambi.
+   Il fondo del giorno e quello dell'intestazione restano scuri o chiari in
+   blocco, cosi' l'unico colore di testo del tema funziona su tutti e due. */
+
+/* --- Neon: notte viola, insegne magenta e ciano ------------------------ */
+.neon-theme {
+    --background-color: #0d0b1f;
+    --text-color: #f2e9ff;
+    --card-background: #1b1440;
+    --table-header-bg: #ff2d95;
+    --table-cell-bg: #241a52;
+    --table-day-bg: #3a2a7a;
+    --input-bg: #2f2466;
+    --input-focus-bg: #3a2a7a;
+    --cover-bg: #ff2d95;
+    --list-bg: #1b1440;
+    --list-button-bg: #00e5ff;
+    --list-button-hover: #00b8cc;
+    --scramble-button-bg: #00e5ff;
+    --scramble-button-hover: #00b8cc;
+    --add-button-bg: #00e5ff;
+    --add-button-hover: #00b8cc;
+    --delete-button-bg: #ff2d95;
+    --delete-button-hover: #d61f7b;
+    --delete-button-text: #0d0b1f;
+    --button-bg: #00e5ff;
+    --button-text: #0d0b1f;
+    --button-hover: #00b8cc;
+    --box-shadow: rgba(255, 45, 149, 0.35);
+    --stats-text-color: #c9b8ff;
+    --important-pattern-1: rgba(0, 229, 255, 0.15);
+    --important-pattern-2: rgba(0, 229, 255, 0.3);
+    --important-border-color: #00e5ff;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* --- Tropicale: sabbia, corallo e turchese ----------------------------- */
+.tropicale-theme {
+    --background-color: #fff6d9;
+    --text-color: #05445e;
+    --card-background: #ffffff;
+    --table-header-bg: #ff6f61;
+    --table-cell-bg: #d8f3dc;
+    --table-day-bg: #2ec4b6;
+    --input-bg: #ffffff;
+    --input-focus-bg: #ffffff;
+    --cover-bg: #ffd166;
+    --list-bg: #ffffff;
+    --list-button-bg: #ffd166;
+    --list-button-hover: #ffbe3d;
+    --scramble-button-bg: #ffd166;
+    --scramble-button-hover: #ffbe3d;
+    --add-button-bg: #2ec4b6;
+    --add-button-hover: #21a79b;
+    --delete-button-bg: #ff6f61;
+    --delete-button-hover: #e85a4d;
+    --delete-button-text: #ffffff;
+    --button-bg: #ffd166;
+    --button-text: #05445e;
+    --button-hover: #ffbe3d;
+    --box-shadow: rgba(5, 68, 94, 0.15);
+    --stats-text-color: #05445e;
+    --important-pattern-1: rgba(46, 196, 182, 0.2);
+    --important-pattern-2: rgba(46, 196, 182, 0.4);
+    --important-border-color: #ff6f61;
+    font-family: 'Fredoka', sans-serif;
+}
+
+/* --- Nordico: i grigi azzurri del nord --------------------------------- */
+.nordico-theme {
+    --background-color: #2e3440;
+    --text-color: #eceff4;
+    --card-background: #3b4252;
+    --table-header-bg: #5e81ac;
+    --table-cell-bg: #434c5e;
+    --table-day-bg: #4c566a;
+    --input-bg: #434c5e;
+    --input-focus-bg: #4c566a;
+    --cover-bg: #5e81ac;
+    --list-bg: #3b4252;
+    --list-button-bg: #88c0d0;
+    --list-button-hover: #6fa8ba;
+    --scramble-button-bg: #88c0d0;
+    --scramble-button-hover: #6fa8ba;
+    --add-button-bg: #a3be8c;
+    --add-button-hover: #8ba874;
+    --delete-button-bg: #bf616a;
+    --delete-button-hover: #a54d56;
+    --delete-button-text: #eceff4;
+    --button-bg: #88c0d0;
+    --button-text: #2e3440;
+    --button-hover: #6fa8ba;
+    --box-shadow: rgba(0, 0, 0, 0.35);
+    --stats-text-color: #d8dee9;
+    --important-pattern-1: rgba(136, 192, 208, 0.15);
+    --important-pattern-2: rgba(136, 192, 208, 0.3);
+    --important-border-color: #88c0d0;
+    font-family: 'Nunito', sans-serif;
+}
+
+/* --- Lavagna: verde scuro e gessi -------------------------------------- */
+.lavagna-theme {
+    --background-color: #22312b;
+    --text-color: #f5f3e7;
+    --card-background: #2b3a33;
+    --table-header-bg: #3d5248;
+    --table-cell-bg: #2b3a33;
+    --table-day-bg: #35473e;
+    --input-bg: #35473e;
+    --input-focus-bg: #3d5248;
+    --cover-bg: #3d5248;
+    --list-bg: #2b3a33;
+    --list-button-bg: #f2d478;
+    --list-button-hover: #dcbd5c;
+    --scramble-button-bg: #f2d478;
+    --scramble-button-hover: #dcbd5c;
+    --add-button-bg: #8ec9e0;
+    --add-button-hover: #72b2ca;
+    --delete-button-bg: #f28ab2;
+    --delete-button-hover: #d97398;
+    --delete-button-text: #22312b;
+    --button-bg: #f2d478;
+    --button-text: #22312b;
+    --button-hover: #dcbd5c;
+    --box-shadow: rgba(0, 0, 0, 0.4);
+    --stats-text-color: #cfd6c8;
+    --important-pattern-1: rgba(242, 212, 120, 0.15);
+    --important-pattern-2: rgba(242, 212, 120, 0.3);
+    --important-border-color: #f2d478;
+    font-family: 'Caveat', cursive;
+}
+
+/* Caveat e Orbitron cambiano molto di larghezza: la casella del nome resta
+   leggibile solo con un filo di corpo in piu' o in meno. */
+.lavagna-theme input[type="text"],
+.lavagna-theme .weight-display {
+    font-size: 1.05em;
+    font-weight: bold;
+}
+
+.neon-theme input[type="text"],
+.neon-theme .weight-display {
+    font-size: 0.85em;
+}
+
+/* I dischetti del selettore: quattro fasce coi colori portanti del tema. */
+.theme-option.neon-option {
+    --stripe-1: #0d0b1f;
+    --stripe-2: #ff2d95;
+    --stripe-3: #241a52;
+    --stripe-4: #00e5ff;
+    border: 2px solid #00e5ff;
+}
+
+.theme-option.tropicale-option {
+    --stripe-1: #fff6d9;
+    --stripe-2: #ff6f61;
+    --stripe-3: #d8f3dc;
+    --stripe-4: #2ec4b6;
+    border: 2px solid #05445e;
+}
+
+.theme-option.nordico-option {
+    --stripe-1: #2e3440;
+    --stripe-2: #5e81ac;
+    --stripe-3: #434c5e;
+    --stripe-4: #88c0d0;
+    border: 2px solid #eceff4;
+}
+
+.theme-option.lavagna-option {
+    --stripe-1: #22312b;
+    --stripe-2: #3d5248;
+    --stripe-3: #35473e;
+    --stripe-4: #f2d478;
+    border: 2px solid #f5f3e7;
 }

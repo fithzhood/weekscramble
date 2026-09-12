@@ -117,7 +117,8 @@ function getRandomTheme() {
         'light', 'dark', 'ocean', 'forest', 'lavender', 
         'autumn', 'mono', 'pastel', 'retro', 'vintage',
         'gold', 'starry', 'christmas', 'dragonball', 
-        'onepiece', 'pikachu', 'halloween', 'gameboy', 'rosa'
+        'onepiece', 'pikachu', 'halloween', 'gameboy', 'rosa',
+        'neon', 'tropicale', 'nordico', 'lavagna'
     ];
     const randomIndex = Math.floor(Math.random() * themes.length);
     return themes[randomIndex];
@@ -148,7 +149,11 @@ function setTheme(themeName) {
         'pikachu-theme',
         'halloween-theme',
         'gameboy-theme',
-        'rosa-theme'
+        'rosa-theme',
+        'neon-theme',
+        'tropicale-theme',
+        'nordico-theme',
+        'lavagna-theme'
     );
     
     // Salviamo la preferenza originale (per mantenere 'random' se selezionato)
