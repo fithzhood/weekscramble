@@ -5076,62 +5076,92 @@ body {
 /* ===== Corpo del testo piu' grande ======================================
    Il guscio nuovo non ha ne' la barra di stato ne' quella di navigazione, e
    quello spazio conviene spenderlo in leggibilita'. La tabella aveva 171 px di
-   margine fra l'altezza naturale e quella a cui viene stirata: e' quello che
-   si sta usando qui, quindi le righe restano larghe uguali e nessuno scorre. */
+   margine fra l'altezza naturale e quella a cui viene stirata: e' quello che si
+   sta usando qui, quindi le righe restano larghe uguali e nessuno scorre.
+
+   ⚠️ Ogni corpo ha un tetto in `vw`. Android applica la sua scala dei caratteri
+   (su questo telefono 1,3) ai `rem`, non ai `vw`: col solo `rem` la tabella
+   diventava piu' larga dello schermo e il bordo destro finiva fuori. Il `min()`
+   tiene il corpo scelto dove c'e' spazio e lo lega alla larghezza dove non ce
+   n'e'. Per lo stesso motivo la tabella e' a colonne fisse: cosi' un nome di
+   giorno lungo allarga il testo, non la colonna. */
+#weekTable {
+    table-layout: fixed;
+    width: 100%;
+}
+
 #weekTable th {
-    font-size: 1.6rem;
+    font-size: min(1.6rem, 5.6vw);
+    padding: 12px 4px;
+}
+
+/* A colonne fisse la larghezza la decide la PRIMA riga, che qui e' quella delle
+   intestazioni: metterla sulle celle sotto non serve a niente, restavano meta'
+   e meta'. Il 30% basta per "Mercoledi'" e lascia il resto al nome. */
+#weekTable th:first-child {
+    width: 30%;
 }
 
 #weekTable td:first-child {
-    font-size: 1.45rem !important;
-    padding: 10px 6px !important;
+    font-size: min(1.45rem, 5.2vw) !important;
+    padding: 10px 4px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #weekTable td input[type="text"] {
-    /* E' la scritta che si legge tutti i giorni: non deve essere la piu'
-       piccola della riga. */
-    font-size: 1.35rem !important;
-    width: 186px !important;
-    padding: 8px !important;
+    font-size: min(1.35rem, 4.8vw) !important;
+    width: calc(100% - 88px) !important;
+    min-width: 0 !important;
+    padding: 8px 6px !important;
+    margin-right: 4px !important;
 }
 
 .table-weight-control .weight-display {
-    font-size: 1.2rem !important;
+    font-size: min(1.2rem, 4.2vw) !important;
+    min-width: 24px !important;
 }
 
 .table-weight-control .weight-button {
-    font-size: 1rem !important;
-    padding: 2px 7px !important;
-    min-width: 26px !important;
+    font-size: min(1rem, 3.6vw) !important;
+    padding: 2px 6px !important;
+    min-width: 24px !important;
 }
 
 .app-header h1 {
-    font-size: 1.75rem;
+    font-size: min(1.75rem, 6.2vw);
 }
 
 .button-container > button {
-    font-size: 21px;
+    font-size: min(21px, 5.4vw);
     min-height: 58px;
 }
 
 /* Anche la Lista: e' l'altra schermata che si legge davvero. */
 #listArea > h2 {
-    font-size: 1.7rem;
+    font-size: min(1.7rem, 6vw);
 }
 
 #listArea > .deck-stats {
-    font-size: 1.02rem;
+    font-size: min(1.02rem, 3.6vw);
 }
 
 #activityList li {
-    font-size: 1.15rem;
+    font-size: min(1.15rem, 4.2vw);
 }
 
 #activityList .weight-display {
-    font-size: 1.05rem !important;
+    font-size: min(1.05rem, 3.8vw) !important;
 }
 
 #newActivity,
 #addActivity {
-    font-size: 1.15rem;
+    font-size: min(1.15rem, 4.4vw);
+}
+
+/* Rete di sicurezza: qualunque cosa sbordi, la pagina non scorre di lato. */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
