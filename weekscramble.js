@@ -302,9 +302,14 @@ function adattaTesti() {
     const sa = getComputedStyle(cellaAtt);
     const si = getComputedStyle(casella);
     const controllo = cellaAtt.querySelector('.table-weight-control');
+    // Il controllo del peso e' largo diverso da tema a tema: si misura e si
+    // riserva esattamente quello, se no le frecce escono dalla cella.
+    const largoControllo = controllo ? controllo.getBoundingClientRect().width : 70;
+    const riserva = Math.ceil(largoControllo + parseFloat(si.marginRight || 0) + 4);
+    stile.setProperty('--riserva-peso', riserva + 'px');
+
     const contorniAtt = parseFloat(sa.paddingLeft) + parseFloat(sa.paddingRight)
-        + parseFloat(si.paddingLeft) + parseFloat(si.paddingRight) + 12
-        + (controllo ? controllo.getBoundingClientRect().width : 70);
+        + parseFloat(si.paddingLeft) + parseFloat(si.paddingRight) + 4 + riserva;
 
     const serveGiorno = Math.max.apply(null, GIORNI_SETTIMANA.map(function (g) {
         return larghezzaTesto(g, cella);

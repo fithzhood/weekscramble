@@ -5112,7 +5112,11 @@ body {
 
 #weekTable td input[type="text"] {
     font-size: var(--corpo-attivita, 1.35rem) !important;
-    width: calc(100% - 68px) !important;
+    /* Lo spazio da lasciare al controllo del peso non e' un numero fisso: quel
+       controllo cambia larghezza col carattere del tema. Lo misura
+       `adattaTesti()` e lo scrive qui; i 68px sono solo il ripiego. Col numero
+       fisso le frecce uscivano dalla cella e finivano sul bordo della tabella. */
+    width: calc(100% - var(--riserva-peso, 68px)) !important;
     min-width: 0 !important;
     padding: 8px 4px !important;
     margin-right: 3px !important;
