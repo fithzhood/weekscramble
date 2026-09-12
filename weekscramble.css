@@ -5072,3 +5072,66 @@ body {
     padding-top: 10px;
     margin-top: 0;
 }
+
+/* ===== Corpo del testo piu' grande ======================================
+   Il guscio nuovo non ha ne' la barra di stato ne' quella di navigazione, e
+   quello spazio conviene spenderlo in leggibilita'. La tabella aveva 171 px di
+   margine fra l'altezza naturale e quella a cui viene stirata: e' quello che
+   si sta usando qui, quindi le righe restano larghe uguali e nessuno scorre. */
+#weekTable th {
+    font-size: 1.6rem;
+}
+
+#weekTable td:first-child {
+    font-size: 1.45rem !important;
+    padding: 10px 6px !important;
+}
+
+#weekTable td input[type="text"] {
+    /* E' la scritta che si legge tutti i giorni: non deve essere la piu'
+       piccola della riga. */
+    font-size: 1.35rem !important;
+    width: 186px !important;
+    padding: 8px !important;
+}
+
+.table-weight-control .weight-display {
+    font-size: 1.2rem !important;
+}
+
+.table-weight-control .weight-button {
+    font-size: 1rem !important;
+    padding: 2px 7px !important;
+    min-width: 26px !important;
+}
+
+.app-header h1 {
+    font-size: 1.75rem;
+}
+
+.button-container > button {
+    font-size: 21px;
+    min-height: 58px;
+}
+
+/* Anche la Lista: e' l'altra schermata che si legge davvero. */
+#listArea > h2 {
+    font-size: 1.7rem;
+}
+
+#listArea > .deck-stats {
+    font-size: 1.02rem;
+}
+
+#activityList li {
+    font-size: 1.15rem;
+}
+
+#activityList .weight-display {
+    font-size: 1.05rem !important;
+}
+
+#newActivity,
+#addActivity {
+    font-size: 1.15rem;
+}
