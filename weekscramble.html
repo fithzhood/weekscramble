@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>WeekScramble</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="weekscramble.css?v=1">
+</head>
+<body>
+    <header class="app-header">
+        <h1>WeekScramble<span id="build-tag" class="build-tag"></span></h1>
+    </header>
+    <div id="themeArea" class="hidden">
+        <button class="close-button theme-close">&times;</button>
+        <h2>Scegli Tema</h2>
+        <div class="theme-selector" id="themeSelector">
+            <div class="theme-option light-option" data-theme="light"></div>
+            <div class="theme-option dark-option" data-theme="dark"></div>
+            <div class="theme-option ocean-option" data-theme="ocean"></div>
+            <div class="theme-option forest-option" data-theme="forest"></div>
+            <div class="theme-option lavender-option" data-theme="lavender"></div>
+            <div class="theme-option autumn-option" data-theme="autumn"></div>
+            <div class="theme-option mono-option" data-theme="mono"></div>
+            <div class="theme-option pastel-option" data-theme="pastel"></div>
+            <div class="theme-option retro-option" data-theme="retro"></div>
+            <div class="theme-option vintage-option" data-theme="vintage"></div>
+            <div class="theme-option gold-option" data-theme="gold"></div>
+            <div class="theme-option starry-option" data-theme="starry"></div>
+            <div class="theme-option christmas-option" data-theme="christmas"></div>
+            <div class="theme-option dragonball-option" data-theme="dragonball"></div>
+            <div class="theme-option onepiece-option" data-theme="onepiece"></div>
+            <div class="theme-option pikachu-option" data-theme="pikachu"></div>
+            <div class="theme-option halloween-option" data-theme="halloween"></div>
+            <div class="theme-option gameboy-option" data-theme="gameboy"></div>
+            <div class="theme-option rosa-option" data-theme="rosa"></div>
+            <div class="theme-option random-option" data-theme="random"></div>
+        </div>
+    </div>
+    <div class="container">
+        <table id="weekTable">
+            <tr>
+                <th>GIORNO</th>
+                <th>ATTIVITÀ</th>
+            </tr>
+            <tr>
+                <td>Lunedì</td>
+                <td><input type="text" readonly data-revealed="false"><div class="cover"></div></td>
+            </tr>
+            <tr>
+                <td>Martedì</td>
+                <td><input type="text" readonly data-revealed="false"><div class="cover"></div></td>
+            </tr>
+            <tr>
+                <td>Mercoledì</td>
+                <td><input type="text" readonly data-revealed="false"><div class="cover"></div></td>
+            </tr>
+            <tr>
+                <td>Giovedì</td>
+                <td><input type="text" readonly data-revealed="false"><div class="cover"></div></td>
+            </tr>
+            <tr>
+                <td>Venerdì</td>
+                <td><input type="text" readonly data-revealed="false"><div class="cover"></div></td>
+            </tr>
+            <tr>
+                <td>Sabato</td>
+                <td><input type="text" readonly data-revealed="false"><div class="cover"></div></td>
+            </tr>
+            <tr>
+                <td>Domenica</td>
+                <td><input type="text" readonly data-revealed="false"><div class="cover"></div></td>
+            </tr>
+        </table>
+        <div class="button-container">
+            <button id="listButton">Lista</button>
+            <button id="scrambleButton">Scramble</button>
+            <button class="theme-toggle" id="themeToggle">🎨</button>
+        </div>
+    </div>
+    <div id="listArea" class="hidden">
+        <button class="close-button">&times;</button>
+        <h2>Lista Attività</h2>
+        <ul id="activityList"></ul>
+        <input type="text" id="newActivity" placeholder="Nuova attività">
+        <button id="addActivity">Aggiungi</button>
+    </div>
+    <script src="weekscramble.js?v=1"></script>
+    <script src="backup.js?v=4"></script>
+</body>
+</html>

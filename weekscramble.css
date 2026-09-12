@@ -1,0 +1,4722 @@
+/* Le regole @import valgono solo se stanno in cima al foglio. Una di queste
+   stava a meta' file, dove il browser la ignora: i caratteri dei temi non
+   venivano mai caricati e ogni tema ripiegava sul carattere di sistema. */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Mountains+of+Christmas:wght@400;700&family=Press+Start+2P&family=Bangers&family=Permanent+Marker&family=Russo+One&family=Dancing+Script:wght@400;700&family=Pacifico&family=Roboto+Mono&family=Quicksand:wght@400;700&family=Lobster&family=VT323&family=Comfortaa:wght@400;700&family=Architects+Daughter&family=Mali&display=swap');
+
+/* All'inizio del file, aggiungiamo le variabili CSS per i colori */
+:root {
+    /* Tema chiaro (default) */
+    --background-color: #fff9c4;
+    --text-color: #333;
+    --card-background: #fff;
+    --table-header-bg: #ffccbc;
+    --table-cell-bg: #b3e5fc;
+    --table-day-bg: #dcedc8;
+    --input-bg: rgba(255, 255, 255, 0.7);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #ffcc80;
+    --list-bg: #e3f2fd;
+    --list-button-bg: #a5d6a7;
+    --list-button-hover: #81c784;
+    --scramble-button-bg: #90caf9;
+    --scramble-button-hover: #64b5f6;
+    --add-button-bg: #ffffd1;
+    --add-button-hover: #ffff99;
+    --delete-button-bg: #ffcccb;
+    --delete-button-hover: #ff9999;
+    --box-shadow: rgba(0, 0, 0, 0.1);
+    --stats-text-color: #666;
+    --button-text-color: var(--text-color); /* Per default usa lo stesso colore del testo normale */
+    --important-pattern-1: rgba(255, 255, 255, 0.1);
+    --important-pattern-2: rgba(255, 255, 255, 0.2);
+    --important-border-color: rgba(255, 215, 0, 0.8); /* Oro come default */
+}
+
+/* Tema scuro */
+.dark-theme {
+    --background-color: #263238;
+    --text-color: #e0e0e0;
+    --card-background: #37474f;
+    --table-header-bg: #455a64;
+    --table-cell-bg: #546e7a;
+    --table-day-bg: #37474f;
+    --input-bg: rgba(55, 71, 79, 0.8);
+    --input-focus-bg: #455a64;
+    --cover-bg: #78909c;
+    --list-bg: #455a64;
+    --list-button-bg: #4caf50;
+    --list-button-hover: #388e3c;
+    --scramble-button-bg: #2196f3;
+    --scramble-button-hover: #1976d2;
+    --add-button-bg: #ffc107;
+    --add-button-hover: #ffa000;
+    --delete-button-bg: #f44336;
+    --delete-button-hover: #d32f2f;
+    --box-shadow: rgba(0, 0, 0, 0.3);
+    --stats-text-color: #e0e0e0;
+    --important-pattern-1: rgba(255, 255, 255, 0.05);
+    --important-pattern-2: rgba(255, 255, 255, 0.1);
+    --important-border-color: #64b5f6; /* Azzurro chiaro */
+}
+
+/* Tema blu oceano */
+.ocean-theme {
+    --background-color: #e0f7fa;
+    --text-color: #01579b;
+    --card-background: #ffffff;
+    --table-header-bg: #80deea;
+    --table-cell-bg: #b3e5fc;
+    --table-day-bg: #4fc3f7;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #81d4fa;
+    --list-bg: #e1f5fe;
+    --list-button-bg: #4dd0e1;
+    --list-button-hover: #26c6da;
+    --scramble-button-bg: #29b6f6;
+    --scramble-button-hover: #039be5;
+    --add-button-bg: #00bcd4;
+    --add-button-hover: #00acc1;
+    --delete-button-bg: #4fc3f7 !important;
+    --delete-button-hover: #29b6f6 !important;
+    --box-shadow: rgba(0, 128, 255, 0.1);
+    --important-pattern-1: rgba(129, 212, 250, 0.3);
+    --important-pattern-2: rgba(129, 212, 250, 0.6);
+    --important-border-color: #00bcd4; /* Ciano */
+}
+
+/* Tema verde foresta */
+.forest-theme {
+    --background-color: #e8f5e9;
+    --text-color: #1b5e20;
+    --card-background: #ffffff;
+    --table-header-bg: #a5d6a7;
+    --table-cell-bg: #c8e6c9;
+    --table-day-bg: #81c784;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #aed581;
+    --list-bg: #dcedc8;
+    --list-button-bg: #66bb6a;
+    --list-button-hover: #4caf50;
+    --scramble-button-bg: #4caf50;
+    --scramble-button-hover: #43a047;
+    --add-button-bg: #8bc34a;
+    --add-button-hover: #7cb342;
+    --delete-button-bg: #81c784 !important;
+    --delete-button-hover: #66bb6a !important;
+    --box-shadow: rgba(76, 175, 80, 0.1);
+    --important-pattern-1: rgba(129, 199, 132, 0.3);
+    --important-pattern-2: rgba(129, 199, 132, 0.6);
+    --important-border-color: #4caf50; /* Verde */
+}
+
+/* Tema viola lavanda */
+.lavender-theme {
+    --background-color: #f3e5f5;
+    --text-color: #4a148c;
+    --card-background: #ffffff;
+    --table-header-bg: #ce93d8;
+    --table-cell-bg: #e1bee7;
+    --table-day-bg: #ba68c8;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #b39ddb;
+    --list-bg: #ede7f6;
+    --list-button-bg: #9575cd;
+    --list-button-hover: #7e57c2;
+    --scramble-button-bg: #7e57c2;
+    --scramble-button-hover: #673ab7;
+    --add-button-bg: #9c27b0;
+    --add-button-hover: #8e24aa;
+    --delete-button-bg: #ba68c8 !important;
+    --delete-button-hover: #ab47bc !important;
+    --box-shadow: rgba(156, 39, 176, 0.1);
+    --important-pattern-1: rgba(186, 104, 200, 0.3);
+    --important-pattern-2: rgba(186, 104, 200, 0.6);
+    --important-border-color: #9c27b0; /* Viola */
+}
+
+/* Tema autunnale */
+.autumn-theme {
+    --background-color: #fff8e1;
+    --text-color: #5d4037;
+    --card-background: #fffde7;
+    --table-header-bg: #ffcc80;
+    --table-cell-bg: #ffe0b2;
+    --table-day-bg: #ffb74d;
+    --input-bg: rgba(255, 255, 255, 0.7);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #ffca28;
+    --list-bg: #fff9c4;
+    --list-button-bg: #ff9800;
+    --list-button-hover: #f57c00;
+    --scramble-button-bg: #ff7043;
+    --scramble-button-hover: #f4511e;
+    --add-button-bg: #ff5722;
+    --add-button-hover: #e64a19;
+    --delete-button-bg: #ffb74d !important;
+    --delete-button-hover: #ffa726 !important;
+    --box-shadow: rgba(230, 74, 25, 0.1);
+    --important-pattern-1: rgba(255, 183, 77, 0.3);
+    --important-pattern-2: rgba(255, 183, 77, 0.6);
+    --important-border-color: #ff9800; /* Arancione */
+}
+
+/* Tema monocromatico */
+.mono-theme {
+    --background-color: #f5f5f5;
+    --text-color: #212121;
+    --card-background: #ffffff;
+    --table-header-bg: #e0e0e0;
+    --table-cell-bg: #eeeeee;
+    --table-day-bg: #bdbdbd;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #9e9e9e;
+    --list-bg: #fafafa;
+    --list-button-bg: #757575;
+    --list-button-hover: #616161;
+    --scramble-button-bg: #616161;
+    --scramble-button-hover: #424242;
+    --add-button-bg: #9e9e9e;
+    --add-button-hover: #757575;
+    --delete-button-bg: #757575 !important;
+    --delete-button-hover: #616161 !important;
+    --box-shadow: rgba(0, 0, 0, 0.1);
+    --important-pattern-1: rgba(117, 117, 117, 0.3);
+    --important-pattern-2: rgba(117, 117, 117, 0.6);
+    --important-border-color: #616161; /* Grigio scuro */
+}
+
+/* Tema pastello */
+.pastel-theme {
+    --background-color: #f8bbd0;
+    --text-color: #6a1b9a;
+    --card-background: #ffffff;
+    --table-header-bg: #bbdefb;
+    --table-cell-bg: #c8e6c9;
+    --table-day-bg: #b2ebf2;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #b3e5fc;
+    --list-bg: #e1bee7;
+    --list-button-bg: #9fa8da;
+    --list-button-hover: #7986cb;
+    --scramble-button-bg: #80cbc4;
+    --scramble-button-hover: #4db6ac;
+    --add-button-bg: #fff176;
+    --add-button-hover: #ffee58;
+    --delete-button-bg: #ce93d8 !important;
+    --delete-button-hover: #ba68c8 !important;
+    --box-shadow: rgba(233, 30, 99, 0.1);
+    --important-pattern-1: rgba(206, 147, 216, 0.3);
+    --important-pattern-2: rgba(206, 147, 216, 0.6);
+    --important-border-color: #ec407a; /* Rosa */
+}
+
+/* Tema retrò anni '80 */
+.retro-theme {
+    --background-color: #4a148c; /* Viola scuro */
+    --text-color: #ffffff;
+    --card-background: #7b1fa2;
+    --table-header-bg: #ff1744;
+    --table-cell-bg: #651fff;
+    --table-day-bg: #d500f9;
+    --input-bg: rgba(255, 255, 255, 0.2);
+    --input-focus-bg: rgba(255, 255, 255, 0.3);
+    --cover-bg: #00e5ff;
+    --list-bg: #6200ea;
+    --list-button-bg: #76ff03;
+    --list-button-hover: #64dd17;
+    --scramble-button-bg: #ffea00;
+    --scramble-button-hover: #ffd600;
+    --add-button-bg: #ff9100;
+    --add-button-hover: #ff6d00;
+    --delete-button-bg: #ff1744 !important;
+    --delete-button-hover: #d50000 !important;
+    --box-shadow: rgba(255, 23, 68, 0.4);
+    --stats-text-color: #ffffff;
+    --button-text-color: #000000; /* Testo nero per i pulsanti colorati */
+    --important-pattern-1: rgba(255, 23, 68, 0.3);
+    --important-pattern-2: rgba(255, 23, 68, 0.6);
+    --important-border-color: #ff1744; /* Rosso brillante */
+}
+
+/* Tema vintage (stile retrò anni '50-'60) */
+.vintage-theme {
+    --background-color: #f5e9d9;
+    --text-color: #5d4037;
+    --card-background: #fff8e6;
+    --table-header-bg: #d7ccc8;
+    --table-cell-bg: #e0d9c8;
+    --table-day-bg: #bcaaa4;
+    --input-bg: rgba(255, 248, 230, 0.8);
+    --input-focus-bg: #fff8e6;
+    --cover-bg: #a1887f;
+    --list-bg: #f5e9d9;
+    --list-button-bg: #8d6e63;
+    --list-button-hover: #6d4c41;
+    --scramble-button-bg: #a1887f;
+    --scramble-button-hover: #8d6e63;
+    --add-button-bg: #bcaaa4;
+    --add-button-hover: #a1887f;
+    --delete-button-bg: #bcaaa4 !important;
+    --delete-button-hover: #a1887f !important;
+    --box-shadow: rgba(93, 64, 55, 0.15);
+    --stats-text-color: #5d4037;
+    --button-text-color: #ffffff;
+    --important-pattern-1: rgba(188, 170, 164, 0.3);
+    --important-pattern-2: rgba(188, 170, 164, 0.6);
+    --important-border-color: #8d6e63; /* Marrone */
+}
+
+/* Tema oro */
+.gold-theme {
+    --background-color: #212121;
+    --text-color: #ffd700;
+    --card-background: #1a1a1a;
+    --table-header-bg: #8d6e63;
+    --table-cell-bg: #3e2723;
+    --table-day-bg: #4e342e;
+    --input-bg: rgba(30, 30, 30, 0.8);
+    --input-focus-bg: #2c2c2c;
+    --cover-bg: #5d4037;
+    --list-bg: #3e2723;
+    --list-button-bg: #d4af37;
+    --list-button-hover: #ffd700;
+    --scramble-button-bg: #ffbf00;
+    --scramble-button-hover: #ffdf00;
+    --add-button-bg: #d4af37;
+    --add-button-hover: #cda349;
+    --delete-button-bg: #d4af37 !important;
+    --delete-button-hover: #c5a028 !important;
+    --box-shadow: rgba(212, 175, 55, 0.2);
+    --stats-text-color: #d4af37;
+    --button-text-color: #212121;
+    --important-pattern-1: rgba(212, 175, 55, 0.3);
+    --important-pattern-2: rgba(212, 175, 55, 0.6);
+    --important-border-color: #ffd700; /* Oro */
+}
+
+/* Tema notte stellata */
+.starry-theme {
+    --background-color: #0d1b33;
+    --text-color: #e0f7fa;
+    --card-background: #1c3155;
+    --table-header-bg: #29598b;
+    --table-cell-bg: #1c3f72;
+    --table-day-bg: #274c77;
+    --input-bg: rgba(28, 49, 85, 0.8);
+    --input-focus-bg: #274c77;
+    --cover-bg: #40689c;
+    --list-bg: #1c3f72;
+    --list-button-bg: #9cc9f0;
+    --list-button-hover: #80bdff;
+    --scramble-button-bg: #ffd166;
+    --scramble-button-hover: #ffde8a;
+    --add-button-bg: #a0c4ff;
+    --add-button-hover: #80bdff;
+    --delete-button-bg: #9cc9f0 !important;
+    --delete-button-hover: #7db9e8 !important;
+    --box-shadow: rgba(156, 201, 240, 0.2);
+    --stats-text-color: #9cc9f0;
+    --button-text-color: #0d1b33;
+    --important-pattern-1: rgba(156, 201, 240, 0.3);
+    --important-pattern-2: rgba(156, 201, 240, 0.6);
+    --important-border-color: #80bdff; /* Azzurro chiaro */
+}
+
+/* Tema natalizio - bianco neve più tenue per i giorni */
+.christmas-theme {
+    --background-color: #386641;
+    --text-color: #ffffff;
+    --card-background: #ffffff;
+    --table-header-bg: #d62828;
+    --table-cell-bg: #f0f8ff;
+    --table-day-bg: #fffacd;
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --input-focus-bg: #ffffff;
+    --cover-bg: #e71d36;
+    --list-bg: #d62828;
+    --list-button-bg: #d62828;
+    --list-button-hover: #bc1c1c;
+    --scramble-button-bg: #d62828;
+    --scramble-button-hover: #bc1c1c;
+    --add-button-bg: #ffd400;
+    --add-button-hover: #e6c000;
+    --delete-button-bg: #d62828 !important;
+    --delete-button-hover: #bc1c1c !important;
+    --box-shadow: rgba(214, 40, 40, 0.3);
+    --stats-text-color: #ffffff;
+    --button-text-color: #ffffff;
+    --important-pattern-1: rgba(214, 40, 40, 0.3);
+    --important-pattern-2: rgba(214, 40, 40, 0.6);
+    --important-border-color: #d62828; /* Rosso natalizio */
+}
+
+/* Tema DragonBall - rimuoviamo le stelle */
+.dragonball-theme {
+    --background-color: #f5b042;
+    --text-color: #1a1a1a;
+    --card-background: #f89b29;
+    --table-header-bg: #ff4e00;
+    --table-cell-bg: #f89b29;
+    --table-day-bg: #ff4e00;
+    --input-bg: #ffdb99;
+    --input-focus-bg: #ffffff;
+    --cover-bg: linear-gradient(135deg, #f89b29 0%, #ff4e00 100%);
+    --list-bg: #ffdb99;
+    --list-button-bg: #ff4e00;
+    --list-button-hover: #ff8566;
+    --scramble-button-bg: #ff4e00;
+    --scramble-button-hover: #ff8566;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    
+    /* Rimuoviamo completamente le stelle */
+    background-image: none;
+    --important-pattern-1: rgba(0, 126, 167, 0.3);
+    --important-pattern-2: rgba(0, 126, 167, 0.6);
+    --important-border-color: #007ea7; /* Blu */
+}
+
+/* Tema One Piece con sfondo azzurro cielo */
+.onepiece-theme {
+    --background-color: #4cc9f0;
+    --text-color: #f8961e;
+    --card-background: #f1faee;
+    --table-header-bg: #f8961e;
+    --table-cell-bg: #f1faee;
+    --table-day-bg: #f94144;
+    --input-bg: #f1faee;
+    --input-focus-bg: #ffffff;
+    --cover-bg: #f94144;
+    --list-bg: #f1faee;
+    --list-button-bg: #f8961e;
+    --list-button-hover: #f9c74f;
+    --scramble-button-bg: #f8961e;
+    --scramble-button-hover: #f9c74f;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Aggiorniamo anche il selettore del tema One Piece */
+.theme-option.onepiece-option {
+    --stripe-1: #87CEEB; /* Azzurro cielo - sfondo */
+    --stripe-2: #c1121f; /* Rosso cappello di Rufy */
+    --stripe-3: #ffe566; /* Giallo */
+    --stripe-4: #005495; /* Blu mare */
+    border: 2px solid #000000;
+}
+
+/* Tema Pikachu */
+.theme-option.pikachu-option {
+    --stripe-1: #ffde00; /* background-color - giallo */
+    --stripe-2: #ff0000; /* guance e pulsanti - rosso */
+    --stripe-3: #73420e; /* dettagli - marrone */
+    --stripe-4: #fff3b0; /* table-cell-bg - giallo chiaro */
+    border: 2px solid #000000;
+}
+
+/* Tema Gameboy */
+.theme-option.gameboy-option {
+    --stripe-1: #9BBC0F; /* Verde chiaro - sfondo */
+    --stripe-2: #8BAC0F; /* Verde medio chiaro */
+    --stripe-3: #306230; /* Verde medio scuro */
+    --stripe-4: #0F380F; /* Verde scuro */
+    border: 2px solid #0F380F;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--background-color) !important;
+    padding: calc(0px + 0.3cm) 0 15px; /* Ridotto da 5px a 0px */
+    box-sizing: border-box;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    position: relative;
+    top: -15px; /* Alziamo di ulteriori 10 pixel (da -5px a -15px) */
+}
+
+table {
+    grid-column: 1 / -1;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-shadow: none;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table, th, td {
+    border: 2px solid #000;
+}
+
+th, td {
+    padding: 17.5px 8px;
+    text-align: center;
+    font-size: 1em;
+}
+
+th {
+    background-color: var(--table-header-bg);
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 1.35rem; /* Aumento la dimensione delle intestazioni */
+}
+
+td {
+    background-color: var(--table-cell-bg);
+    position: relative;
+    color: var(--text-color);
+}
+
+td:first-child {
+    background-color: var(--table-day-bg);
+    font-weight: bold;
+    width: 85px;
+    font-size: 1.25rem; /* Ridotto da 1.4rem a 1.25rem */
+    padding: 10px 12px;
+}
+
+td input[type="text"] {
+    width: calc(100% - 70px);
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.table-weight-control {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 3px;
+}
+
+.table-weight-control .weight-button {
+    padding: 0 3px;
+    font-size: 12px;
+    height: 20px;
+    line-height: 1;
+    margin: 0 1px;
+}
+
+.table-weight-control .weight-display {
+    min-width: 15px;
+    font-size: 12px;
+}
+
+input[type="text"] {
+    width: 90%;
+    padding: 6px;
+    border: 2px solid rgba(178, 223, 219, 0.3);
+    border-radius: 8px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    margin: 0 auto;
+    background-color: var(--input-bg);
+    transition: background-color 0.3s ease;
+    color: var(--text-color);
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: rgba(129, 212, 249, 0.3);
+    box-shadow: 0 0 5px rgba(129, 212, 249, 0.3);
+    background-color: var(--input-focus-bg);
+}
+
+.button-container {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: -15px; /* Cambiato da -5px a -15px */
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 18px;
+    border: 2px solid #000;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: transform 0.2s, background 0.3s, border-color 0.3s;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#listButton {
+    grid-column: 1;
+    justify-self: center;
+    background: var(--list-button-bg);
+    color: var(--button-text-color);
+}
+
+#scrambleButton {
+    grid-column: 2;
+    justify-self: center;
+    background: var(--list-button-bg);
+    color: var(--button-text-color);
+}
+
+.cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--cover-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    box-sizing: border-box;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.cover.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#listArea {
+    width: 95%;
+    max-width: 800px;
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--box-shadow);
+    position: relative;
+    margin-top: 0;
+}
+
+#listArea.hidden {
+    display: none;
+}
+
+#activityList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#activityList li {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important; /* Distribuisce lo spazio tra gli elementi */
+    padding: 8px 10px !important; /* Aggiungi un po' di padding */
+}
+
+#activityList button {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: var(--delete-button-bg);
+    color: var(--button-text-color);
+    border: 2px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s;
+}
+
+#newActivity {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#addActivity {
+    width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: var(--add-button-bg);
+    color: var(--button-text-color);
+    border: 2px solid #000;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s;
+}
+
+@media screen and (min-width: 480px) {
+    #newActivity {
+        width: 70%;
+        margin-right: 2%;
+        margin-bottom: 0;
+    }
+
+    #addActivity {
+        width: 28%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    #listArea {
+        padding: 10px;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        padding: calc(20px + 0.3cm) 5px 10px;
+    }
+
+    .container {
+        width: 99%;
+    }
+
+    td:first-child {
+        font-size: 1.2rem; /* Ridotto da 1.3rem a 1.2rem */
+        padding: 8px 10px;
+    }
+
+    th, td {
+        padding: 14px 8px;
+    }
+
+    td input[type="text"] {
+        width: calc(100% - 70px);
+    }
+
+    .table-weight-control {
+        margin-left: 3px;
+    }
+
+    .table-weight-control .weight-button {
+        padding: 0 3px;
+        margin: 0 1px;
+    }
+}
+
+.weight-control {
+    display: flex !important;
+    align-items: center !important;
+    margin-left: auto !important; /* Spinge il controllo del peso a destra */
+    min-width: 80px !important;
+}
+
+.weight-button {
+    padding: 2px 8px;
+    font-size: 14px;
+    background-color: #90caf9;
+    color: #333;
+    border: 1px solid #000;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.weight-display {
+    min-width: 20px;
+    text-align: center;
+}
+
+.activity-text {
+    flex: 1 !important; /* Prende lo spazio rimanente */
+    margin: 0 !important;
+    padding: 2px 5px !important;
+    border-radius: 3px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+}
+
+.activity-text.important {
+    font-weight: bold;
+    border: 2px solid var(--button-bg);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.total-occurrences {
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #e3f2fd;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.total-occurrences.warning {
+    background-color: #ffcdd2;
+}
+
+.deck-stats {
+    margin: 10px 0;
+    font-size: 0.9em;
+    color: var(--stats-text-color);
+}
+
+.deck-stats span {
+    margin-right: 15px;
+}
+
+/* Creiamo stili separati per le crocette in base al contesto */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin: 0;
+    transition: transform 0.2s;
+    /* Aggiungiamo bordo per renderla più visibile */
+    -webkit-text-stroke: 1px var(--text-color);
+    text-shadow:
+        -1px -1px 0 var(--text-color),  
+        1px -1px 0 var(--text-color),
+        -1px 1px 0 var(--text-color),
+        1px 1px 0 var(--text-color);
+    color: var(--card-background); /* Colore invertito rispetto allo sfondo */
+}
+
+.close-button:hover {
+    transform: scale(1.1);
+    color: var(--delete-button-bg); /* Usiamo il colore "delete" per l'hover */
+}
+
+/* Per nascondere elementi */
+.hidden {
+    display: none !important;
+}
+
+/* Style per il theme toggler */
+.theme-toggle {
+    background: var(--list-button-bg);
+    color: var(--button-text-color);
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    width: auto;
+    height: auto;
+    border: 2px solid #000;
+    cursor: pointer;
+    grid-column: 3;
+    justify-self: center;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    min-width: 50px;
+    -webkit-text-stroke: 1px black;
+    text-shadow:
+        -1px -1px 0 #000,  
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+
+.theme-toggle:hover {
+    background: var(--list-button-hover);
+    transform: scale(1.05);
+}
+
+/* Aggiungiamo lo stile per il selettore di temi */
+#themeArea,
+#themeArea:hover,
+#themeArea:active,
+#themeArea:focus,
+body #themeArea,
+body #themeArea:hover {
+    width: 95%;
+    max-width: 800px;
+    background-color: var(--card-background) !important;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--box-shadow);
+    position: relative;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: none !important;
+    transform: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    animation: none !important;
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -o-animation: none !important;
+}
+
+/* Rimuovo la vecchia regola hover che non serve più */
+/* #themeArea:hover {
+    background-color: var(--card-background) !important;
+} */
+
+.theme-selector {
+    position: static;
+    transform: none;
+    top: auto;
+    left: auto;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.theme-option {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 0 2px transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-option:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.theme-option.active {
+    box-shadow: 0 0 0 3px var(--text-color);
+    transform: scale(1.1);
+}
+
+/* Modifichiamo il selettore per mostrare 4 fasce orizzontali di uguale dimensione */
+.theme-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        var(--stripe-1) 0%, 
+        var(--stripe-1) 25%, 
+        var(--stripe-2) 25%, 
+        var(--stripe-2) 50%, 
+        var(--stripe-3) 50%, 
+        var(--stripe-3) 75%, 
+        var(--stripe-4) 75%, 
+        var(--stripe-4) 100%);
+}
+
+/* Tema chiaro */
+.theme-option.light-option {
+    --stripe-1: #fff9c4; /* background-color */
+    --stripe-2: #ffccbc; /* table-header-bg */
+    --stripe-3: #b3e5fc; /* table-cell-bg */
+    --stripe-4: #dcedc8; /* table-day-bg */
+    border: 2px solid #333;
+}
+
+/* Tema scuro */
+.theme-option.dark-option {
+    --stripe-1: #263238; /* background-color */
+    --stripe-2: #455a64; /* table-header-bg */
+    --stripe-3: #546e7a; /* table-cell-bg */
+    --stripe-4: #37474f; /* table-day-bg */
+    border: 2px solid #e0e0e0;
+}
+
+/* Tema oceano */
+.theme-option.ocean-option {
+    --stripe-1: #e0f7fa; /* background-color */
+    --stripe-2: #80deea; /* table-header-bg */
+    --stripe-3: #b3e5fc; /* table-cell-bg */
+    --stripe-4: #4fc3f7; /* table-day-bg */
+    border: 2px solid #01579b;
+}
+
+/* Tema foresta */
+.theme-option.forest-option {
+    --stripe-1: #e8f5e9; /* background-color */
+    --stripe-2: #a5d6a7; /* table-header-bg */
+    --stripe-3: #c8e6c9; /* table-cell-bg */
+    --stripe-4: #81c784; /* table-day-bg */
+    border: 2px solid #1b5e20;
+}
+
+/* Tema lavanda */
+.theme-option.lavender-option {
+    --stripe-1: #f3e5f5;
+    --stripe-2: #ce93d8;
+    --stripe-3: #e1bee7;
+    --stripe-4: #ba68c8;
+    border: 2px solid #4a148c;
+}
+
+/* Tema autunno */
+.theme-option.autumn-option {
+    --stripe-1: #fff8e1;
+    --stripe-2: #ffcc80;
+    --stripe-3: #ffe0b2;
+    --stripe-4: #ffb74d;
+    border: 2px solid #5d4037;
+}
+
+/* Tema monocromatico */
+.theme-option.mono-option {
+    --stripe-1: #f5f5f5;
+    --stripe-2: #e0e0e0;
+    --stripe-3: #eeeeee;
+    --stripe-4: #bdbdbd;
+    border: 2px solid #212121;
+}
+
+/* Tema pastello */
+.theme-option.pastel-option {
+    --stripe-1: #f8bbd0;
+    --stripe-2: #bbdefb;
+    --stripe-3: #c8e6c9;
+    --stripe-4: #b2ebf2;
+    border: 2px solid #6a1b9a;
+}
+
+/* Tema retrò */
+.theme-option.retro-option {
+    --stripe-1: #311b92;
+    --stripe-2: #ff1744;
+    --stripe-3: #651fff;
+    --stripe-4: #d500f9;
+    border: 2px solid #ffffff;
+}
+
+/* Tema vintage */
+.theme-option.vintage-option {
+    --stripe-1: #f5e9d9;
+    --stripe-2: #d7ccc8;
+    --stripe-3: #e0d9c8;
+    --stripe-4: #bcaaa4;
+    border: 2px solid #5d4037;
+}
+
+/* Tema oro */
+.theme-option.gold-option {
+    --stripe-1: #212121;
+    --stripe-2: #8d6e63;
+    --stripe-3: #3e2723;
+    --stripe-4: #d4af37;
+    border: 2px solid #ffd700;
+}
+
+/* Tema notte stellata */
+.theme-option.starry-option {
+    --stripe-1: #0d1b33;
+    --stripe-2: #29598b;
+    --stripe-3: #1c3f72;
+    --stripe-4: #9cc9f0;
+    border: 2px solid #e0f7fa;
+}
+
+/* Tema natalizio */
+.theme-option.christmas-option {
+    --stripe-1: #386641;
+    --stripe-2: #d62828;
+    --stripe-3: #f0f8ff;
+    --stripe-4: #fffacd;
+    border: 2px solid #006400;
+}
+
+/* Tema DragonBall */
+.theme-option.dragonball-option {
+    --stripe-1: #ff9500;
+    --stripe-2: #007ea7;
+    --stripe-3: #ffdd00;
+    --stripe-4: #FFA726;
+    border: 2px solid #cc0001;
+}
+
+/* Tema One Piece */
+.theme-option.onepiece-option {
+    --stripe-1: #87CEEB; /* Azzurro cielo - sfondo */
+    --stripe-2: #c1121f; /* Rosso cappello di Rufy */
+    --stripe-3: #ffe566; /* Giallo */
+    --stripe-4: #005495; /* Blu mare */
+    border: 2px solid #000000;
+}
+
+/* Tema Pikachu */
+.theme-option.pikachu-option {
+    --stripe-1: #ffde00; /* background-color - giallo */
+    --stripe-2: #ff0000; /* guance e pulsanti - rosso */
+    --stripe-3: #73420e; /* dettagli - marrone */
+    --stripe-4: #fff3b0; /* table-cell-bg - giallo chiaro */
+    border: 2px solid #000000;
+}
+
+/* Miglioramenti al tema One Piece - elementi in rosso */
+
+/* Modifica per rendere le scritte delle attività nere invece che rosse */
+.onepiece-theme input[type="text"] {
+    color: #000000 !important; /* Nero invece di rosso */
+    font-weight: bold;
+}
+
+/* Manteniamo rossi gli elementi nella lista delle attività */
+.onepiece-theme #activityList li {
+    color: #c1121f;
+    font-weight: bold;
+}
+
+/* Modifica per rendere il bordo della crocetta rosso */
+.onepiece-theme .close-button {
+    -webkit-text-stroke: 1px #c1121f;
+    text-shadow:
+        -1px -1px 0 #c1121f,  
+        1px -1px 0 #c1121f,
+        -1px 1px 0 #c1121f,
+        1px 1px 0 #c1121f;
+    color: var(--card-background);
+}
+
+/* Modifica per rendere più visibile la scritta "Scegli Tema" */
+.onepiece-theme #themeArea h2 {
+    color: #c1121f;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    font-weight: bolder;
+    font-size: 28px;
+}
+
+/* Rendere i giorni della settimana bianchi invece che rossi */
+.onepiece-theme td:first-child {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Aggiungamo testo blu mare ai pulsanti gialli nel tema One Piece */
+.onepiece-theme #addActivity {
+    color: #005495 !important; /* Blu mare invece del colore predefinito */
+    font-weight: bold;
+}
+
+/* Cambiamo anche il colore del testo nell'intestazione della tabella */
+.onepiece-theme th {
+    background-color: #ffe566 !important; /* Giallo invece di blu */
+    color: #c1121f !important; /* Testo rosso invece di blu */
+    font-weight: bold;
+    border: 2px solid #000000;
+}
+
+/* Aggiorniamo anche il colore del testo nell'intestazione */
+.onepiece-theme th {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Anche il titolo della lista attività in blu mare */
+.onepiece-theme #listArea h2 {
+    color: #005495 !important; /* Blu mare come gli altri elementi */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+}
+
+/* Stili specifici per il tema natalizio */
+.christmas-theme #listArea {
+    background-color: var(--list-bg); /* Rosso */
+    color: #ffffff; /* Testo bianco nella lista */
+    border: 2px solid #006400; /* Bordo verde scuro */
+}
+
+.christmas-theme #listArea h2 {
+    color: #ffffff; /* Titolo bianco */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.christmas-theme #activityList li {
+    background-color: #f0f8ff; /* Bianco azzurrato come nelle altre parti */
+    color: #d62828; /* Testo rosso natalizio */
+    font-weight: bold;
+    border: 1px solid #d62828; /* Bordo rosso */
+    border-radius: 5px;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+}
+
+.christmas-theme #newActivity {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #006400;
+    color: #000000;
+}
+
+/* Migliorare la visibilità della crocetta su sfondo rosso */
+.christmas-theme #listArea .close-button {
+    -webkit-text-stroke: 1px #ffffff;
+    text-shadow:
+        -1px -1px 0 #ffffff,  
+        1px -1px 0 #ffffff,
+        -1px 1px 0 #ffffff,
+        1px 1px 0 #ffffff;
+    color: #d62828; /* Colore rosso */
+}
+
+/* Crocetta rossa nel selettore tema natalizio */
+.christmas-theme #themeArea .close-button {
+    -webkit-text-stroke: 1px #d62828; /* Rosso natalizio */
+    text-shadow:
+        -1px -1px 0 #d62828,  
+        1px -1px 0 #d62828,
+        -1px 1px 0 #d62828,
+        1px 1px 0 #d62828;
+    color: var(--card-background);
+}
+
+/* Titolo "Scegli Tema" in rosso nel tema natalizio */
+.christmas-theme #themeArea h2 {
+    color: #d62828; /* Rosso natalizio */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+    font-size: 28px;
+}
+
+/* Testo delle attività in rosso per il tema natalizio */
+.christmas-theme #weekTable input[type="text"] {
+    color: #d62828 !important; /* Rosso natalizio */
+    font-weight: bold;
+}
+
+/* Anche il peso delle attività in rosso */
+.christmas-theme .weight-display {
+    color: #d62828 !important; /* Rosso natalizio */
+    font-weight: bold;
+}
+
+/* I pulsanti di controllo del peso in rosso */
+.christmas-theme .weight-button {
+    background-color: rgba(214, 40, 40, 0.2);
+    border-color: #d62828;
+    color: #d62828;
+}
+
+/* Rendere rosso il testo dei giorni della settimana nel tema natalizio */
+.christmas-theme td:first-child {
+    color: #d62828 !important; /* Rosso natalizio */
+    font-weight: bold;
+}
+
+/* Miglioriamo anche i bottoni nella lista */
+.christmas-theme #activityList .weight-control {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    padding: 2px;
+}
+
+/* Il pulsante Elimina deve risaltare */
+.christmas-theme #activityList li .delete-button {
+    background-color: #d62828;
+    color: white;
+    border: 1px solid #006400; /* Bordo verde per richiamo natalizio */
+}
+
+/* Personalizzazione del pulsante Aggiungi nel tema natalizio */
+.christmas-theme #addActivity {
+    background-color: #fffacd !important; /* Giallo tenue (lemon chiffon) */
+    color: #d62828 !important; /* Testo rosso natalizio */
+    font-weight: bold;
+    border: 1px solid #006400; /* Bordo verde scuro */
+}
+
+/* Tema pikachu */
+.pikachu-theme {
+    --background-color: #ffde00;
+    --text-color: #1a1a1a;
+    --card-background: #ffde00;
+    --table-header-bg: #ff0000;
+    --table-cell-bg: #fff3b0;
+    --table-day-bg: #ff6b6b;
+    --input-bg: #fffff0;
+    --input-focus-bg: #ffffff;
+    --cover-bg: linear-gradient(135deg, #ffde00 0%, #ff0000 100%);
+    --list-bg: #fff3b0;
+    --list-button-bg: #ff0000;
+    --list-button-hover: #ff6b6b;
+    --scramble-button-bg: #ff0000;
+    --scramble-button-hover: #ff6b6b;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+    
+    /* Aggiungiamo un pattern di sfondo con piccoli cerchi rossi per le guance */
+    background-image: 
+        radial-gradient(circle at 20% 30%, #ff0000 0%, #ff0000 3%, transparent 3.5%),
+        radial-gradient(circle at 80% 30%, #ff0000 0%, #ff0000 3%, transparent 3.5%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    --important-pattern-1: rgba(255, 0, 0, 0.3);
+    --important-pattern-2: rgba(255, 0, 0, 0.6);
+    --important-border-color: #ff0000; /* Rosso */
+}
+
+/* Rimuoviamo le orecchie di Pikachu */
+.pikachu-theme::before,
+.pikachu-theme::after {
+    content: none; /* Rimuove le orecchie */
+}
+
+/* Stilizziamo i pulsanti nel tema Pikachu */
+.pikachu-theme button {
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+/* Stilizziamo la tabella nel tema Pikachu */
+.pikachu-theme #weekTable {
+    border: 3px solid #73420e;
+    border-radius: 15px;
+}
+
+.pikachu-theme th,
+.pikachu-theme td:first-child {
+    color: #ffde00 !important; /* Giallo Pikachu */
+}
+
+/* Stilizziamo gli input nel tema Pikachu */
+.pikachu-theme input[type="text"] {
+    border: 2px solid #73420e;
+    color: #73420e;
+    font-weight: bold;
+}
+
+/* Stilizziamo la lista attività nel tema Pikachu */
+.pikachu-theme #listArea {
+    border: 3px solid #73420e;
+}
+
+.pikachu-theme #listArea h2 {
+    color: #73420e;
+}
+
+.pikachu-theme #activityList li {
+    border: 2px solid #73420e;
+    background-color: #fff9c4;
+}
+
+.pikachu-theme .weight-display {
+    color: #73420e;
+    font-weight: bold;
+}
+
+/* Stilizziamo il pulsante Aggiungi nel tema Pikachu */
+.pikachu-theme #addActivity {
+    color: #73420e !important;
+    font-weight: bold;
+}
+
+/* Stilizziamo la crocetta nel tema Pikachu */
+.pikachu-theme .close-button {
+    -webkit-text-stroke: 1px #73420e;
+    text-shadow:
+        -1px -1px 0 #73420e,  
+        1px -1px 0 #73420e,
+        -1px 1px 0 #73420e,
+        1px 1px 0 #73420e;
+    color: var(--card-background);
+}
+
+/* Aggiornamento dei colori della lista attività nel tema One Piece */
+.onepiece-theme #listArea {
+    background-color: #005495 !important; /* Blu mare per il contenitore */
+    border: 2px solid #000000;
+}
+
+.onepiece-theme #listArea h2 {
+    color: #ffffff !important; /* Testo bianco per il titolo */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+
+.onepiece-theme #activityList li {
+    background-color: #c1121f !important; /* Rosso per le caselle attività */
+    color: #ffffff !important; /* Testo bianco per le attività */
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+/* Aggiorniamo anche i controlli del peso per renderli leggibili */
+.onepiece-theme .weight-control {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.onepiece-theme .weight-display {
+    color: #ffffff !important; /* Testo bianco per il peso */
+}
+
+/* Aggiorniamo il pulsante elimina per renderlo coerente */
+.onepiece-theme #activityList li .delete-button {
+    background-color: #ffe566; /* Giallo per il pulsante elimina */
+    color: #005495 !important; /* Testo blu per contrasto */
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+/* Aggiorniamo il campo di input per nuove attività */
+.onepiece-theme #newActivity {
+    border: 2px solid #000000;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Assicuriamoci che il pulsante Aggiungi sia coerente */
+.onepiece-theme #addActivity {
+    background-color: #ffe566 !important; /* Giallo per il pulsante */
+    color: #005495 !important; /* Testo blu */
+    border: 2px solid #000000;
+    font-weight: bold;
+}
+
+/* Aggiorniamo anche la crocetta per chiudere la lista */
+.onepiece-theme #listArea .close-button {
+    -webkit-text-stroke: 1px #ffffff;
+    text-shadow:
+        -1px -1px 0 #ffffff,  
+        1px -1px 0 #ffffff,
+        -1px 1px 0 #ffffff,
+        1px 1px 0 #ffffff;
+    color: #005495;
+}
+
+/* Regola globale per impedire la selezione del testo */
+body, h1, h2, h3, button, th, td:first-child, .close-button, .theme-option, .weight-button, .weight-display {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+/* Permettiamo la selezione del testo solo negli input e nelle attività */
+input[type="text"], #activityList li {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    cursor: text;
+}
+
+/* Assicuriamoci che i pulsanti abbiano il cursore a puntatore */
+button, .close-button, .theme-option {
+    cursor: pointer;
+}
+
+/* Personalizzazione dei pulsanti di controllo per ogni tema */
+
+/* Rimuoviamo prima la regola globale che potrebbe causare conflitti */
+.weight-button, .delete-button {
+    background-color: initial;
+    color: initial;
+    border: initial;
+}
+
+/* Tema chiaro */
+.light-theme .weight-button, 
+.light-theme .delete-button {
+    background-color: #ffccbc !important;
+    color: #333 !important;
+    border: 1px solid #333 !important;
+}
+
+/* Tema scuro */
+.dark-theme .weight-button, 
+.dark-theme .delete-button {
+    background-color: #455a64 !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+/* Tema oceano */
+.ocean-theme .weight-button, 
+.ocean-theme .delete-button {
+    background-color: #4fc3f7 !important;
+    color: #01579b !important;
+    border: 1px solid #01579b !important;
+}
+
+/* Tema foresta */
+.forest-theme .weight-button, 
+.forest-theme .delete-button {
+    background-color: #81c784 !important;
+    color: #1b5e20 !important;
+    border: 1px solid #1b5e20 !important;
+}
+
+/* Tema lavanda */
+.lavender-theme .weight-button, 
+.lavender-theme .delete-button {
+    background-color: #ba68c8 !important;
+    color: #ffffff !important;
+    border: 1px solid #4a148c !important;
+}
+
+/* Tema autunno */
+.autumn-theme .weight-button, 
+.autumn-theme .delete-button {
+    background-color: #ffb74d !important;
+    color: #5d4037 !important;
+    border: 1px solid #5d4037 !important;
+}
+
+/* Tema monocromatico */
+.mono-theme .weight-button, 
+.mono-theme .delete-button {
+    background-color: #757575 !important;
+    color: #ffffff !important;
+    border: 1px solid #212121 !important;
+}
+
+/* Tema pastello */
+.pastel-theme .weight-button, 
+.pastel-theme .delete-button {
+    background-color: #ce93d8 !important;
+    color: #6a1b9a !important;
+    border: 1px solid #6a1b9a !important;
+}
+
+/* Tema retrò */
+.retro-theme .weight-button, 
+.retro-theme .delete-button {
+    background-color: #ff1744 !important;
+    color: #ffffff !important;
+    border: 1px solid #311b92 !important;
+}
+
+/* Tema vintage */
+.vintage-theme .weight-button, 
+.vintage-theme .delete-button {
+    background-color: #bcaaa4 !important;
+    color: #5d4037 !important;
+    border: 1px solid #5d4037 !important;
+}
+
+/* Tema oro */
+.gold-theme .weight-button, 
+.gold-theme .delete-button {
+    background-color: #d4af37 !important;
+    color: #212121 !important;
+    border: 1px solid #212121 !important;
+}
+
+/* Tema notte stellata */
+.starry-theme .weight-button, 
+.starry-theme .delete-button {
+    background-color: #9cc9f0 !important;
+    color: #0d1b33 !important;
+    border: 1px solid #e0f7fa !important;
+}
+
+/* Tema natalizio */
+.christmas-theme .weight-button, 
+.christmas-theme .delete-button {
+    background-color: #d62828 !important;
+    color: #ffffff !important;
+    border: 1px solid #006400 !important;
+}
+
+.christmas-theme .weight-button:hover, 
+.christmas-theme .delete-button:hover {
+    background-color: #bc1c1c !important;
+}
+
+/* Tema DragonBall */
+.dragonball-theme .weight-button, 
+.dragonball-theme .delete-button {
+    background-color: #007ea7 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+}
+
+.dragonball-theme .weight-button:hover, 
+.dragonball-theme .delete-button:hover {
+    background-color: #00638a !important;
+}
+
+/* One Piece è già personalizzato */
+
+.pikachu-theme #activityList li .delete-button {
+    background-color: #ff0000 !important;
+    color: #ffffff !important;
+    border: 1px solid #73420e !important;
+}
+
+.pikachu-theme #activityList li .delete-button:hover {
+    background-color: #cc0000 !important;
+}
+
+/* Risoluzione definitiva dei conflitti nei pulsanti elimina */
+.delete-button {
+    all: revert !important;
+    background-color: var(--delete-button-bg) !important;
+    color: var(--delete-button-text) !important;
+    border: 2px solid #000 !important;
+    box-shadow: none !important;
+    font-weight: bold !important;
+    font-size: 18px !important; /* Dimensione più grande per la crocetta */
+    line-height: 1 !important; /* Allineamento verticale migliore */
+    padding: 0 !important; /* Rimuoviamo il padding */
+    width: 25px !important; /* Larghezza fissa */
+    height: 25px !important; /* Altezza fissa */
+    border-radius: 50% !important; /* Forma circolare */
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.delete-button:hover {
+    transform: scale(1.1) !important;
+    background-color: var(--delete-button-hover) !important;
+}
+
+/* Aggiungiamo un attributo personalizzato per identificare i pulsanti elimina */
+[data-role="delete-button"],
+button[data-role="delete-button"],
+.delete-button,
+button.delete-button {
+    background-color: var(--delete-button-bg) !important;
+    color: var(--delete-button-text) !important;
+}
+
+/* Sovrascriviamo qualsiasi stile inline */
+[style*="background"].delete-button,
+.delete-button[style*="background"],
+button.delete-button[style*="background"] {
+    background-color: var(--delete-button-bg) !important;
+    color: var(--delete-button-text) !important;
+}
+
+/* Sovrascriviamo qualsiasi stile inline con !important */
+.delete-button[style] {
+    background-color: var(--delete-button-bg) !important;
+    color: var(--delete-button-text) !important;
+}
+
+/* Personalizzazione delle variabili per ogni tema */
+.light-theme {
+    --delete-button-text: #333 !important;
+    --important-pattern-1: rgba(179, 229, 252, 0.3);
+    --important-pattern-2: rgba(179, 229, 252, 0.6);
+    --important-border-color: #03a9f4; /* Azzurro */
+}
+
+.dark-theme {
+    --delete-button-text: #ffffff !important;
+    --important-pattern-1: rgba(255, 255, 255, 0.05);
+    --important-pattern-2: rgba(255, 255, 255, 0.1);
+    --important-border-color: #64b5f6; /* Azzurro chiaro */
+}
+
+.ocean-theme {
+    --delete-button-text: #01579b !important;
+    --important-pattern-1: rgba(129, 212, 250, 0.3);
+    --important-pattern-2: rgba(129, 212, 250, 0.6);
+    --important-border-color: #00bcd4; /* Ciano */
+}
+
+.forest-theme {
+    --delete-button-text: #1b5e20 !important;
+    --important-pattern-1: rgba(129, 199, 132, 0.3);
+    --important-pattern-2: rgba(129, 199, 132, 0.6);
+    --important-border-color: #4caf50; /* Verde */
+}
+
+.lavender-theme {
+    --delete-button-text: #ffffff !important;
+    --important-pattern-1: rgba(186, 104, 200, 0.3);
+    --important-pattern-2: rgba(186, 104, 200, 0.6);
+    --important-border-color: #9c27b0; /* Viola */
+}
+
+.autumn-theme {
+    --delete-button-text: #5d4037 !important;
+    --important-pattern-1: rgba(255, 183, 77, 0.3);
+    --important-pattern-2: rgba(255, 183, 77, 0.6);
+    --important-border-color: #ff9800; /* Arancione */
+}
+
+.mono-theme {
+    --delete-button-text: #ffffff !important;
+    --important-pattern-1: rgba(117, 117, 117, 0.3);
+    --important-pattern-2: rgba(117, 117, 117, 0.6);
+    --important-border-color: #616161; /* Grigio scuro */
+}
+
+.pastel-theme {
+    --delete-button-text: #6a1b9a !important;
+    --important-pattern-1: rgba(206, 147, 216, 0.3);
+    --important-pattern-2: rgba(206, 147, 216, 0.6);
+    --important-border-color: #ec407a; /* Rosa */
+}
+
+.retro-theme {
+    --delete-button-text: #ffffff !important;
+    --important-pattern-1: rgba(255, 23, 68, 0.3);
+    --important-pattern-2: rgba(255, 23, 68, 0.6);
+    --important-border-color: #ff1744; /* Rosso brillante */
+}
+
+.vintage-theme {
+    --delete-button-text: #5d4037 !important;
+    --important-pattern-1: rgba(188, 170, 164, 0.3);
+    --important-pattern-2: rgba(188, 170, 164, 0.6);
+    --important-border-color: #8d6e63; /* Marrone */
+}
+
+.gold-theme {
+    --delete-button-text: #212121 !important;
+    --important-pattern-1: rgba(212, 175, 55, 0.3);
+    --important-pattern-2: rgba(212, 175, 55, 0.6);
+    --important-border-color: #ffd700; /* Oro */
+}
+
+.starry-theme {
+    --delete-button-text: #0d1b33 !important;
+    --important-pattern-1: rgba(156, 201, 240, 0.3);
+    --important-pattern-2: rgba(156, 201, 240, 0.6);
+    --important-border-color: #80bdff; /* Azzurro chiaro */
+}
+
+.christmas-theme {
+    --delete-button-text: #ffffff !important;
+    --important-pattern-1: rgba(214, 40, 40, 0.3);
+    --important-pattern-2: rgba(214, 40, 40, 0.6);
+    --important-border-color: #d62828; /* Rosso natalizio */
+}
+
+.dragonball-theme {
+    --delete-button-text: #ffffff !important;
+    --important-pattern-1: rgba(0, 126, 167, 0.3);
+    --important-pattern-2: rgba(0, 126, 167, 0.6);
+    --important-border-color: #007ea7; /* Blu */
+}
+
+.pikachu-theme {
+    --delete-button-text: #ffffff !important;
+    --important-pattern-1: rgba(255, 0, 0, 0.3);
+    --important-pattern-2: rgba(255, 0, 0, 0.6);
+    --important-border-color: #ff0000; /* Rosso */
+}
+
+.onepiece-theme {
+    --delete-button-text: #005495 !important;
+    --important-pattern-1: rgba(193, 18, 31, 0.3);
+    --important-pattern-2: rgba(193, 18, 31, 0.6);
+    --important-border-color: #c1121f; /* Rosso */
+}
+
+/* Regola globale per resettare tutti i pulsanti elimina */
+button.delete-button {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: none !important;
+}
+
+/* Regola specifica per ogni tema con massima specificità */
+body.light-theme #activityList li .delete-button {
+    color: #333 !important;
+}
+
+body.dark-theme #activityList li .delete-button {
+    color: #ffffff !important;
+}
+
+body.ocean-theme #activityList li .delete-button {
+    color: #01579b !important;
+}
+
+body.forest-theme #activityList li .delete-button {
+    color: #1b5e20 !important;
+}
+
+body.lavender-theme #activityList li .delete-button {
+    color: #ffffff !important;
+}
+
+body.autumn-theme #activityList li .delete-button {
+    color: #5d4037 !important;
+}
+
+body.mono-theme #activityList li .delete-button {
+    color: #ffffff !important;
+}
+
+body.pastel-theme #activityList li .delete-button {
+    color: #6a1b9a !important;
+}
+
+body.retro-theme #activityList li .delete-button {
+    color: #ffffff !important;
+}
+
+body.vintage-theme #activityList li .delete-button {
+    color: #5d4037 !important;
+}
+
+body.gold-theme #activityList li .delete-button {
+    color: #212121 !important;
+}
+
+body.starry-theme #activityList li .delete-button {
+    color: #0d1b33 !important;
+}
+
+body.christmas-theme #activityList li .delete-button {
+    color: #ffffff !important;
+}
+
+body.dragonball-theme #activityList li .delete-button {
+    color: #ffffff !important;
+}
+
+body.pikachu-theme #activityList li .delete-button {
+    color: #ffffff !important;
+}
+
+body.onepiece-theme #activityList li .delete-button {
+    color: #005495 !important;
+}
+
+/* Aggiorniamo anche una regola per sovrascrivere qualsiasi stile inline */
+[style*="background"].delete-button {
+    background-color: inherit !important;
+}
+
+/* Stile coerente per tutti i pulsanti dell'applicazione */
+.list-button, 
+.scramble-button, 
+.theme-button,
+#addActivity,
+#scrambleButton,
+#listButton,
+#themeButton {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text-color) !important;
+    border: 2px solid #000 !important;
+    box-shadow: none !important;
+    font-weight: bold !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s !important;
+}
+
+/* Personalizzazione delle variabili per ogni tema */
+.light-theme {
+    --button-bg: #b3e5fc !important; /* Azzurro chiaro per i pulsanti */
+    --button-hover: #81d4fa !important; /* Azzurro più scuro per hover */
+    --button-text: #01579b !important; /* Blu scuro per il testo */
+    --delete-button-bg: #b3e5fc !important; /* Stesso azzurro per il pulsante elimina */
+    --delete-button-hover: #81d4fa !important; /* Stesso azzurro hover per il pulsante elimina */
+    --delete-button-text: #01579b !important; /* Stesso blu scuro per il testo */
+}
+
+.dark-theme {
+    --button-bg: #455a64 !important;
+    --button-hover: #546e7a !important;
+    --button-text: #ffffff !important;
+}
+
+.ocean-theme {
+    --button-bg: #4fc3f7 !important;
+    --button-hover: #29b6f6 !important;
+    --button-text: #01579b !important;
+}
+
+.forest-theme {
+    --button-bg: #81c784 !important;
+    --button-hover: #66bb6a !important;
+    --button-text: #1b5e20 !important;
+}
+
+.lavender-theme {
+    --button-bg: #ba68c8 !important;
+    --button-hover: #ab47bc !important;
+    --button-text: #ffffff !important;
+}
+
+.autumn-theme {
+    --button-bg: #ffb74d !important;
+    --button-hover: #ffa726 !important;
+    --button-text: #5d4037 !important;
+}
+
+.mono-theme {
+    --button-bg: #757575 !important;
+    --button-hover: #616161 !important;
+    --button-text: #ffffff !important;
+}
+
+.pastel-theme {
+    --button-bg: #ce93d8 !important;
+    --button-hover: #ba68c8 !important;
+    --button-text: #6a1b9a !important;
+}
+
+.retro-theme {
+    --button-bg: #ff1744 !important;
+    --button-hover: #d50000 !important;
+    --button-text: #ffffff !important;
+}
+
+.vintage-theme {
+    --button-bg: #bcaaa4 !important;
+    --button-hover: #a1887f !important;
+    --button-text: #5d4037 !important;
+}
+
+.gold-theme {
+    --button-bg: #d4af37 !important;
+    --button-hover: #c5a028 !important;
+    --button-text: #212121 !important;
+}
+
+.starry-theme {
+    --button-bg: #9cc9f0 !important;
+    --button-hover: #7db9e8 !important;
+    --button-text: #0d1b33 !important;
+}
+
+.christmas-theme {
+    --button-bg: #d62828 !important;
+    --button-hover: #bc1c1c !important;
+    --button-text: #ffffff !important;
+}
+
+.dragonball-theme {
+    --button-bg: #007ea7 !important;
+    --button-hover: #00638a !important;
+    --button-text: #000000 !important; /* Cambiato da bianco a nero */
+    --delete-button-text: #000000 !important; /* Cambiato da bianco a nero */
+}
+
+.pikachu-theme {
+    --button-bg: #ff0000 !important;
+    --button-hover: #cc0000 !important;
+    --button-text: #ffffff !important;
+}
+
+.onepiece-theme {
+    --button-bg: #ffe566 !important;
+    --button-hover: #ffd700 !important;
+    --button-text: #005495 !important;
+}
+
+/* Sovrascriviamo qualsiasi stile inline */
+[style*="background"].list-button,
+[style*="background"].scramble-button,
+[style*="background"].theme-button,
+#addActivity[style*="background"],
+#scrambleButton[style*="background"],
+#listButton[style*="background"],
+#themeButton[style*="background"] {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+}
+
+/* Correzione specifica per il pulsante tema */
+.theme-toggle,
+#themeToggle,
+.theme-button-container button,
+button.theme-toggle,
+.theme-selector-button,
+#themeSelector,
+.theme-icon,
+.theme-button-icon,
+button[aria-label="Cambia tema"],
+button[title="Cambia tema"],
+button[data-action="toggle-theme"],
+.palette-icon,
+.color-palette,
+.theme-palette {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+    border: 2px solid #000 !important;
+    box-shadow: none !important;
+    font-weight: bold !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s !important;
+}
+
+/* Regola per il pulsante circolare con l'icona della tavolozza */
+.theme-circle-button,
+.palette-button,
+.color-button,
+button.rounded-theme-button,
+.theme-icon-button {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+    border: 2px solid #000 !important;
+    box-shadow: none !important;
+    font-weight: bold !important;
+    border-radius: 50% !important; /* Rende il pulsante circolare */
+    cursor: pointer !important;
+    transition: background-color 0.3s !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Regola per qualsiasi pulsante con stile inline */
+button[style] {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+}
+
+body.dragonball-theme #activityList li .delete-button {
+    color: #000000 !important; /* Cambiato da bianco a nero */
+}
+
+/* Correzione specifica per i pulsanti nel tema DragonBall */
+.dragonball-theme button,
+.dragonball-theme .weight-button,
+.dragonball-theme .delete-button,
+.dragonball-theme #listButton,
+.dragonball-theme #scrambleButton,
+.dragonball-theme #themeButton,
+.dragonball-theme #addActivity {
+    color: #000000 !important; /* Assicuriamo che tutti i pulsanti abbiano testo nero */
+}
+
+/* Riordinamento dei pulsanti: Temi a sinistra, Lista al centro, Scramble a destra */
+.button-container,
+.controls,
+.app-controls,
+.bottom-controls,
+footer,
+.footer-controls {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+}
+
+/* Ordine dei pulsanti */
+#themeButton,
+.theme-button,
+.theme-toggle,
+.palette-button,
+.color-button,
+.theme-circle-button,
+button[aria-label="Cambia tema"],
+button[title="Cambia tema"] {
+    order: 1 !important; /* Primo pulsante (sinistra) */
+}
+
+#listButton,
+.list-button {
+    order: 2 !important; /* Secondo pulsante (centro) */
+}
+
+#scrambleButton,
+.scramble-button {
+    order: 3 !important; /* Terzo pulsante (destra) */
+}
+
+/* Correzione delle dimensioni del selettore tema */
+.theme-selector,
+#themeSelector,
+.theme-dropdown,
+.theme-menu {
+    max-width: 400px !important; /* Aumentato da 300px a 400px */
+    max-height: 500px !important; /* Aumentato da 400px a 500px */
+    overflow-y: auto !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    z-index: 1000 !important;
+    padding: 10px !important;
+}
+
+/* Correzione delle dimensioni delle icone dei temi */
+.theme-option,
+.theme-item,
+.theme-selector-item,
+.theme-option img,
+.theme-item img,
+.theme-selector-item img,
+.theme-circle {
+    width: 55px !important; /* Ridotto leggermente da 60px a 55px */
+    height: 55px !important; /* Ridotto leggermente da 60px a 55px */
+    border-radius: 50% !important;
+    margin: 5px !important; /* Ridotto da 8px a 5px */
+    border: 2px solid #000 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important; /* Assicura che il bordo sia incluso nelle dimensioni */
+}
+
+/* Miglioramento del layout del selettore tema */
+.theme-selector-container,
+.theme-options-container,
+.theme-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important; /* Ridotto da 15px a 10px */
+    padding: 10px !important; /* Ridotto da 15px a 10px */
+    background-color: var(--card-background) !important;
+    border: 2px solid #000 !important;
+    box-sizing: border-box !important;
+}
+
+/* Stile per l'icona del pulsante tema */
+.theme-button-icon,
+.palette-icon,
+.theme-icon {
+    width: 30px !important;
+    height: 30px !important;
+    object-fit: contain !important;
+    margin: 0 !important;
+}
+
+/* Stile per il pulsante tema circolare nella barra degli strumenti */
+.theme-circle-button {
+    width: 50px !important;
+    height: 50px !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+}
+
+/* Assicuriamo che le immagini all'interno delle icone siano visualizzate correttamente */
+.theme-option img,
+.theme-item img,
+.theme-selector-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+/* Miglioramento del layout del selettore tema - sviluppo in altezza */
+.theme-selector-container,
+.theme-options-container,
+.theme-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* Ridotto da 4 a 3 colonne */
+    gap: 10px !important;
+    padding: 10px !important;
+    background-color: var(--card-background) !important;
+    border: 2px solid #000 !important;
+    box-sizing: border-box !important;
+    max-width: 300px !important; /* Ridotto da 400px a 300px */
+    margin: 0 auto !important; /* Centrato orizzontalmente */
+}
+
+/* Correzione delle dimensioni del selettore tema */
+.theme-selector,
+#themeSelector,
+.theme-dropdown,
+.theme-menu {
+    max-width: 320px !important; /* Ridotto da 400px a 320px */
+    max-height: 600px !important; /* Aumentato da 500px a 600px */
+    overflow-y: auto !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    z-index: 1000 !important;
+    padding: 10px !important;
+}
+
+/* Correzione delle dimensioni delle icone dei temi */
+.theme-option,
+.theme-item,
+.theme-selector-item,
+.theme-option img,
+.theme-item img,
+.theme-selector-item img,
+.theme-circle {
+    width: 60px !important; /* Aumentato da 55px a 60px */
+    height: 60px !important; /* Aumentato da 55px a 60px */
+    border-radius: 50% !important;
+    margin: 5px !important;
+    border: 2px solid #000 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Titolo del selettore tema */
+.theme-selector-title,
+.theme-title,
+.theme-header {
+    text-align: center !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 15px !important;
+    color: var(--text-color) !important;
+    font-weight: bold !important;
+}
+
+/* Sovrascrittura forzata per i pulsanti elimina nel tema dark */
+.dark-theme .delete-button,
+body.dark-theme #activityList li .delete-button,
+.dark-theme button.delete-button {
+    background-color: #455a64 !important; /* Stesso colore degli altri pulsanti nel tema dark */
+    color: #e0e0e0 !important; /* Stesso colore del testo nel tema dark */
+    border: 2px solid #000 !important;
+    box-shadow: none !important;
+    font-weight: bold !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+}
+
+/* Personalizzazione dei pulsanti per il tema natalizio */
+.christmas-theme {
+    --button-bg: #f0f8ff !important; /* Bianco azzurrato per i pulsanti */
+    --button-hover: #e1f5fe !important; /* Bianco azzurrato più scuro per hover */
+    --button-text: #000000 !important; /* Testo nero */
+    --delete-button-bg: #f0f8ff !important; /* Stesso colore per il pulsante elimina */
+    --delete-button-hover: #e1f5fe !important; /* Stesso colore hover per il pulsante elimina */
+    --delete-button-text: #000000 !important; /* Stesso colore del testo */
+    --button-border: #000000 !important; /* Bordo nero per tutti i pulsanti */
+    --button-border-hover: #333333 !important; /* Bordo nero più scuro per hover */
+}
+
+/* Sovrascrittura forzata per i pulsanti nel tema natalizio con bordo nero */
+.christmas-theme .delete-button,
+body.christmas-theme #activityList li .delete-button,
+.christmas-theme button.delete-button,
+.christmas-theme #listButton,
+.christmas-theme #scrambleButton,
+.christmas-theme #themeButton,
+.christmas-theme #addActivity,
+.christmas-theme button:not(.weight-button) {
+    background-color: #f0f8ff !important; /* Bianco azzurrato */
+    color: #000000 !important; /* Testo nero */
+    border: 2px solid #000000 !important; /* Bordo nero */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    font-weight: bold !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+}
+
+/* Correzione specifica per il pulsante tema nel tema natalizio con bordo nero */
+.christmas-theme #themeButton,
+.christmas-theme button#themeButton,
+.christmas-theme button.theme-button,
+.christmas-theme button.theme-toggle,
+.christmas-theme button.palette-button,
+.christmas-theme button.color-button,
+.christmas-theme button.theme-circle-button,
+.christmas-theme button[id="themeButton"],
+.christmas-theme button[class*="theme"],
+.christmas-theme button[class*="palette"],
+.christmas-theme button:first-child {
+    background-color: #f0f8ff !important; /* Bianco azzurrato */
+    color: #000000 !important; /* Testo nero */
+    border: 2px solid #000000 !important; /* Bordo nero */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    font-weight: bold !important;
+}
+
+/* Correzione delle frecce nella tabella del tema natalizio */
+.christmas-theme .weight-button,
+.christmas-theme button.weight-button,
+.christmas-theme .table-weight-control button,
+.christmas-theme #weekTable button {
+    background-color: #d62828 !important; /* Rosso natalizio */
+    color: #ffffff !important; /* Testo bianco */
+    border: 1px solid #000000 !important;
+}
+
+/* Correzione del contrasto dei numeri nel tema One Piece */
+.onepiece-theme .weight-display,
+.onepiece-theme .table-weight-control .weight-display,
+.onepiece-theme #weekTable .weight-display,
+.onepiece-theme .table-cell .weight-display,
+.onepiece-theme span.weight-display {
+    color: #000000 !important; /* Testo nero per i numeri */
+    font-weight: bold !important; /* Testo in grassetto per maggiore leggibilità */
+    text-shadow: 0 0 2px #ffffff !important; /* Leggero contorno bianco per migliorare la leggibilità */
+}
+
+/* Assicuriamo che anche i numeri nella lista attività siano leggibili */
+.onepiece-theme #activityList .weight-display,
+.onepiece-theme .activity-list .weight-display {
+    color: #000000 !important; /* Testo nero */
+    background-color: #ffffff !important; /* Sfondo bianco */
+    padding: 2px 5px !important; /* Padding per creare un po' di spazio */
+    border-radius: 3px !important; /* Bordi arrotondati */
+    border: 1px solid #000000 !important; /* Bordo nero */
+}
+
+/* Stile per il pulsante stella */
+.star-button {
+    all: unset !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 24px !important;
+    font-size: 1.2rem !important;
+    transition: all 0.2s ease !important;
+    opacity: 0.3 !important; /* Stella semitrasparente di default */
+}
+
+/* Quando la stella è attiva (attività importante) */
+.star-button.active {
+    opacity: 1 !important; /* Stella completamente opaca */
+    transform: scale(1.1) !important;
+}
+
+/* Rimuoviamo qualsiasi stile che potrebbe interferire */
+.star-button:not(.active) {
+    opacity: 0.3 !important; /* Forziamo l'opacità per le stelle non attive */
+}
+
+/* Rimuoviamo qualsiasi altro stile che potrebbe interferire */
+.star-button,
+button.star-button,
+#activityList .star-button,
+#activityList button.star-button,
+li .star-button,
+.activity-list .star-button {
+    opacity: 0.3 !important; /* Default semitrasparente */
+}
+
+/* Forziamo l'opacità piena per le stelle attive con alta specificità */
+.star-button.active,
+button.star-button.active,
+#activityList .star-button.active,
+#activityList button.star-button.active,
+li .star-button.active,
+.activity-list .star-button.active {
+    opacity: 1 !important; /* Completamente opaca quando attiva */
+}
+
+/* Colori specifici per tema */
+.light-theme .star-button { color: #03a9f4 !important; }
+.dark-theme .star-button { color: #64b5f6 !important; }
+.ocean-theme .star-button { color: #00bcd4 !important; }
+.forest-theme .star-button { color: #4caf50 !important; }
+.lavender-theme .star-button { color: #9c27b0 !important; }
+.autumn-theme .star-button { color: #ff9800 !important; }
+.mono-theme .star-button { color: #616161 !important; }
+.pastel-theme .star-button { color: #ec407a !important; }
+.retro-theme .star-button { color: #ff1744 !important; }
+.vintage-theme .star-button { color: #8d6e63 !important; }
+.gold-theme .star-button { color: #ffd700 !important; }
+.starry-theme .star-button { color: #80bdff !important; }
+.christmas-theme .star-button { color: #d62828 !important; }
+.dragonball-theme .star-button { color: #007ea7 !important; }
+.onepiece-theme .star-button { color: #c1121f !important; }
+.pikachu-theme .star-button { color: #ff0000 !important; }
+.halloween-theme .star-button { color: #ff6600 !important; }
+.gameboy-theme .star-button { color: #0F380F !important; }
+.rosa-theme .star-button { color: #d81b60 !important; }
+
+/* Stile per le attività importanti */
+.activity-text.important,
+input[type="text"].important {
+    background-image: none;
+    background-size: auto;
+    font-weight: bold;
+    border: 3px solid var(--important-border-color);
+    box-shadow: 0 0 5px var(--important-border-color);
+}
+
+/* Variabili per il bordo delle attività importanti per ogni tema */
+:root {
+    --important-border-color: rgba(255, 215, 0, 0.8); /* Oro come default */
+}
+
+.light-theme {
+    --important-border-color: #03a9f4; /* Azzurro */
+}
+
+.dark-theme {
+    --important-border-color: #64b5f6; /* Azzurro chiaro */
+}
+
+.ocean-theme {
+    --important-border-color: #00bcd4; /* Ciano */
+}
+
+.forest-theme {
+    --important-border-color: #4caf50; /* Verde */
+}
+
+.lavender-theme {
+    --important-border-color: #9c27b0; /* Viola */
+}
+
+.autumn-theme {
+    --important-border-color: #ff9800; /* Arancione */
+}
+
+.mono-theme {
+    --important-border-color: #616161; /* Grigio scuro */
+}
+
+.pastel-theme {
+    --important-border-color: #ec407a; /* Rosa */
+}
+
+.retro-theme {
+    --important-border-color: #ff1744; /* Rosso brillante */
+}
+
+.vintage-theme {
+    --important-border-color: #8d6e63; /* Marrone */
+}
+
+.gold-theme {
+    --important-border-color: #ffd700; /* Oro */
+}
+
+.starry-theme {
+    --important-border-color: #80bdff; /* Azzurro chiaro */
+}
+
+.christmas-theme {
+    --important-border-color: #d62828; /* Rosso natalizio */
+}
+
+.dragonball-theme {
+    --important-border-color: #007ea7; /* Blu */
+}
+
+.onepiece-theme {
+    --important-border-color: #c1121f; /* Rosso */
+}
+
+.pikachu-theme {
+    --important-border-color: #ff0000; /* Rosso */
+}
+
+/* Assicuriamoci che il pulsante stella non influisca sul layout */
+#activityList li {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Manteniamo l'allineamento del testo dell'attività */
+.activity-text {
+    flex: 0 0 auto; /* Non si espande o contrae */
+    width: 140px; /* Larghezza fissa */
+    max-width: 140px; /* Larghezza massima */
+    padding: 2px 5px;
+    border-radius: 3px;
+    overflow: hidden; /* Nasconde il contenuto che eccede */
+    white-space: nowrap; /* Testo su una sola riga */
+    text-overflow: ellipsis; /* Aggiunge puntini se il testo è troppo lungo */
+}
+
+/* Regola responsive per schermi più piccoli */
+@media screen and (max-width: 480px) {
+    .activity-text {
+        width: 100px; /* Larghezza fissa più piccola per mobile */
+        max-width: 100px;
+    }
+}
+
+/* Regola responsive per schermi molto piccoli */
+@media screen and (max-width: 360px) {
+    .activity-text {
+        width: 80px; /* Larghezza ancora più piccola */
+        max-width: 80px;
+    }
+}
+
+/* Aggiorniamo i colori per ogni tema */
+.light-theme .activity-text.important {
+    border-color: #b3e5fc;
+}
+
+.dark-theme .activity-text.important {
+    border-color: #424242;
+}
+
+.ocean-theme .activity-text.important {
+    border-color: #0277bd;
+}
+
+.forest-theme .activity-text.important {
+    border-color: #2e7d32;
+}
+
+.lavender-theme .activity-text.important {
+    border-color: #7e57c2;
+}
+
+.autumn-theme .activity-text.important {
+    border-color: #ef6c00;
+}
+
+.mono-theme .activity-text.important {
+    border-color: #424242;
+}
+
+.pastel-theme .activity-text.important {
+    border-color: #b39ddb;
+}
+
+.retro-theme .activity-text.important {
+    border-color: #4a148c;
+}
+
+.vintage-theme .activity-text.important {
+    border-color: #795548;
+}
+
+.gold-theme .activity-text.important {
+    border-color: #ffd700;
+}
+
+.starry-theme .activity-text.important {
+    border-color: #1a237e;
+}
+
+.christmas-theme .activity-text.important {
+    border-color: #c62828;
+}
+
+.dragonball-theme .activity-text.important {
+    border-color: #ff9800;
+}
+
+.onepiece-theme .activity-text.important {
+    border-color: #1565c0;
+}
+
+.pikachu-theme .activity-text.important {
+    border-color: #fdd835;
+}
+
+/* Stile per gli input importanti nella tabella */
+td input[type="text"].important {
+    font-weight: bold;
+    border: 4px solid var(--button-bg); /* Aumentato da 3px a 4px */
+    border-radius: 5px;
+    padding: 3px 6px; /* Aumentato il padding per bilanciare il bordo più spesso */
+}
+
+/* Colori specifici per tema per gli input importanti */
+.light-theme td input[type="text"].important {
+    border-color: #b3e5fc;
+}
+
+.dark-theme td input[type="text"].important {
+    border-color: #424242;
+}
+
+.ocean-theme td input[type="text"].important {
+    border-color: #0277bd;
+}
+
+.forest-theme td input[type="text"].important {
+    border-color: #2e7d32;
+}
+
+.lavender-theme td input[type="text"].important {
+    border-color: #7e57c2;
+}
+
+.autumn-theme td input[type="text"].important {
+    border-color: #ef6c00;
+}
+
+.mono-theme td input[type="text"].important {
+    border-color: #424242;
+}
+
+.pastel-theme td input[type="text"].important {
+    border-color: #b39ddb;
+}
+
+.retro-theme td input[type="text"].important {
+    border-color: #4a148c;
+}
+
+.vintage-theme td input[type="text"].important {
+    border-color: #795548;
+}
+
+.gold-theme td input[type="text"].important {
+    border-color: #ffd700;
+}
+
+.starry-theme td input[type="text"].important {
+    border-color: #1a237e;
+}
+
+.christmas-theme td input[type="text"].important {
+    border-color: #c62828;
+}
+
+.dragonball-theme td input[type="text"].important {
+    border-color: #ff9800;
+}
+
+.onepiece-theme td input[type="text"].important {
+    border-color: #1565c0;
+}
+
+.pikachu-theme td input[type="text"].important {
+    border-color: #fdd835;
+}
+
+/* Tema Halloween */
+.halloween-theme {
+    --background-color: #000;
+    --text-color: #ff6600;
+    --card-background: #222;
+    --table-header-bg: #ff6600;
+    --table-cell-bg: #222;
+    --table-day-bg: #111;
+    --input-bg: #333;
+    --input-focus-bg: #444;
+    --cover-bg: linear-gradient(to bottom, #ff6600, #222);
+    --list-bg: #111;
+    --list-button-bg: #ff6600;
+    --list-button-hover: #ff9955;
+    --scramble-button-bg: #ff6600;
+    --scramble-button-hover: #ff9955;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Stili specifici per il tema Halloween */
+.halloween-theme {
+    background-color: #000000 !important;
+}
+
+.halloween-theme .container {
+    background-color: #000000;
+}
+
+.halloween-theme #listButton,
+.halloween-theme #scrambleButton,
+.halloween-theme #addActivity,
+.halloween-theme .theme-toggle,
+.halloween-theme .close-button,
+.halloween-theme #themeToggle,
+.halloween-theme #themeButton {
+    color: #000000 !important;
+    background-color: #ff6600 !important; /* Arancione Halloween */
+    border-color: #000000 !important;
+}
+
+/* Stile specifico aggiuntivo per il pulsante tema nel tema Halloween */
+.halloween-theme button.theme-toggle,
+.halloween-theme button#themeToggle,
+.halloween-theme button#themeButton {
+    background-color: #ff6600 !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+}
+
+.halloween-theme td:first-child {
+    background-color: #ffee00;
+    color: #000000;
+    font-weight: bold;
+}
+
+.halloween-theme #weekTable {
+    background-color: #000000;
+    border: 2px solid #000000;
+}
+
+.halloween-theme th {
+    border-bottom: 2px solid #000000;
+    color: #000000;
+}
+
+.halloween-theme td {
+    border: 1px solid #000000;
+    background-color: #000000;
+}
+
+.halloween-theme input[type="text"] {
+    background-color: #000000;
+    color: #ff6b00;
+    border: 1px solid #ff6b00;
+}
+
+.halloween-theme button {
+    color: #000000;
+}
+
+.halloween-theme .weight-button {
+    background-color: #ff6b00;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.halloween-theme .weight-display {
+    color: #ff6b00;
+}
+
+.halloween-theme .cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ff6b00;
+    border: 2px solid #000000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: #ff6b00;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.halloween-theme .cover.active {
+    display: flex;
+    background-color: #ff6b00;
+    border: 2px solid #000000;
+}
+
+.halloween-theme #listArea {
+    background-color: #ffee00;
+}
+
+.halloween-theme td:not(:first-child) {
+    border-top: 1px solid #ff6b00;
+    border-bottom: 1px solid #ff6b00;
+    border-left: 1px solid #ff6b00;
+    border-right: 1px solid #ff6b00;
+    background-color: #000000;
+}
+
+.halloween-theme th:first-child {
+    border-left: 2px solid #ff6b00;
+    border-top: 2px solid #ff6b00;
+}
+
+.halloween-theme th:last-child {
+    border-top: 2px solid #ff6b00;
+    border-right: 2px solid #ff6b00;
+}
+
+.halloween-theme #themeArea {
+    background-color: #000000 !important; /* Nero */
+    border: 2px solid #ff6b00; /* Bordo arancione */
+}
+
+.dark-theme #themeArea {
+    background-color: #263238;
+    border: 2px solid #455a64;
+}
+
+.ocean-theme #themeArea {
+    background-color: #e0f7fa;
+    border: 2px solid #80deea;
+}
+
+.forest-theme #themeArea {
+    background-color: #e8f5e9;
+    border: 2px solid #a5d6a7;
+}
+
+.lavender-theme #themeArea {
+    background-color: #f3e5f5;
+    border: 2px solid #ce93d8;
+}
+
+.autumn-theme #themeArea {
+    background-color: #fff8e1;
+    border: 2px solid #ffcc80;
+}
+
+.mono-theme #themeArea {
+    background-color: #f5f5f5;
+    border: 2px solid #e0e0e0;
+}
+
+.pastel-theme #themeArea {
+    background-color: #f8bbd0;
+    border: 2px solid #bbdefb;
+}
+
+.retro-theme #themeArea {
+    background-color: #311b92;
+    border: 2px solid #ff1744;
+}
+
+.vintage-theme #themeArea {
+    background-color: #f5e9d9;
+    border: 2px solid #d7ccc8;
+}
+
+.gold-theme #themeArea {
+    background-color: #212121;
+    border: 2px solid #d4af37;
+}
+
+.starry-theme #themeArea {
+    background-color: #0d1b33;
+    border: 2px solid #9cc9f0;
+}
+
+.christmas-theme #themeArea {
+    background-color: #386641;
+    border: 2px solid #d62828;
+}
+
+.dragonball-theme #themeArea {
+    background-color: #ff9500;
+    border: 2px solid #007ea7;
+}
+
+.onepiece-theme #themeArea {
+    background-color: #87CEEB;
+    border: 2px solid #c1121f;
+}
+
+.pikachu-theme #themeArea {
+    background-color: #ffde00;
+    border: 2px solid #ff0000;
+}
+
+.gameboy-theme {
+    --background-color: #9BBC0F;
+    --text-color: #0F380F;
+    --card-background: #8BAC0F;
+    --table-header-bg: #306230;
+    --table-cell-bg: #8BAC0F;
+    --table-day-bg: #306230;
+    --input-bg: #9BBC0F;
+    --input-focus-bg: #9BBC0F;
+    --cover-bg: #306230;
+    --list-bg: #8BAC0F;
+    --list-button-bg: #306230;
+    --list-button-hover: #0F380F;
+    --scramble-button-bg: #306230;
+    --scramble-button-hover: #0F380F;
+    --add-button-bg: #306230;
+    --add-button-hover: #0F380F;
+    --delete-button-bg: #306230;
+    --delete-button-hover: #0F380F;
+    --button-text-color: #9BBC0F;
+    --button-bg: #306230;
+    --button-hover: #0F380F;
+    --important-border-color: #0F380F;
+}
+
+.gameboy-theme button,
+.gameboy-theme #listButton,
+.gameboy-theme #scrambleButton,
+.gameboy-theme #themeButton,
+.gameboy-theme #addActivity,
+.gameboy-theme .delete-button,
+.gameboy-theme .weight-button {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text-color) !important;
+    border: 2px solid #0F380F !important;
+    border-radius: 0 !important;
+    font-family: 'Courier New', monospace !important;
+}
+
+.gameboy-theme .cover {
+    background-color: var(--cover-bg);
+    border: 2px solid #0F380F;
+}
+
+.gameboy-theme .cover.active {
+    background-color: var(--cover-bg);
+}
+
+.gameboy-theme #listArea {
+    background-color: var(--list-bg);
+    border: 4px solid #0F380F;
+    border-radius: 0;
+}
+
+.gameboy-theme #themeArea {
+    background-color: var(--list-bg);
+    border: 4px solid #0F380F;
+    border-radius: 0;
+}
+
+.gameboy-theme .weight-button {
+    background-color: var(--list-button-bg);
+    color: #9BBC0F;
+    border: 2px solid #0F380F;
+}
+
+.gameboy-theme .weight-display {
+    color: var(--text-color);
+}
+
+.gameboy-theme #activityList li {
+    border: 2px solid #0F380F;
+    background-color: var(--card-background);
+}
+
+.gameboy-theme #activityList li .delete-button {
+    background-color: var(--delete-button-bg);
+    color: #9BBC0F;
+    border: 2px solid #0F380F;
+}
+
+.gameboy-theme .activity-text.important {
+    color: #0F380F;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.gameboy-theme td input[type="text"].important {
+    color: #0F380F;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Tema Gameboy */
+.theme-option.gameboy-option {
+    --stripe-1: #9BBC0F; /* Verde chiaro - sfondo */
+    --stripe-2: #8BAC0F; /* Verde medio chiaro */
+    --stripe-3: #306230; /* Verde medio scuro */
+    --stripe-4: #0F380F; /* Verde scuro */
+    border: 2px solid #0F380F;
+}
+
+/* Correzioni per allineare i bordi dei rettangoli coprenti con i bordi della tabella */
+.gameboy-theme .cover {
+    box-sizing: border-box;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.halloween-theme .cover {
+    box-sizing: border-box;
+    position: absolute;
+    top: -1px; /* Estendo il bordo oltre il confine della cella */
+    left: 0;
+    width: 100%;
+    height: calc(100% + 2px); /* Aumento l'altezza per compensare lo spostamento */
+    border-width: 0;
+    border-top: 1px solid black !important;
+    border-bottom: 1px solid black !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    margin: 0;
+    padding: 0;
+    z-index: 5; /* Assicura che i bordi siano sopra quelli della tabella */
+    background-color: var(--cover-bg);
+}
+
+/* Sovrascrivo l'impostazione globale per permettere i bordi nel tema Halloween */
+.halloween-theme .cover.active {
+    opacity: 1;
+    pointer-events: auto;
+    border-top: 1px solid black !important;
+    border-bottom: 1px solid black !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+}
+
+/* Assicuro che i bordi siano visibili solo quando la cover è attiva */
+.halloween-theme .cover:not(.active) {
+    border: none !important;
+}
+
+.christmas-theme .cover {
+    box-sizing: border-box;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.pikachu-theme .cover {
+    box-sizing: border-box;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.onepiece-theme .cover {
+    box-sizing: border-box;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.dragonball-theme .cover {
+    box-sizing: border-box;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.dark-theme .cover,
+.ocean-theme .cover,
+.forest-theme .cover,
+.lavender-theme .cover,
+.autumn-theme .cover,
+.mono-theme .cover,
+.pastel-theme .cover,
+.retro-theme .cover,
+.vintage-theme .cover,
+.gold-theme .cover,
+.starry-theme .cover,
+.rosa-theme .cover {
+    box-sizing: border-box;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Per risolvere il problema dei bordi in tutti i temi, rimuovo tutti i bordi dalle cover */
+.cover {
+    border: none !important;
+}
+
+/* E aggiungo le proprietà necessarie per assicurare la corretta dimensione e posizione */
+td {
+    position: relative; /* Assicura che le cover siano correttamente posizionate all'interno delle celle */
+}
+
+/* Tema Halloween nel selettore di temi */
+.theme-option.halloween-option {
+    --stripe-1: #FF6D00; /* Arancione zucca */
+    --stripe-2: #FF9100; /* Arancione chiaro */
+    --stripe-3: #000000; /* Nero */
+    --stripe-4: #424242; /* Grigio scuro */
+    border: 2px solid #000;
+    background: linear-gradient(45deg,
+        var(--stripe-1) 0%, var(--stripe-1) 25%,
+        var(--stripe-2) 25%, var(--stripe-2) 50%,
+        var(--stripe-3) 50%, var(--stripe-3) 75%,
+        var(--stripe-4) 75%, var(--stripe-4) 100%
+    );
+}
+
+.rosa-theme {
+    --background-color: #FFE6F2;
+    --text-color: #D81B60;
+    --card-background: #FFF0F5;
+    --table-header-bg: #F06292;
+    --table-cell-bg: #F8BBD0;
+    --table-day-bg: #EC407A;
+    --input-bg: #FFEBEE;
+    --input-focus-bg: #FFFFFF;
+    --cover-bg: #F48FB1;
+    --list-bg: #FFF0F5;
+    --list-button-bg: #F06292;
+    --list-button-hover: #EC407A;
+    --scramble-button-bg: #F06292;
+    --scramble-button-hover: #EC407A;
+    --add-button-bg: #F06292;
+    --add-button-hover: #EC407A;
+    --delete-button-bg: #F06292;
+    --delete-button-hover: #EC407A;
+    --important-border-color: #C2185B;
+}
+
+.rosa-theme {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+.rosa-theme .container {
+    background-color: transparent;
+    border: none;
+    border-radius: 15px;
+    box-shadow: none;
+}
+
+.rosa-theme #weekTable {
+    border: 2px solid #F48FB1;
+    border-radius: 10px;
+}
+
+.rosa-theme th {
+    background-color: var(--table-header-bg);
+    color: white;
+    border-radius: 5px;
+}
+
+.rosa-theme td {
+    background-color: var(--table-cell-bg);
+    border-radius: 5px;
+}
+
+.rosa-theme td:first-child {
+    background-color: var(--table-day-bg);
+    color: white;
+    font-weight: bold;
+}
+
+.rosa-theme input[type="text"] {
+    background-color: var(--input-bg);
+    border: 1px solid #F48FB1;
+    color: var(--text-color);
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.rosa-theme button {
+    background-color: var(--list-button-bg);
+    color: white;
+    border: 2px solid #F48FB1;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.rosa-theme button:hover {
+    background-color: var(--list-button-hover);
+    transform: scale(1.05);
+}
+
+.rosa-theme .cover {
+    background-color: var(--cover-bg);
+    border: none !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.rosa-theme .cover.active {
+    background-color: var(--cover-bg);
+}
+
+.rosa-theme #listArea {
+    background-color: var(--list-bg);
+    border: 2px solid #F48FB1;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rosa-theme #themeArea {
+    background-color: var(--list-bg);
+    border: 2px solid #F48FB1;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rosa-theme .weight-button {
+    background-color: var(--list-button-bg);
+    color: white;
+    border: 1px solid #F48FB1;
+    border-radius: 5px;
+}
+
+.rosa-theme .weight-button:hover {
+    background-color: var(--list-button-hover);
+}
+
+.rosa-theme .weight-display {
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.rosa-theme #activityList li {
+    border: 1px solid #F48FB1;
+    background-color: var(--card-background);
+    border-radius: 8px;
+}
+
+.rosa-theme #activityList li .delete-button {
+    background-color: var(--delete-button-bg);
+    color: white;
+    border: 1px solid #F48FB1;
+    border-radius: 5px;
+}
+
+.rosa-theme #activityList li .delete-button:hover {
+    background-color: var(--delete-button-hover);
+}
+
+.rosa-theme .activity-text.important {
+    color: #C2185B;
+    font-weight: bold;
+    text-decoration: underline;
+    border-color: var(--important-border-color);
+}
+
+.rosa-theme td input[type="text"].important {
+    color: #C2185B;
+    font-weight: bold;
+    text-decoration: underline;
+    border-color: var(--important-border-color);
+}
+
+/* Tema Rosa nel selettore di temi */
+.theme-option.rosa-option {
+    --stripe-1: #FFE6F2; /* Rosa molto chiaro */
+    --stripe-2: #F8BBD0; /* Rosa chiaro */
+    --stripe-3: #F06292; /* Rosa medio */
+    --stripe-4: #D81B60; /* Rosa scuro */
+    border: 2px solid #F48FB1;
+    background: linear-gradient(45deg,
+        var(--stripe-1) 0%, var(--stripe-1) 25%,
+        var(--stripe-2) 25%, var(--stripe-2) 50%,
+        var(--stripe-3) 50%, var(--stripe-3) 75%,
+        var(--stripe-4) 75%, var(--stripe-4) 100%
+    );
+}
+
+/* Tema Random nel selettore di temi */
+.theme-option.random-option {
+    border: 2px solid #333;
+    background-color: white;
+    position: relative;
+}
+
+/* Aggiungo il punto di domanda al centro del selettore random */
+.theme-option.random-option::before {
+    content: "?";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 38px;
+    font-weight: bold;
+    color: #333;
+    z-index: 1;
+    line-height: 0;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Font specifici per i vari temi */
+/* Applico i font per ogni tema */
+.halloween-theme {
+    font-family: 'Creepster', cursive;
+}
+
+.christmas-theme {
+    font-family: 'Mountains of Christmas', cursive;
+}
+
+.gameboy-theme {
+    font-family: 'Press Start 2P', monospace;
+}
+
+.pikachu-theme {
+    font-family: 'Bangers', cursive;
+}
+
+.onepiece-theme {
+    font-family: 'Permanent Marker', cursive;
+}
+
+.dragonball-theme {
+    font-family: 'Russo One', sans-serif;
+}
+
+.rosa-theme {
+    font-family: 'Dancing Script', cursive;
+}
+
+.dark-theme {
+    font-family: 'Roboto Mono', monospace;
+}
+
+.ocean-theme {
+    font-family: 'Pacifico', cursive;
+}
+
+.forest-theme {
+    font-family: 'Architects Daughter', cursive; /* Più leggibile di Indie Flower */
+}
+
+.lavender-theme {
+    font-family: 'Mali', cursive; /* Più leggibile di Shadows Into Light */
+}
+
+.autumn-theme {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.mono-theme {
+    font-family: 'VT323', monospace;
+}
+
+.pastel-theme {
+    font-family: 'Comfortaa', sans-serif;
+}
+
+.retro-theme {
+    font-family: 'VT323', monospace;
+}
+
+.vintage-theme {
+    font-family: 'Lobster', cursive;
+}
+
+.gold-theme {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.starry-theme {
+    font-family: 'Comfortaa', sans-serif; /* Sostituito Pacifico che potrebbe essere difficile da leggere */
+}
+
+/* Per tutti i temi, assicuro che alcuni elementi mantengano font leggibili */
+input[type="text"],
+.weight-display,
+.table-weight-control .weight-display {
+    font-family: inherit;
+}
+
+/* Specifici aggiustamenti per temi con font più elaborati */
+.gameboy-theme input[type="text"],
+.gameboy-theme .weight-display,
+.retro-theme input[type="text"],
+.retro-theme .weight-display {
+    font-size: 0.9em; /* Font più piccolo per i font pixelati */
+}
+
+.rosa-theme input[type="text"],
+.rosa-theme .weight-display {
+    font-weight: bold; /* Peso maggiore per migliore leggibilità */
+}
+
+/* Sovrascrivo il font per il tema rosa che richiede un'implementazione diversa */
+.rosa-theme {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Dancing Script', cursive;
+}
+
+/* Aggiungo regole speciali per migliorare la leggibilità su dispositivi mobili */
+@media screen and (max-width: 480px) {
+    .gameboy-theme,
+    .gameboy-theme input[type="text"] {
+        font-size: 0.85em; /* Ancora più piccolo su mobile per Press Start 2P */
+    }
+    
+    .rosa-theme input[type="text"] {
+        font-size: 1.1em; /* Leggermente più grande per Dancing Script */
+    }
+    
+    .halloween-theme,
+    .christmas-theme,
+    .pikachu-theme,
+    .onepiece-theme {
+        font-size: 0.95em; /* Leggermente più piccolo per font decorativi */
+    }
+}
+
+/* Stile per rendere invisibile il bonus +0 ma mantenere lo spazio */
+.invisible-bonus {
+    opacity: 0;
+    visibility: visible; /* Mantiene lo spazio occupato */
+    pointer-events: none; /* Non interagisce con il mouse */
+}
+
+/* Colore testo grigio scuro per tema dark */
+.dark-theme .activity-text {
+    color: #333333 !important;
+}
+
+.dark-theme .weight-display {
+    color: #333333 !important;
+}
+
+.dark-theme input[type="text"] {
+    color: #333333 !important;
+}
+
+/* Colore bianco per il placeholder "Nuova attività" */
+#newActivity::placeholder {
+    color: #666666 !important; /* Colore default */
+}
+
+/* Per il tema chiaro, più scuro per visibilità */
+.light-theme #newActivity::placeholder {
+    color: #666666 !important;
+}
+
+/* Per il tema scuro, più chiaro per contrasto */
+.dark-theme #newActivity::placeholder {
+    color: #bbbbbb !important;
+}
+
+/* Per il tema oceano */
+.ocean-theme #newActivity::placeholder {
+    color: #0277bd !important; /* Blu oceano scuro */
+}
+
+/* Per il tema foresta */
+.forest-theme #newActivity::placeholder {
+    color: #2e7d32 !important; /* Verde foresta */
+}
+
+/* Per il tema lavanda */
+.lavender-theme #newActivity::placeholder {
+    color: #7e57c2 !important; /* Viola lavanda */
+}
+
+/* Per il tema autunno */
+.autumn-theme #newActivity::placeholder {
+    color: #e65100 !important; /* Arancione autunno */
+}
+
+/* Per il tema mono */
+.mono-theme #newActivity::placeholder {
+    color: #424242 !important; /* Grigio scuro */
+}
+
+/* Per il tema pastello */
+.pastel-theme #newActivity::placeholder {
+    color: #ec407a !important; /* Rosa pastello */
+}
+
+/* Per il tema retro */
+.retro-theme #newActivity::placeholder {
+    color: #311b92 !important; /* Blu scuro come i rettangoli */
+}
+
+/* Per il tema vintage */
+.vintage-theme #newActivity::placeholder {
+    color: #5d4037 !important; /* Marrone vintage */
+}
+
+/* Per il tema oro */
+.gold-theme #newActivity::placeholder {
+    color: #ff9800 !important; /* Oro ambrato */
+}
+
+/* Per il tema stellato */
+.starry-theme #newActivity::placeholder {
+    color: #3949ab !important; /* Blu notte */
+}
+
+/* Per il tema natalizio */
+.christmas-theme #newActivity::placeholder {
+    color: #d32f2f !important; /* Rosso natalizio */
+}
+
+/* Per il tema Dragon Ball */
+.dragonball-theme #newActivity::placeholder {
+    color: #e65100 !important; /* Arancione DragonBall */
+}
+
+/* Per il tema One Piece */
+.onepiece-theme #newActivity::placeholder {
+    color: #c62828 !important; /* Rosso One Piece */
+}
+
+/* Per il tema Pikachu */
+.pikachu-theme #newActivity::placeholder {
+    color: #616161 !important; /* Grigio scuro */
+}
+
+/* Per il tema Halloween */
+.halloween-theme #newActivity::placeholder {
+    color: #ff6d00 !important; /* Arancione Halloween */
+}
+
+/* Per il tema Gameboy */
+.gameboy-theme #newActivity::placeholder {
+    color: #1b5e20 !important; /* Verde Gameboy */
+}
+
+/* Per il tema Rosa */
+.rosa-theme #newActivity::placeholder {
+    color: #ad1457 !important; /* Rosa scuro */
+}
+
+/* Rimozione specifica dei rettangoli delle stelle nel tema Gameboy */
+.gameboy-theme .star-button {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    padding: 0 !important;
+    margin-right: 5px !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+}
+
+.gameboy-theme .star-button::before,
+.gameboy-theme .star-button::after {
+    display: none !important;
+    content: none !important;
+}
+
+.gameboy-theme #activityList li > *:first-child,
+.gameboy-theme #activityList li > *:first-child::before,
+.gameboy-theme #activityList li > *:first-child::after {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+}
+
+/* Regola globale che blocca qualsiasi effetto hover per #themeArea in tutti i temi possibili */
+#themeArea,
+#themeArea:hover,
+html body #themeArea,
+html body #themeArea:hover,
+body.light-theme #themeArea,
+body.light-theme #themeArea:hover,
+body.dark-theme #themeArea,
+body.dark-theme #themeArea:hover,
+body.ocean-theme #themeArea,
+body.ocean-theme #themeArea:hover,
+body.forest-theme #themeArea,
+body.forest-theme #themeArea:hover,
+body.lavender-theme #themeArea,
+body.lavender-theme #themeArea:hover,
+body.autumn-theme #themeArea,
+body.autumn-theme #themeArea:hover,
+body.mono-theme #themeArea,
+body.mono-theme #themeArea:hover,
+body.pastel-theme #themeArea,
+body.pastel-theme #themeArea:hover,
+body.retro-theme #themeArea,
+body.retro-theme #themeArea:hover,
+body.vintage-theme #themeArea,
+body.vintage-theme #themeArea:hover,
+body.gold-theme #themeArea,
+body.gold-theme #themeArea:hover,
+body.starry-theme #themeArea,
+body.starry-theme #themeArea:hover,
+body.christmas-theme #themeArea,
+body.christmas-theme #themeArea:hover,
+body.dragonball-theme #themeArea,
+body.dragonball-theme #themeArea:hover,
+body.onepiece-theme #themeArea,
+body.onepiece-theme #themeArea:hover,
+body.pikachu-theme #themeArea,
+body.pikachu-theme #themeArea:hover,
+body.halloween-theme #themeArea,
+body.halloween-theme #themeArea:hover,
+body.gameboy-theme #themeArea,
+body.gameboy-theme #themeArea:hover,
+body.rosa-theme #themeArea,
+body.rosa-theme #themeArea:hover {
+    width: 95%;
+    max-width: 800px;
+    background-color: var(--card-background) !important;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--box-shadow);
+    position: relative;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: none !important;
+    transform: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    animation: none !important;
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -o-animation: none !important;
+}
+
+/* Rimuovo tutte le precedenti regole di #themeArea che possono causare conflitti */
+/* #themeArea,
+#themeArea:hover,
+#themeArea:active,
+#themeArea:focus,
+body #themeArea,
+body #themeArea:hover {
+    width: 95%;
+    max-width: 800px;
+    background-color: var(--card-background) !important;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--box-shadow);
+    position: relative;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: none !important;
+    transform: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    animation: none !important;
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -o-animation: none !important;
+} */
+
+/* Rimozione completa di qualsiasi stile che possa creare rettangoli */
+.star-button,
+button.star-button,
+#activityList .star-button,
+#activityList button.star-button,
+li .star-button,
+.activity-list .star-button {
+    all: unset !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 5px 0 0 !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 1.5rem !important;
+    cursor: pointer !important;
+    opacity: 0.3 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    transform: translateY(-6px) !important;
+}
+
+.star-button.active {
+    opacity: 1 !important;
+}
+
+/* Rimuoviamo qualsiasi stile residuo dal contenitore */
+#activityList li > *:first-child {
+    all: unset !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 5px 0 0 !important;
+}
+
+/* Assicuriamoci che non ci siano stili ereditati */
+.star-button *,
+.star-button::before,
+.star-button::after,
+#activityList li > *:first-child::before,
+#activityList li > *:first-child::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Modifica del colore del testo per il tema scuro */
+.dark-theme td input[type="text"] {
+    color: #ffffff !important; /* Testo bianco */
+}
+
+/* Assicuriamoci che anche il testo delle attività importanti sia bianco */
+.dark-theme td input[type="text"].important {
+    color: #ffffff !important;
+}
+
+/* Modifica del colore di sfondo dei rettangoli delle attività nel tema oceano */
+.ocean-theme #activityList li {
+    background-color: #e1f5fe !important; /* Azzurro molto chiaro */
+    border: 1px solid #81d4fa !important; /* Bordo azzurro chiaro */
+}
+
+/* Assicuriamoci che il colore rimanga lo stesso anche quando l'attività è importante */
+.ocean-theme #activityList li .activity-text.important {
+    background-color: #e1f5fe !important;
+}
+
+/* Modifica del colore di sfondo dei rettangoli delle attività nel tema lavanda */
+.lavender-theme #activityList li {
+    background-color: #f3e5f5 !important; /* Viola molto tenue */
+    border: 1px solid #ce93d8 !important; /* Bordo viola chiaro */
+}
+
+/* Assicuriamoci che il colore rimanga lo stesso anche quando l'attività è importante */
+.lavender-theme #activityList li .activity-text.important {
+    background-color: #f3e5f5 !important;
+}
+
+/* Modifica del colore di sfondo dei rettangoli delle attività nel tema autunno */
+.autumn-theme #activityList li {
+    background-color: #fff3e0 !important; /* Arancione molto chiaro */
+    border: 1px solid #ffcc80 !important; /* Bordo arancione chiaro */
+}
+
+/* Assicuriamoci che il colore rimanga lo stesso anche quando l'attività è importante */
+.autumn-theme #activityList li .activity-text.important {
+    background-color: #fff3e0 !important;
+}
+
+/* Modifica del colore del placeholder "Nuova attività" nel tema autunno */
+.autumn-theme #newActivity::placeholder {
+    color: #ffd54f !important; /* Giallo */
+}
+
+/* Modifica del colore di sfondo dei rettangoli delle attività nel tema mono (grigio) */
+.mono-theme #activityList li {
+    background-color: #eeeeee !important; /* Grigio leggermente più scuro */
+    border: 1px solid #bdbdbd !important; /* Bordo grigio medio */
+}
+
+/* Assicuriamoci che il colore rimanga lo stesso anche quando l'attività è importante */
+.mono-theme #activityList li .activity-text.important {
+    background-color: #eeeeee !important;
+}
+
+/* Modifica del colore di sfondo dei rettangoli delle attività nel tema pastello */
+.pastel-theme #activityList li {
+    background-color: #f8bbd0 !important; /* Rosa pastello */
+    border: 1px solid #f48fb1 !important; /* Bordo rosa pastello più scuro */
+}
+
+/* Assicuriamoci che il colore rimanga lo stesso anche quando l'attività è importante */
+.pastel-theme #activityList li .activity-text.important {
+    background-color: #f8bbd0 !important;
+}
+
+/* Alternanza di colori per le attività nel tema pastello */
+.pastel-theme #activityList li:nth-child(2n) {
+    background-color: #bbdefb !important; /* Azzurro pastello */
+    border: 1px solid #90caf9 !important; /* Bordo azzurro pastello più scuro */
+}
+
+.pastel-theme #activityList li:nth-child(3n) {
+    background-color: #c8e6c9 !important; /* Verde pastello */
+    border: 1px solid #a5d6a7 !important; /* Bordo verde pastello più scuro */
+}
+
+.pastel-theme #activityList li:nth-child(4n) {
+    background-color: #fff9c4 !important; /* Giallo pastello */
+    border: 1px solid #fff59d !important; /* Bordo giallo pastello più scuro */
+}
+
+/* Alternanza di colori per le righe della tabella nel tema pastello */
+.pastel-theme table tr:nth-child(2n) td {
+    background-color: #bbdefb !important; /* Azzurro pastello */
+}
+
+.pastel-theme table tr:nth-child(3n) td {
+    background-color: #c8e6c9 !important; /* Verde pastello */
+}
+
+.pastel-theme table tr:nth-child(4n) td {
+    background-color: #fff9c4 !important; /* Giallo pastello */
+}
+
+.pastel-theme table tr:nth-child(5n) td {
+    background-color: #f8bbd0 !important; /* Rosa pastello */
+}
+
+/* Modifica del colore di sfondo dei rettangoli delle attività nel tema retrò */
+.retro-theme #activityList li {
+    background-color: #311b92 !important; /* Blu scuro neon */
+    border: 1px solid #ff1744 !important; /* Bordo rosso neon */
+    color: #ffffff !important; /* Testo bianco per migliorare la leggibilità */
+}
+
+/* Assicuriamoci che il colore rimanga lo stesso anche quando l'attività è importante */
+.retro-theme #activityList li .activity-text.important {
+    background-color: #311b92 !important;
+    color: #ffffff !important;
+}
+
+/* Modifica del colore di sfondo dei rettangoli delle attività nella tabella nel tema retrò */
+.retro-theme table tr td {
+    background-color: #311b92 !important; /* Blu scuro neon */
+    color: #ffffff !important; /* Testo bianco per migliorare la leggibilità */
+}
+
+/* Modifica del colore del placeholder "Nuova attività" nel tema retrò */
+.retro-theme #newActivity::placeholder {
+    color: #311b92 !important; /* Blu scuro come i rettangoli */
+}
+
+/* Modifica dello sfondo principale per la pagina con la tabella nel tema retrò */
+.retro-theme body {
+    background-color: #4a148c !important; /* Viola scuro */
+}
+
+.vintage-theme #activityList li {
+    background-color: #f5e9d9 !important; /* Colore beige chiaro */
+    border: 1px solid #d7ccc8 !important; /* Bordo marrone chiaro */
+    color: #5d4037 !important; /* Testo marrone scuro */
+}
+
+.gold-theme #activityList li {
+    background-color: #ffd700 !important; /* Giallo oro */
+    border: 1px solid #daa520 !important; /* Bordo oro più scuro */
+    color: #000000 !important; /* Testo nero */
+}
+
+.starry-theme #activityList li {
+    background-color: #e0f7fa !important; /* Azzurrino */
+    border: 1px solid #9cc9f0 !important; /* Bordo azzurro chiaro */
+    color: #000000 !important; /* Testo nero */
+}
+
+.starry-theme #newActivity {
+    color: #ffffff !important; /* Testo bianco */
+}
+
+.starry-theme #newActivity::placeholder {
+    color: #81d4fa !important; /* Azzurrino */
+}
+
+.dragonball-theme .deck-stats {
+    color: #000000 !important; /* Testo nero */
+}
+
+.dragonball-theme #activityList li {
+    background-color: #fff9c4 !important; /* Giallo chiaro */
+    border: 1px solid #f89b29 !important; /* Bordo arancione chiaro */
+    color: #1a1a1a !important; /* Testo scuro per contrasto */
+}
+
+.onepiece-theme .deck-stats {
+    color: #ffffff !important; /* Bianco */
+}
+
+.halloween-theme #activityList li {
+    background-color: #000000 !important; /* Nero */
+    border: 1px solid #ff6b00 !important; /* Bordo arancione */
+    color: #ff6b00 !important; /* Testo arancione */
+}
+
+.halloween-theme #themeArea {
+    background-color: #ff6b00 !important; /* Arancione */
+    border: 2px solid #ff6b00 !important; /* Bordo arancione */
+}
+
+.halloween-theme .theme-option.active {
+    box-shadow: 0 0 0 3px #ffee00 !important; /* Giallo */
+}
+
+/* Aggiungi anche questa regola per il contenitore del selettore */
+.halloween-theme .theme-selector {
+    background-color: #ff6b00 !important; /* Arancione */
+}
+
+/* Override aggressivo per il tema Halloween */
+.halloween-theme #themeArea {
+    background-color: #ff6b00 !important;
+    border: 2px solid #ff6b00 !important;
+}
+
+.halloween-theme .theme-selector {
+    background-color: #ff6b00 !important;
+}
+
+/* Selettore più specifico per garantire la priorità */
+body.halloween-theme div#themeArea[style] {
+    background-color: #ff6b00 !important;
+    border: 2px solid #ff6b00 !important;
+}
+
+/* Forza il cambio di colore anche per tutti gli elementi interni */
+.halloween-theme #themeArea * {
+    background-color: inherit;
+}
+
+/* Override specifico per il selettore dei temi nel tema Halloween */
+.halloween-theme .theme-selector {
+    background-color: #ff6b00 !important; /* Arancione */
+    border: 2px solid #000000 !important; /* Bordo nero */
+}
+
+/* Soluzione più aggressiva per il selettore temi nel tema Halloween */
+.halloween-theme .theme-selector,
+.halloween-theme #themeSelector,
+.halloween-theme div.theme-selector {
+    background-color: #ff6b00 !important; /* Arancione */
+    border: 2px solid #000000 !important; /* Bordo nero */
+    background-image: none !important;
+}
+
+/* Assicuriamoci che anche i contenitori padre non influenzino il colore */
+.halloween-theme #themeArea .theme-selector {
+    background-color: #ff6b00 !important;
+}
+
+/* Soluzione per il selettore temi nel tema Rosa */
+.rosa-theme .theme-selector,
+.rosa-theme #themeSelector,
+.rosa-theme div.theme-selector {
+    background-color: #ffcdd2 !important; /* Rosa chiaro */
+    border: 2px solid #f48fb1 !important; /* Bordo rosa più scuro */
+    background-image: none !important;
+}
+
+/* Assicuriamoci che anche i contenitori padre non influenzino il colore */
+.rosa-theme #themeArea .theme-selector {
+    background-color: #ffcdd2 !important;
+}
+
+/* Stile per i pulsanti principali nel tema Rosa */
+.rosa-theme #listButton,
+.rosa-theme #scrambleButton,
+.rosa-theme .theme-toggle {
+    background-color: #ffcdd2 !important; /* Rosa chiaro */
+    color: #d81b60 !important; /* Rosa scuro per il testo */
+    border: 2px solid #f48fb1 !important; /* Bordo rosa medio */
+}
+
+/* Effetto hover per i pulsanti */
+.rosa-theme #listButton:hover,
+.rosa-theme #scrambleButton:hover,
+.rosa-theme .theme-toggle:hover {
+    background-color: #f8bbd0 !important; /* Rosa leggermente più scuro per l'hover */
+    color: #ad1457 !important; /* Rosa più scuro per il testo in hover */
+}
+
+/* Stile più specifico per il pulsante della tavolozza nel tema Rosa */
+.rosa-theme button.theme-toggle,
+.rosa-theme #themeToggle {
+    background-color: #ffcdd2 !important; /* Rosa chiaro */
+    color: #d81b60 !important; /* Rosa scuro per il testo */
+    border: 2px solid #f48fb1 !important; /* Bordo rosa medio */
+}
+
+/* Stile hover per il pulsante della tavolozza */
+.rosa-theme button.theme-toggle:hover,
+.rosa-theme #themeToggle:hover {
+    background-color: #f8bbd0 !important; /* Rosa leggermente più scuro per l'hover */
+    color: #ad1457 !important; /* Rosa più scuro per il testo in hover */
+}
+
+/* Rettangoli nella lista attività del tema Rosa */
+.rosa-theme #activityList li {
+    background-color: #ffcdd2 !important; /* Rosa chiaro */
+    border: 1px solid #f48fb1 !important; /* Bordo rosa medio */
+    color: #d81b60 !important; /* Testo rosa scuro */
+}
+
+/* Pulsante Aggiungi nel tema Rosa */
+.rosa-theme #addActivity {
+    background-color: #ffcdd2 !important; /* Rosa chiaro */
+    color: #d81b60 !important; /* Testo rosa scuro */
+    border: 2px solid #f48fb1 !important; /* Bordo rosa medio */
+}
+
+/* Effetto hover per il pulsante Aggiungi */
+.rosa-theme #addActivity:hover {
+    background-color: #f8bbd0 !important; /* Rosa leggermente più scuro per l'hover */
+    color: #ad1457 !important; /* Rosa più scuro per il testo in hover */
+}
+
+/* Assicuriamoci che anche i controlli peso nella lista abbiano i colori coordinati */
+.rosa-theme .weight-button {
+    background-color: #ffcdd2 !important;
+    color: #d81b60 !important;
+    border: 1px solid #f48fb1 !important;
+}
+
+.rosa-theme .weight-button:hover {
+    background-color: #f8bbd0 !important;
+    color: #ad1457 !important;
+}
+
+/* Assicuriamoci che il pulsante di eliminazione abbia lo stesso stile */
+.rosa-theme #activityList li .delete-button {
+    background-color: #ffcdd2 !important;
+    color: #d81b60 !important;
+    border: 1px solid #f48fb1 !important;
+}
+
+/* Tema Light - Azzurro chiaro */
+.light-theme #activityList li {
+    background-color: #e1f5fe !important; /* Azzurro molto chiaro */
+    border: 1px solid #b3e5fc !important;
+    color: #01579b !important; /* Blu scuro */
+}
+
+/* Tema Dark - Grigio scuro con testo chiaro */
+.dark-theme #activityList li {
+    background-color: #424242 !important; /* Grigio scuro */
+    border: 1px solid #616161 !important;
+    color: #ffffff !important; /* Grigio molto chiaro */
+}
+
+/* Tema Ocean - Celeste chiaro */
+.ocean-theme #activityList li {
+    background-color: #e0f7fa !important; /* Celeste molto chiaro */
+    border: 1px solid #80deea !important;
+    color: #006064 !important; /* Blu oceano scuro */
+}
+
+/* Tema Forest - Verde chiaro */
+.forest-theme #activityList li {
+    background-color: #e8f5e9 !important; /* Verde molto chiaro */
+    border: 1px solid #a5d6a7 !important;
+    color: #1b5e20 !important; /* Verde foresta scuro */
+}
+
+/* Tema Lavender - Lavanda chiaro */
+.lavender-theme #activityList li {
+    background-color: #f3e5f5 !important; /* Lavanda molto chiaro */
+    border: 1px solid #ce93d8 !important;
+    color: #4a148c !important; /* Viola scuro */
+}
+
+/* Tema Autumn - Arancione chiaro */
+.autumn-theme #activityList li {
+    background-color: #fff3e0 !important; /* Arancio molto chiaro */
+    border: 1px solid #ffcc80 !important;
+    color: #e65100 !important; /* Arancio autunno scuro */
+}
+
+/* Tema Mono - Grigio chiaro */
+.mono-theme #activityList li {
+    background-color: #fafafa !important; /* Grigio molto chiaro */
+    border: 1px solid #e0e0e0 !important;
+    color: #212121 !important; /* Nero */
+}
+
+/* Tema Pastel - Colori pastello vari (mantenuto) */
+.pastel-theme #activityList li {
+    background-color: #f8bbd0 !important; /* Rosa pastello */
+    border: 1px solid #f48fb1 !important;
+    color: #880e4f !important; /* Rosa scuro */
+}
+
+/* Variazioni del tema Pastel */
+.pastel-theme #activityList li:nth-child(2n) {
+    background-color: #e1bee7 !important; /* Viola pastello */
+    color: #4a148c !important;
+}
+.pastel-theme #activityList li:nth-child(4n) {
+    background-color: #c8e6c9 !important; /* Verde pastello */
+    color: #1b5e20 !important;
+}
+
+/* Tema Retro - Beige chiaro */
+.retro-theme #activityList li {
+    background-color: #f5f5dc !important; /* Beige chiaro */
+    border: 1px solid #d7ccc8 !important;
+    color: #4e342e !important; /* Marrone scuro */
+}
+
+/* Tema Vintage - Rosa antico chiaro */
+.vintage-theme #activityList li {
+    background-color: #f9e4e0 !important; /* Rosa antico chiaro */
+    border: 1px solid #e6b9b1 !important;
+    color: #a1887f !important; /* Rosa antico scuro */
+}
+
+/* Tema Gold - Oro chiaro */
+.gold-theme #activityList li {
+    background-color: #fff8e1 !important; /* Oro molto chiaro */
+    border: 1px solid #ffd54f !important;
+    color: #ff6f00 !important; /* Oro scuro */
+}
+
+/* Testo delle attività nel tema Oro */
+.gold-theme .activity-text {
+    color: #000000 !important; /* Testo nero */
+}
+
+/* Testo importante nel tema Oro */
+.gold-theme .activity-text.important {
+    color: #000000 !important; /* Testo nero */
+    font-weight: bold;
+    text-shadow: 0 0 2px #daa520; /* Leggero bagliore dorato */
+}
+
+/* Pulsanti nei rettangoli del tema Oro */
+.gold-theme #activityList li .weight-button,
+.gold-theme #activityList li .delete-button {
+    background-color: #ffdf80 !important; /* Oro più chiaro per i pulsanti */
+    color: #000000 !important; /* Testo nero */
+    border: 1px solid #daa520 !important; /* Bordo oro più scuro */
+}
+
+/* Hover sui pulsanti nel tema Oro */
+.gold-theme #activityList li .weight-button:hover,
+.gold-theme #activityList li .delete-button:hover {
+    background-color: #daa520 !important; /* Oro più scuro per l'hover */
+    color: #000000 !important; /* Testo nero */
+}
+
+/* Display del peso nel tema Oro */
+.gold-theme .weight-display {
+    color: #000000 !important; /* Testo nero */
+}
+
+/* Tema Pikachu - Rettangoli rossi come le guance di Pikachu con testo bianco */
+.pikachu-theme #activityList li {
+    background-color: #e51c23 !important; /* Rosso brillante come le guance di Pikachu */
+    border: 1px solid #b71c1c !important; /* Bordo rosso più scuro */
+    color: #ffffff !important; /* Testo bianco */
+}
+
+/* Testo delle attività nel tema Pikachu */
+.pikachu-theme .activity-text {
+    color: #ffffff !important; /* Testo bianco */
+}
+
+/* Testo importante nel tema Pikachu */
+.pikachu-theme .activity-text.important {
+    color: #ffffff !important; /* Testo bianco */
+    font-weight: bold;
+    text-shadow: 0 0 2px #ffeb3b; /* Leggero bagliore giallo */
+}
+
+/* Pulsanti nei rettangoli del tema Pikachu */
+.pikachu-theme #activityList li .weight-button,
+.pikachu-theme #activityList li .delete-button {
+    background-color: #ff5252 !important; /* Rosso leggermente più chiaro per i pulsanti */
+    color: #ffffff !important; /* Testo bianco */
+    border: 1px solid #b71c1c !important; /* Bordo rosso più scuro */
+}
+
+/* Hover sui pulsanti nel tema Pikachu */
+.pikachu-theme #activityList li .weight-button:hover,
+.pikachu-theme #activityList li .delete-button:hover {
+    background-color: #d32f2f !important; /* Rosso più scuro per l'hover */
+    color: #ffffff !important; /* Testo bianco */
+}
+
+/* Display del peso nel tema Pikachu */
+.pikachu-theme .weight-display {
+    color: #ffffff !important; /* Testo bianco */
+}
+
+/* Stella per elementi importanti */
+.pikachu-theme .star-button {
+    color: #ffeb3b !important; /* Giallo per la stella, come il colore di Pikachu */
+}
+
+/* Tema Gameboy - Rettangoli con verde chiaro */
+.gameboy-theme #activityList li {
+    background-color: #9BBC0F !important; /* Verde più chiaro del Gameboy */
+    border: 1px solid #306230 !important; /* Bordo verde più scuro */
+    color: #0F380F !important; /* Testo verde molto scuro, quasi nero */
+}
+
+/* Testo delle attività nel tema Gameboy */
+.gameboy-theme .activity-text {
+    color: #0F380F !important; /* Testo verde scuro per contrasto */
+}
+
+/* Testo importante nel tema Gameboy */
+.gameboy-theme .activity-text.important {
+    color: #0F380F !important; /* Testo verde scuro */
+    font-weight: bold;
+    text-shadow: 0 0 1px #306230; /* Leggero effetto ombra */
+}
+
+/* Pulsanti nei rettangoli del tema Gameboy */
+.gameboy-theme #activityList li .weight-button,
+.gameboy-theme #activityList li .delete-button {
+    background-color: #8BAC0F !important; /* Verde medio-chiaro per i pulsanti */
+    color: #0F380F !important; /* Testo verde scuro */
+    border: 1px solid #306230 !important; /* Bordo verde più scuro */
+}
+
+/* Hover sui pulsanti nel tema Gameboy */
+.gameboy-theme #activityList li .weight-button:hover,
+.gameboy-theme #activityList li .delete-button:hover {
+    background-color: #306230 !important; /* Verde più scuro per l'hover */
+    color: #9BBC0F !important; /* Testo verde chiaro per contrasto */
+}
+
+/* Display del peso nel tema Gameboy */
+.gameboy-theme .weight-display {
+    color: #0F380F !important; /* Testo verde scuro */
+}
+
+/* Pulsante Aggiungi nel tema Gameboy per coerenza */
+.gameboy-theme #addActivity {
+    background-color: #8BAC0F !important; /* Verde medio-chiaro */
+    color: #0F380F !important; /* Testo verde scuro */
+    border: 2px solid #306230 !important; /* Bordo verde più scuro */
+}
+
+/* Stile per il pulsante stella - versione con cerchio */
+.star-button {
+    all: unset !important;
+    cursor: pointer !important;
+    font-size: 1.5rem !important;
+    margin-right: 5px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.2s ease !important;
+    width: 1.5rem !important;
+    text-align: center !important;
+}
+
+.star-button.active {
+    transform: scale(1.1) !important;
+}
+
+.star-button:not(.active) {
+    color: #999 !important; /* Cerchio inattivo in grigio */
+}
+
+/* Contenitore a tabella per gli elementi interni */
+.activity-item-container {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important; /* Importante per mantenere le larghezze fisse */
+}
+
+/* Celle della tabella invisibile */
+.star-cell,
+.weight-cell,
+.text-cell,
+.delete-cell {
+    display: table-cell !important;
+    vertical-align: middle !important;
+    padding: 0 10px !important;
+}
+
+/* Dimensioni specifiche per ogni cella */
+.star-cell {
+    width: 24px !important;
+    min-width: 24px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+
+.weight-cell {
+    width: 100px !important;
+    min-width: 100px !important;
+    text-align: center !important;
+}
+
+.text-cell {
+    width: auto !important; /* Prende lo spazio rimanente */
+}
+
+.delete-cell {
+    width: 24px !important;
+    min-width: 24px !important;
+    padding: 0 !important;
+    text-align: right !important;
+    margin-left: auto !important; /* Spinge la crocetta a destra */
+}
+
+/* Stile per il pulsante elimina */
+.delete-button {
+    width: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    margin: 0 !important; /* Assicurati che non ci sia margine */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* Centra la crocetta */
+    font-size: 18px !important;
+    line-height: 1 !important;
+}
+
+/* Assicuriamo che il testo dell'attività non si sovrapponga */
+.activity-text {
+    display: block !important;
+    padding: 2px 5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    border: 3px solid var(--important-border-color); /* Aggiungi il bordo */
+    box-shadow: 0 0 5px var(--important-border-color); /* Aggiungi l'ombra */
+    border-radius: 5px; /* Aggiungi gli angoli arrotondati */
+    font-weight: bold; /* Aggiungi il grassetto */
+}
+
+/* Aggiustiamo il contenitore dell'elemento lista */
+#activityList li {
+    padding: 8px 0 !important; /* Rimuoviamo il padding laterale poiché lo gestiamo nelle celle */
+}
+
+/* Aggiustiamo il pulsante stella per adattarsi alla cella più stretta */
+.star-button {
+    width: 20px !important;
+    min-width: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 1.2rem !important;
+}
+
+/* Modifica della cella peso per garantire spazio sufficiente */
+.weight-cell {
+    width: 100px !important;
+    min-width: 100px !important;
+    text-align: center !important;
+}
+
+/* Stile per il controllo del peso con layout fisso */
+.weight-control {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important; /* Distribuisce lo spazio uniformemente */
+    width: 90px !important; /* Larghezza fissa per il contenitore */
+    margin: 0 auto !important; /* Centra il controllo nella cella */
+}
+
+/* Stile per i pulsanti peso */
+.weight-button {
+    padding: 2px 8px !important;
+    font-size: 14px !important;
+    background-color: var(--button-bg) !important;
+    color: var(--button-text-color) !important;
+    border: 1px solid #000 !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    width: 24px !important; /* Larghezza fissa per i pulsanti */
+    margin: 0 !important; /* Rimuoviamo i margini */
+}
+
+/* Stile per il display del peso */
+.weight-display {
+    min-width: 36px !important; /* Spazio fisso per contenere "X+Y" */
+    text-align: center !important;
+    font-weight: bold !important;
+}
+
+/* Modifica del posizionamento della cella delete */
+.delete-cell {
+    width: 24px !important;
+    min-width: 24px !important;
+    padding: 0 !important;
+    position: static !important; /* Rimuoviamo il posizionamento assoluto */
+    text-align: right !important;
+    margin-left: 0 !important; /* Aggiungiamo questo per assicurarci che sia allineato completamente a destra */
+}
+
+/* Aggiustiamo il contenitore rimuovendo il padding-right non più necessario */
+.activity-item-container {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    position: relative !important;
+    padding-right: 0 !important; /* Rimuoviamo il padding */
+}
+
+/* Assicuriamo che il pulsante elimina sia allineato correttamente */
+.delete-button {
+    width: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    margin: 0 0 0 auto !important; /* Spinge il pulsante a destra */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+}
+
+/* Stile base per tutte le attività - mantiene lo spazio ma senza effetti visivi */
+.activity-text {
+    display: block !important;
+    padding: 2px 5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    border: 3px solid transparent !important; /* Bordo trasparente per mantenere lo spazio */
+    border-radius: 5px !important;
+    box-shadow: none !important; /* Nessuna ombra di default */
+}
+
+/* Stile solo per le attività importanti - aggiunge gli effetti visivi */
+.activity-text.important {
+    border-color: var(--important-border-color) !important; /* Bordo colorato */
+    box-shadow: 0 0 5px var(--important-border-color) !important; /* Ombra visibile */
+    font-weight: bold !important;
+}
+
+/* Colori specifici per il tema scuro nella lista attività */
+.dark-theme #activityList .activity-text {
+    color: #e0e0e0 !important; /* Grigio molto chiaro per il testo */
+}
+
+.dark-theme #activityList .weight-display {
+    color: #e0e0e0 !important; /* Stesso grigio chiaro per i numeri */
+}
+
+/* Assicuriamoci che il colore rimanga anche per le attività importanti */
+.dark-theme #activityList .activity-text.important {
+    color: #e0e0e0 !important;
+}
+
+/* Modifica il layout della cella della tabella che contiene l'input e i controlli */
+#weekTable td:not(:first-child) {
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px !important;
+    position: relative !important;
+}
+
+/* Stile per l'input dell'attività */
+#weekTable td input[type="text"] {
+    width: 160px !important; /* Aumentato da 140px a 160px (circa +12.5%) */
+    margin-right: 10px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Stile per i controlli del peso - manteniamo compatto */
+.table-weight-control {
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+}
+
+.table-weight-control .weight-button {
+    padding: 0 3px !important;
+    min-width: 20px !important;
+}
+
+.table-weight-control .weight-display {
+    min-width: 30px !important;
+    text-align: center !important;
+    margin: 0 2px !important;
+}
+
+/* Assicuriamoci che il cover rimanga correttamente posizionato */
+.cover {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/* Stile base per la tabella */
+#weekTable {
+    width: 100% !important;
+    max-width: 600px !important;
+    margin: 0 auto !important; /* Centra la tabella */
+}
+
+/* Media query per schermi piccoli */
+@media screen and (max-width: 480px) {
+    /* Riduciamo il font dei giorni della settimana */
+    #weekTable td:first-child {
+        padding: 6px 4px !important;
+        font-size: 0.8em !important; /* Ridotto da 0.9em a 0.8em */
+        width: 60px !important; /* Larghezza fissa più compatta */
+        min-width: 60px !important;
+    }
+
+    /* Aggiustiamo il padding del container */
+    .container {
+        padding: 0 5px !important;
+        width: 98% !important; /* Leggermente più stretto del 100% */
+        margin: 0 auto !important;
+    }
+
+    #weekTable td input[type="text"] {
+        width: 110px !important; /* Leggermente più stretto */
+        margin-right: 5px !important;
+        font-size: 0.9em !important;
+    }
+}
+
+/* Per schermi molto piccoli */
+@media screen and (max-width: 360px) {
+    #weekTable td:first-child {
+        font-size: 0.75em !important; /* Ancora più piccolo */
+        width: 50px !important; /* Ancora più stretto */
+        min-width: 50px !important;
+        padding: 6px 2px !important;
+    }
+
+    #weekTable td input[type="text"] {
+        width: 85px !important;
+        font-size: 0.85em !important;
+    }
+}
+
+/* Stile base per il container e la tabella */
+.container {
+    margin-top: 20px !important; /* Margine superiore del container */
+}
+
+#weekTable {
+    width: 100% !important;
+    max-width: 600px !important;
+    margin: 0 auto 20px !important; /* Centra la tabella e aggiunge margine sotto */
+}
+
+.button-container {
+    margin-top: 20px !important; /* Spazio tra tabella e pulsanti */
+}
+
+/* Media query per schermi piccoli */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 0 5px !important;
+        width: 98% !important;
+        margin: 15px auto 0 !important; /* Margine superiore leggermente ridotto su mobile */
+    }
+
+    #weekTable {
+        margin: 0 auto 15px !important; /* Margine inferiore leggermente ridotto su mobile */
+    }
+
+    .button-container {
+        margin-top: 15px !important; /* Spazio tra tabella e pulsanti leggermente ridotto su mobile */
+    }
+}
+
+/* Nascondiamo inizialmente gli input */
+#weekTable input[type="text"] {
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+
+/* Classe che verrà aggiunta dopo il caricamento dei rettangoli */
+#weekTable input[type="text"].loaded {
+    opacity: 1;
+}
+
+/* Rimuoviamo le regole precedenti e le sostituiamo con queste */
+#weekTable td {
+    position: relative !important;
+}
+
+#weekTable input[type="text"] {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.cover {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 2 !important;
+    background-color: var(--cover-bg) !important;
+}
+
+/* Rimuoviamo tutte le regole precedenti di opacità e z-index */
+#weekTable td {
+    position: relative !important;
+}
+
+#weekTable input[type="text"] {
+    visibility: hidden !important; /* Nascondiamo di default */
+}
+
+#weekTable input[type="text"][data-revealed="true"] {
+    visibility: visible !important; /* Mostriamo solo se rivelata */
+}
+
+.cover {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: var(--cover-bg) !important;
+}
+
+/* Rimuovi tutte le regole precedenti relative a opacity, visibility e z-index */
+
+/* Stile base per le celle della tabella */
+#weekTable td {
+    position: relative !important;
+}
+
+/* Stile base per gli input */
+#weekTable input[type="text"] {
+    display: block !important;
+    width: 100% !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Stile per gli input nascosti */
+#weekTable input[type="text"][data-revealed="false"] {
+    opacity: 0 !important;
+}
+
+/* Stile per gli input rivelati */
+#weekTable input[type="text"][data-revealed="true"] {
+    opacity: 1 !important;
+}
+
+/* Stile per i rettangoli coprenti */
+.cover {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: var(--cover-bg) !important;
+}
+
+/* Colore dei numeri nella tabella per il tema gold */
+.gold-theme #weekTable .weight-display {
+    color: #ffd700 !important; /* Giallo oro */
+    font-weight: bold !important;
+}
+
+/* Colore dei numeri nella tabella per il tema Pikachu */
+.pikachu-theme #weekTable .weight-display {
+    color: #ff0000 !important; /* Rosso come le guance di Pikachu */
+    font-weight: bold !important;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2) !important; /* Leggera ombra per migliorare la leggibilità */
+}
+
+/* Colore dei rettangoli coprenti nella tabella per il tema Pikachu */
+.pikachu-theme .cover {
+    background-color: #ffde00 !important; /* Giallo Pikachu */
+    border: 2px solid #ff0000 !important; /* Bordo rosso come le guance */
+}
+
+.pikachu-theme .cover.active {
+    background-color: #ffde00 !important; /* Mantiene lo stesso colore quando attivo */
+    opacity: 1 !important;
+}
+
+/* Colore dei rettangoli coprenti nella tabella per il tema Halloween */
+.halloween-theme .cover {
+    background-color: #ff6b00 !important; /* Arancione Halloween */
+    border: 2px solid #000000 !important; /* Bordo nero per il contrasto */
+}
+
+.halloween-theme .cover.active {
+    background-color: #ff6b00 !important; /* Mantiene lo stesso colore quando attivo */
+    opacity: 1 !important;
+}
+/* ===== Coerenza fra i temi ==============================================
+   I 19 temi dichiarano ciascuno le proprie variabili di colore, ma quasi
+   tutti ne dimenticavano qualcuna: su 28 variabili usate dal foglio, a
+   `light` ne mancavano 16, a `halloween` 10, a `dragonball`, `onepiece` e
+   `pikachu` 6. Una variabile non dichiarata rende invalida la regola che la
+   usa, ed e' per questo che alcuni temi mostravano pulsanti e riquadri
+   diversi dagli altri: non era una scelta, era un buco.
+
+   Qui si danno valori predefiniti a tutto, RICAVANDOLI dai colori portanti
+   del tema attivo invece di fissarli: cosi' ogni tema resta se stesso e
+   nessuna regola resta orfana.
+
+   Perche' su `body` e non su `:root`: le variabili portanti le dichiarano i
+   temi su `body.<tema>-theme`, e un `var()` si risolve dov'e' scritto. Su
+   `:root` non le troverebbe. Su `body` si', e `body.<tema>-theme` e' piu'
+   specifico, quindi ogni tema continua a vincere dove dichiara. */
+body {
+    /* I pulsanti prendono la superficie della scheda e il colore del testo:
+       cosi' la freccia si legge sempre. Facendoli del colore dell'intestazione
+       finivano scritta e fondo dello stesso colore, e le frecce sparivano. */
+    --button-bg: var(--card-background);
+    --button-text: var(--text-color);
+    --button-text-color: var(--text-color);
+    --stats-text-color: var(--text-color);
+    --add-button-bg: var(--table-header-bg);
+    --delete-button-bg: var(--table-header-bg);
+    --delete-button-text: var(--card-background);
+    --delete-button-hover: var(--table-header-bg);
+    --list-button-bg: var(--card-background);
+    --list-button-hover: var(--table-header-bg);
+    --list-bg: var(--card-background);
+    --cover-bg: var(--table-header-bg);
+    --input-bg: var(--card-background);
+    --input-focus-bg: var(--card-background);
+    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* Il pannello dei temi non aveva nessuna regola generica: i temi che non lo
+   dichiaravano lo mostravano senza fondo ne' bordo. */
+#themeArea {
+    background-color: var(--card-background);
+    border: 2px solid var(--table-header-bg);
+    color: var(--text-color);
+}
+
+/* ===== Intestazione dell'app ============================================
+   Prima il nome lo scriveva la barra nativa del vecchio guscio, quindi nella
+   pagina non c'era: nel guscio nuovo, che le barre non le ha, restava senza
+   testa. Qui e' in pagina, e prende i colori del tema attivo. */
+.app-header {
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin: 0 0 6px;
+    background-color: var(--table-header-bg);
+    color: var(--card-background);
+    border-radius: 0 0 14px 14px;
+    box-shadow: var(--box-shadow);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+}
+
+.build-tag {
+    font-size: 0.5em;
+    font-weight: normal;
+    opacity: 0.6;
+    vertical-align: super;
+}
+
+/* Nel guscio Android le barre di sistema sono nascoste, ma il foro della
+   fotocamera resta: sul Galaxy A25 e' alto 77 px fisici, circa 27 CSS. */
+body.capacitor .app-header {
+    padding-top: calc(10px + max(env(safe-area-inset-top, 0px), 34px));
+}
+
+/* Regola di casa: il testo non si seleziona, tranne dove si scrive. */
+* {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+input,
+textarea,
+[contenteditable] {
+    -webkit-user-select: text;
+    user-select: text;
+}
