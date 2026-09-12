@@ -182,10 +182,10 @@ const GIORNI_SETTIMANA = ['Lunedì', 'Martedì', 'Mercoledì',
     'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
 const CORPO_GIORNO_BASE = 1.45;   // rem
 const CORPO_ATTIVITA_BASE = 1.35; // rem
-const CORPO_ATTIVITA_MIN = 0.85;  // sotto questo si taglia, non si stringe piu'
+const CORPO_ATTIVITA_MIN = 0.7;   // sotto questo si taglia, non si stringe piu'
 const CRESCITA_MAX = 1.18;        // quanto puo' crescere il corpo dei giorni
 const QUOTA_MIN = 0.28;           // della larghezza della tabella
-const QUOTA_MAX = 0.46;
+const QUOTA_MAX = 0.4;            // oltre, i giorni mangiano i nomi
 
 // ⚠️ Misurare con un canvas non va bene su Android: la scala del testo di
 // sistema ingrandisce quello che il browser disegna, ma il corpo che si legge
