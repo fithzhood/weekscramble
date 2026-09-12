@@ -199,7 +199,8 @@ const CORPO_TESTA_BASE = 1.6;
 const CORPO_GIORNO_BASE = 1.45;
 const CORPO_GIORNO_MIN = 0.95;
 const CORPO_ATTIVITA_BASE = 1.35;
-const CORPO_ATTIVITA_MIN = 0.95;   // sotto questo il nome si taglia, non si stringe
+const CORPO_ATTIVITA_MIN = 0.95;   // il minimo comodo
+const CORPO_ATTIVITA_ESTREMO = 0.7; // ci si arriva solo per non ridurre un nome a due lettere
 const QUOTA_MIN = 0.24;            // della larghezza della tabella
 const QUOTA_MAX = 0.44;
 
@@ -356,6 +357,15 @@ function adattaTesti() {
                 Math.min(1, (utile - bersaglio * minNome) / serveGiorno));
             fattoreNome = minNome;
         }
+    }
+
+    // Con un carattere larghissimo (Press Start 2P del tema gameboy) al minimo
+    // comodo restavano due lettere e i puntini. Meglio scendere sotto: un nome
+    // piccolo ma intero si legge, "Su..." no.
+    const spazioNome = utile - serveGiorno * fattoreGiorno;
+    if (bersaglio * fattoreNome > spazioNome && spazioNome > 0) {
+        fattoreNome = Math.max(CORPO_ATTIVITA_ESTREMO / CORPO_ATTIVITA_BASE,
+                               spazioNome / bersaglio);
     }
 
     const spazioGiorno = serveGiorno * fattoreGiorno;
