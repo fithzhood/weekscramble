@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- Senza queste, il guscio Android tiene la pagina in cache per dieci
-         minuti: si pubblica una correzione e il telefono continua a mostrare
-         quella rotta, coi riferimenti alla versione vecchia del foglio. -->
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <!-- Qui NON c'e' nessun <meta http-equiv="Cache-Control">: non serve a
+         niente, ne' per la CDN ne' per la cache del browser, ed e' un equivoco
+         che costa tempo ogni volta. Contro i dieci minuti di cache di GitHub
+         Pages agisce `allineaVersione()` in weekscramble.js, che rilegge
+         versione.json e si ricarica una volta sola. -->
     <title>WeekScramble</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="weekscramble.css?v=8">
+    <link rel="stylesheet" href="weekscramble.css?v=9">
 </head>
 <body>
     <header class="app-header">
@@ -96,7 +95,7 @@
         <input type="text" id="newActivity" placeholder="Nuova attività">
         <button id="addActivity">Aggiungi</button>
     </div>
-    <script src="weekscramble.js?v=3"></script>
-    <script src="backup.js?v=5"></script>
+    <script src="weekscramble.js?v=9"></script>
+    <script src="backup.js?v=9"></script>
 </body>
 </html>

@@ -14,7 +14,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isCapacitorNative()) document.body.classList.add('capacitor');
     const tag = document.getElementById('build-tag');
     if (tag) tag.textContent = 'v' + APP_BUILD;
+    allineaVersione();
 });
+
+// Perche' il telefono restava indietro dopo una pubblicazione.
+//
+// GitHub Pages serve l'HTML con `Cache-Control: max-age=600` e non si possono
+// mandare intestazioni proprie: per dieci minuti il guscio continua a mostrare
+// la pagina di prima. Il `?v=N` sui fogli non basta, perche' a leggerlo e'
+// l'HTML: se arriva dalla cache si porta dietro i riferimenti vecchi. E il
+// `<meta http-equiv="Cache-Control">` non serve a niente, e' un equivoco:
+// provato sul campo il 7 settembre 2026.
+//
+// L'unica via e' che sia la pagina a controllarsi. All'avvio legge un manifesto
+// senza cache; se la revisione non e' quella con cui e' stata caricata, si
+// ricarica UNA VOLTA SOLA con la revisione in coda — un indirizzo mai visto non
+// puo' essere in cache. Freno in sessionStorage perche' non diventi un anello,
+// e se la rete non c'e' si tiene quello che c'e', che e' la cosa giusta.
+function allineaVersione() {
+    if (APP_BUILD === '?') return;                 // server locale: niente da allineare
+    try {
+        if (sessionStorage.getItem('ws-riletta') === '1') return;
+    } catch (e) {
+        return;
+    }
+    fetch('versione.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(r => (r.ok ? r.json() : null))
+        .then(m => {
+            if (!m || !m.rev || String(m.rev) === String(APP_BUILD)) return;
+            sessionStorage.setItem('ws-riletta', '1');
+            location.replace(location.pathname + '?v=' + m.rev);
+        })
+        .catch(() => {});
+}
 
 // Versione dell'app
 const APP_VERSION = "1.4";
