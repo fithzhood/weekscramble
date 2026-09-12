@@ -187,12 +187,36 @@ const CRESCITA_MAX = 1.18;        // quanto puo' crescere il corpo dei giorni
 const QUOTA_MIN = 0.28;           // della larghezza della tabella
 const QUOTA_MAX = 0.46;
 
-let pennello = null;
+// ⚠️ Misurare con un canvas non va bene su Android: la scala del testo di
+// sistema ingrandisce quello che il browser disegna, ma il corpo che si legge
+// da `getComputedStyle` resta quello scritto nel foglio. Il canvas disegna col
+// corpo dichiarato e restituisce una larghezza piu' piccola del vero, e la
+// colonna risulta abbastanza quando non lo e'. Qui si misura invece un pezzo di
+// testo vero, messo nella stessa cella e quindi soggetto a tutto quello a cui
+// e' soggetto il testo che si vede.
+let metro = null;
 
-function larghezzaTesto(testo, stile) {
-    if (!pennello) pennello = document.createElement('canvas').getContext('2d');
-    pennello.font = stile.fontWeight + ' ' + stile.fontSize + ' ' + stile.fontFamily;
-    return pennello.measureText(testo).width;
+function larghezzaTesto(testo, elemento) {
+    // Dentro un <input> non si puo' appendere niente: il metro va nel genitore,
+    // ma i caratteri li copia dall'input, che sono quelli che contano.
+    const dentro = elemento.tagName === 'INPUT' ? elemento.parentNode : elemento;
+    if (!metro) {
+        metro = document.createElement('span');
+        metro.setAttribute('aria-hidden', 'true');
+        metro.style.cssText =
+            'position:absolute;visibility:hidden;white-space:pre;' +
+            'left:-9999px;top:0;padding:0;margin:0;border:0;';
+    }
+    if (metro.parentNode !== dentro) dentro.appendChild(metro);
+    const s = getComputedStyle(elemento);
+    metro.style.fontFamily = s.fontFamily;
+    metro.style.fontSize = s.fontSize;
+    metro.style.fontWeight = s.fontWeight;
+    metro.style.fontStyle = s.fontStyle;
+    metro.style.letterSpacing = s.letterSpacing;
+    metro.style.textTransform = s.textTransform;
+    metro.textContent = testo;
+    return metro.getBoundingClientRect().width;
 }
 
 function adattaTesti() {
@@ -206,7 +230,7 @@ function adattaTesti() {
     const stile = getComputedStyle(cella);
     const bordi = parseFloat(stile.paddingLeft) + parseFloat(stile.paddingRight) + 6;
     const piuLungo = Math.max.apply(null, GIORNI_SETTIMANA.map(function (g) {
-        return larghezzaTesto(g, stile);
+        return larghezzaTesto(g, cella);
     }));
 
     const larga = tabella.getBoundingClientRect().width;
@@ -250,7 +274,7 @@ function adattaNomi() {
 
     let piuLungo = 0;
     caselle.forEach(function (c) {
-        if (c.value) piuLungo = Math.max(piuLungo, larghezzaTesto(c.value, stile));
+        if (c.value) piuLungo = Math.max(piuLungo, larghezzaTesto(c.value, c));
     });
     if (piuLungo <= disponibile) return;
 
