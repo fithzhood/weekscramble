@@ -178,22 +178,22 @@ function getRandomTheme() {
 // fisso non puo' funzionare. Qui si misura il testo vero nel carattere vero e
 // si decide di conseguenza: prima si allarga la colonna quanto serve, entro un
 // limite; solo se non basta si stringe il corpo.
-const GIORNI_SETTIMANA = ['Lunedì', 'Martedì', 'Mercoledì',
-    'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
-const CORPO_GIORNO_BASE = 1.45;   // rem
-const CORPO_ATTIVITA_BASE = 1.35; // rem
-const CORPO_ATTIVITA_MIN = 0.7;   // sotto questo si taglia, non si stringe piu'
-const CRESCITA_MAX = 1.18;        // quanto puo' crescere il corpo dei giorni
-const QUOTA_MIN = 0.28;           // della larghezza della tabella
-const QUOTA_MAX = 0.4;            // oltre, i giorni mangiano i nomi
+const GIORNI_SETTIMANA = ['Luned\u00ec', 'Marted\u00ec', 'Mercoled\u00ec',
+    'Gioved\u00ec', 'Venerd\u00ec', 'Sabato', 'Domenica'];
 
-// ⚠️ Misurare con un canvas non va bene su Android: la scala del testo di
-// sistema ingrandisce quello che il browser disegna, ma il corpo che si legge
-// da `getComputedStyle` resta quello scritto nel foglio. Il canvas disegna col
-// corpo dichiarato e restituisce una larghezza piu' piccola del vero, e la
-// colonna risulta abbastanza quando non lo e'. Qui si misura invece un pezzo di
-// testo vero, messo nella stessa cella e quindi soggetto a tutto quello a cui
-// e' soggetto il testo che si vede.
+// Corpi in rem: quello di partenza, e il piu' piccolo che si accetta.
+const CORPO_TESTA_BASE = 1.6;
+const CORPO_GIORNO_BASE = 1.45;
+const CORPO_GIORNO_MIN = 0.95;
+const CORPO_ATTIVITA_BASE = 1.35;
+const CORPO_ATTIVITA_MIN = 1.2;    // sotto questo il nome si taglia, non si stringe
+const QUOTA_MIN = 0.24;            // della larghezza della tabella
+const QUOTA_MAX = 0.44;
+
+// ⚠️ Misurare con un canvas non va bene: il canvas disegna col corpo dichiarato
+// nel foglio, mentre a schermo ci finisce anche la scala del testo di sistema.
+// Qui si misura un pezzo di testo vero, messo nella cella, quindi soggetto a
+// tutto cio' a cui e' soggetto il testo che si vede.
 let metro = null;
 
 function larghezzaTesto(testo, elemento) {
@@ -219,69 +219,143 @@ function larghezzaTesto(testo, elemento) {
     return metro.getBoundingClientRect().width;
 }
 
+// Distribuisce la larghezza della riga fra il giorno e il nome dell'attivita'.
+//
+// Perche' non basta il foglio di stile: ogni tema ha il suo carattere, e fra
+// "Mountains of Christmas" e "Press Start 2P" la stessa parola e' larga il
+// doppio. Nemmeno un tetto in `vw` regge, perche' la scala del testo di sistema
+// moltiplica il corpo calcolato qualunque unita' si sia scritta. L'unica cosa
+// che vale su tutti i temi e su tutte le impostazioni e' misurare.
+//
+// L'ordine e' quello deciso: i giorni interi sempre, i nomi mai troppo piccoli,
+// e se lo spazio non basta si stringe prima la colonna dei giorni.
+// Un nome lungo nella tabella resta tagliato: la riga non e' elastica e il
+// corpo non si stringe oltre un certo punto, che e' quello che si e' scelto.
+// Toccandolo pero' si vede per intero, in un fumetto che si chiude da solo.
+// Compare solo quando serve davvero, cioe' quando il testo e' piu' largo della
+// casella: su un nome che gia' si legge sarebbe un disturbo e basta.
+let fumetto = null;
+let timerFumetto = null;
+
+function mostraNomeIntero(casella) {
+    if (!casella.value) return;
+    if (casella.scrollWidth <= casella.clientWidth + 1) return;
+
+    if (!fumetto) {
+        fumetto = document.createElement('div');
+        fumetto.className = 'fumetto-nome';
+        document.body.appendChild(fumetto);
+    }
+    fumetto.textContent = casella.value;
+    fumetto.classList.add('visibile');
+
+    const r = casella.getBoundingClientRect();
+    const largo = fumetto.getBoundingClientRect().width;
+    let x = r.left + r.width / 2 - largo / 2;
+    x = Math.max(6, Math.min(x, window.innerWidth - largo - 6));
+    fumetto.style.left = x.toFixed(0) + 'px';
+
+    // Sopra la casella, tranne per le prime righe, dove sopra non c'e' posto.
+    const alto = fumetto.getBoundingClientRect().height;
+    const sopra = r.top - alto - 8;
+    fumetto.style.top = (sopra > 6 ? sopra : r.bottom + 8).toFixed(0) + 'px';
+
+    clearTimeout(timerFumetto);
+    timerFumetto = setTimeout(nascondiNome, 2600);
+}
+
+function nascondiNome() {
+    if (fumetto) fumetto.classList.remove('visibile');
+}
+
 function adattaTesti() {
     const tabella = document.getElementById('weekTable');
-    const cella = document.querySelector('#weekTable td:first-child');
     const testa = document.querySelector('#weekTable th:first-child');
-    if (!tabella || !cella || !testa) return;
+    const cella = document.querySelector('#weekTable td:first-child');
+    const casella = document.querySelector('#weekTable td input[type="text"]');
+    if (!tabella || !testa || !cella || !casella) return;
 
-    // Si riparte sempre dal corpo pieno, se no le riduzioni si sommano.
-    document.body.style.setProperty('--corpo-giorno', CORPO_GIORNO_BASE + 'rem');
-    const stile = getComputedStyle(cella);
-    const bordi = parseFloat(stile.paddingLeft) + parseFloat(stile.paddingRight) + 6;
-    const piuLungo = Math.max.apply(null, GIORNI_SETTIMANA.map(function (g) {
-        return larghezzaTesto(g, cella);
-    }));
+    const stile = document.body.style;
+    stile.setProperty('--corpo-testa', CORPO_TESTA_BASE + 'rem');
+    stile.setProperty('--corpo-giorno', CORPO_GIORNO_BASE + 'rem');
+    stile.setProperty('--corpo-attivita', CORPO_ATTIVITA_BASE + 'rem');
 
     const larga = tabella.getBoundingClientRect().width;
     if (!larga) return;
-    const minima = larga * QUOTA_MIN;
-    const massima = larga * QUOTA_MAX;
-    const servono = piuLungo + bordi;
 
-    // La colonna prende quello che serve al giorno piu' lungo, fra un minimo e
-    // un massimo. Poi il corpo si adatta a quella colonna: cresce un po' se il
-    // carattere del tema e' stretto e avanza spazio, si stringe se e' largo.
-    // Cosi' ogni tema ha le sue proporzioni invece di subire quelle di un
-    // altro: fra "Mountains of Christmas" e "Press Start 2P" la stessa parola
-    // e' larga il doppio.
-    const colonna = Math.min(massima, Math.max(servono, minima));
-    testa.style.width = colonna.toFixed(0) + 'px';
+    const sg = getComputedStyle(cella);
+    const contorniGiorno = parseFloat(sg.paddingLeft) + parseFloat(sg.paddingRight) + 6;
 
-    const fattore = Math.min(CRESCITA_MAX, (colonna - bordi) / piuLungo);
-    if (Math.abs(fattore - 1) > 0.01) {
-        document.body.style.setProperty(
-            '--corpo-giorno', (CORPO_GIORNO_BASE * fattore).toFixed(3) + 'rem');
-    }
+    const cellaAtt = casella.parentNode;
+    const sa = getComputedStyle(cellaAtt);
+    const si = getComputedStyle(casella);
+    const controllo = cellaAtt.querySelector('.table-weight-control');
+    const contorniAtt = parseFloat(sa.paddingLeft) + parseFloat(sa.paddingRight)
+        + parseFloat(si.paddingLeft) + parseFloat(si.paddingRight) + 12
+        + (controllo ? controllo.getBoundingClientRect().width : 70);
 
-    // Decisa la colonna, si vede quanto resta ai nomi. Loro possono essere
-    // tagliati, ma prima conviene stringerli un po': meglio "Retrogaming"
-    // intero piccolo che "Retrogam..." grande. Sotto un certo corpo no, si
-    // taglia e basta.
-    requestAnimationFrame(adattaNomi);
-}
+    const serveGiorno = Math.max.apply(null, GIORNI_SETTIMANA.map(function (g) {
+        return larghezzaTesto(g, cella);
+    }));
 
-function adattaNomi() {
     const caselle = Array.prototype.slice.call(
         document.querySelectorAll('#weekTable td input[type="text"]'));
-    if (!caselle.length) return;
-
-    document.body.style.setProperty('--corpo-attivita', CORPO_ATTIVITA_BASE + 'rem');
-    const stile = getComputedStyle(caselle[0]);
-    const disponibile = caselle[0].clientWidth
-        - parseFloat(stile.paddingLeft) - parseFloat(stile.paddingRight) - 2;
-    if (disponibile <= 0) return;
-
-    let piuLungo = 0;
+    let serveNome = 0;
     caselle.forEach(function (c) {
-        if (c.value) piuLungo = Math.max(piuLungo, larghezzaTesto(c.value, c));
+        if (c.value) serveNome = Math.max(serveNome, larghezzaTesto(c.value, c));
     });
-    if (piuLungo <= disponibile) return;
+    if (!serveNome) serveNome = serveGiorno;   // settimana vuota: qualcosa di sensato
 
-    const fattore = Math.max(CORPO_ATTIVITA_MIN / CORPO_ATTIVITA_BASE,
-                             disponibile / piuLungo);
-    document.body.style.setProperty(
-        '--corpo-attivita', (CORPO_ATTIVITA_BASE * fattore).toFixed(3) + 'rem');
+    const utile = larga - contorniGiorno - contorniAtt;
+    if (utile <= 0) return;
+
+    let spazioGiorno;
+    let fattoreNome = 1;
+
+    if (serveGiorno + serveNome <= utile) {
+        // Ci stanno tutti e due a corpo pieno: il giorno prende il suo e basta.
+        spazioGiorno = serveGiorno;
+    } else {
+        // Non ci stanno: si toglie al giorno, che tanto resta intero perche' a
+        // stringersi e' il corpo, non il testo. Solo se il giorno e' gia' al
+        // minimo si comincia a stringere il nome.
+        const minimoGiorno = serveGiorno * (CORPO_GIORNO_MIN / CORPO_GIORNO_BASE);
+        spazioGiorno = Math.max(minimoGiorno, Math.min(serveGiorno, utile - serveNome));
+        const restaAlNome = utile - spazioGiorno;
+        fattoreNome = Math.max(CORPO_ATTIVITA_MIN / CORPO_ATTIVITA_BASE,
+                               Math.min(1, restaAlNome / serveNome));
+    }
+
+    const colonna = Math.min(larga * QUOTA_MAX,
+                             Math.max(larga * QUOTA_MIN, spazioGiorno + contorniGiorno));
+    testa.style.width = colonna.toFixed(0) + 'px';
+
+    const fattoreGiorno = Math.min(1.18, (colonna - contorniGiorno) / serveGiorno);
+    if (Math.abs(fattoreGiorno - 1) > 0.01) {
+        stile.setProperty('--corpo-giorno',
+            (CORPO_GIORNO_BASE * fattoreGiorno).toFixed(3) + 'rem');
+    }
+    if (fattoreNome < 0.99) {
+        stile.setProperty('--corpo-attivita',
+            (CORPO_ATTIVITA_BASE * fattoreNome).toFixed(3) + 'rem');
+    }
+
+    // Anche le due intestazioni devono starci: con un carattere largo
+    // "ATTIVITA'" usciva dalla cella e si leggeva "ATTIVIT".
+    const teste = document.querySelectorAll('#weekTable th');
+    if (teste.length > 1) {
+        const st = getComputedStyle(teste[0]);
+        const bordiT = parseFloat(st.paddingLeft) + parseFloat(st.paddingRight) + 6;
+        const serve1 = larghezzaTesto(teste[0].textContent.trim(), teste[0]);
+        const serve2 = larghezzaTesto(teste[1].textContent.trim(), teste[1]);
+        const fattoreT = Math.min(1,
+            (colonna - bordiT) / serve1,
+            (larga - colonna - bordiT) / serve2);
+        if (fattoreT < 0.99) {
+            stile.setProperty('--corpo-testa',
+                (CORPO_TESTA_BASE * fattoreT).toFixed(3) + 'rem');
+        }
+    }
 }
 
 function setTheme(themeName) {
@@ -866,6 +940,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addActivityButton = document.getElementById('addActivity');
     addActivityButton.addEventListener('click', addActivity);
+
+    // Toccando un nome tagliato lo si vede per intero.
+    document.querySelectorAll('#weekTable td input[type="text"]').forEach(casella => {
+        casella.addEventListener('click', () => mostraNomeIntero(casella));
+    });
+    document.addEventListener('scroll', nascondiNome, true);
 
     const covers = document.querySelectorAll('.cover');
     covers.forEach(cover => {

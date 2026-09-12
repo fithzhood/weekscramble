@@ -5173,3 +5173,27 @@ body {
     max-width: 100%;
     overflow-x: hidden;
 }
+
+/* Il fumetto che mostra per intero un nome tagliato. Prende i colori del tema
+   come tutto il resto, e non intercetta i tocchi: e' solo da leggere. */
+.fumetto-nome {
+    position: fixed;
+    z-index: 60;
+    max-width: 92vw;
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 2px solid #000;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    font-size: 1.25rem;
+    font-weight: bold;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+.fumetto-nome.visibile {
+    opacity: 1;
+}
