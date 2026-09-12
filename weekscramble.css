@@ -5064,3 +5064,11 @@ body {
     --stripe-4: #f2d478;
     border: 2px solid #f5f3e7;
 }
+
+/* La riga "nuova attivita'" sta ferma in fondo al pannello, e l'elenco le
+   scorre dietro: senza una riga di stacco l'ultima voce sembrava tagliata. */
+#listArea > #newActivity {
+    border-top: 2px solid var(--table-header-bg);
+    padding-top: 10px;
+    margin-top: 0;
+}
