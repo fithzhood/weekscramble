@@ -5203,3 +5203,28 @@ body {
 .fumetto-nome.visibile {
     opacity: 1;
 }
+
+/* ===== Gameboy: due caratteri, non uno ==================================
+   Press Start 2P e' un carattere a larghezza fissa in cui ogni lettera occupa
+   un quadrato intero: bellissimo per il titolo, impossibile dentro una casella
+   larga ottanta pixel, dove di "Sudoku" restavano due lettere e i puntini.
+   Resta dove c'e' spazio — titolo, intestazioni, pulsanti — mentre il testo
+   della tabella e della lista passa a VT323, che e' pixel anche lui ma stretto
+   e alto, cioe' fatto apposta per stare in poco. */
+.gameboy-theme #weekTable td,
+.gameboy-theme #weekTable td input[type="text"],
+.gameboy-theme .weight-display,
+.gameboy-theme .table-weight-control,
+.gameboy-theme #activityList li,
+.gameboy-theme .activity-text,
+.gameboy-theme #newActivity,
+.gameboy-theme .fumetto-nome {
+    font-family: 'VT323', monospace;
+}
+
+/* VT323 ha le lettere basse: a parita' di corpo si legge meno, quindi qui il
+   ridimensionamento che valeva per il carattere largo non serve piu'. */
+.gameboy-theme #weekTable td input[type="text"],
+.gameboy-theme .weight-display {
+    font-size: inherit;
+}
