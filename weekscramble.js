@@ -126,7 +126,12 @@ function getRandomTheme() {
 function setTheme(themeName) {
     // Rimuoviamo tutte le classi di tema precedenti
     document.body.classList.remove(
-        'dark-theme', 
+        // 'light-theme' mancava: la classe non veniva mai messa, e le tredici
+        // regole `.light-theme` del foglio (pulsanti azzurri, bordi, voci di
+        // lista) non hanno mai avuto effetto. Per questo il tema chiaro era il
+        // piu' incoerente di tutti.
+        'light-theme',
+        'dark-theme',
         'ocean-theme', 
         'forest-theme', 
         'lavender-theme', 
@@ -154,11 +159,14 @@ function setTheme(themeName) {
         themeName = getRandomTheme();
     }
     
-    // Aggiungiamo la classe del nuovo tema (se non è il tema chiaro)
-    if (themeName !== 'light') {
-        document.body.classList.add(`${themeName}-theme`);
-    }
-    
+    // Aggiungiamo la classe del nuovo tema, tema chiaro compreso.
+    document.body.classList.add(`${themeName}-theme`);
+
+    // Il colore dei pulsanti lo decide il foglio di stile; qui si controlla
+    // soltanto che la scritta sopra si legga.
+    adattaTestoPulsanti();
+    allineaTitoloAllaTabella();
+
     // Salviamo la preferenza originale (salviamo 'random' se è stato selezionato random)
     localStorage.setItem('theme', originalTheme);
     
@@ -603,71 +611,65 @@ function loadTheme() {
     setTheme(savedTheme);
 }
 
-// Modifica della funzione per aggiornare lo stile dei pulsanti con azzurro per il tema light
-function updateButtonStyles() {
-    // Verifichiamo se siamo nel tema light
-    const isLightTheme = !document.body.className || document.body.className === 'light-theme';
-    
-    // Colori per il tema light (azzurro)
-    const lightThemeButtonBg = '#b3e5fc'; // Azzurro chiaro
-    const lightThemeButtonHover = '#81d4fa'; // Azzurro più scuro
-    const lightThemeTextColor = '#01579b'; // Blu scuro
-    
-    // Otteniamo i colori per gli altri temi
-    const tableHeaderColor = getComputedStyle(document.documentElement).getPropertyValue('--table-header-bg').trim();
-    const tableCellColor = getComputedStyle(document.documentElement).getPropertyValue('--table-cell-bg').trim();
-    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
-    
-    // Aggiorniamo le variabili CSS per i pulsanti
-    if (isLightTheme) {
-        // Tema light: usiamo l'azzurro
-        document.documentElement.style.setProperty('--button-bg', lightThemeButtonBg);
-        document.documentElement.style.setProperty('--button-hover', lightThemeButtonHover);
-        document.documentElement.style.setProperty('--button-text', lightThemeTextColor);
-        document.documentElement.style.setProperty('--delete-button-bg', lightThemeButtonBg);
-        document.documentElement.style.setProperty('--delete-button-hover', lightThemeButtonHover);
-        document.documentElement.style.setProperty('--delete-button-text', lightThemeTextColor);
-    } else {
-        // Altri temi: usiamo i colori della tabella
-        document.documentElement.style.setProperty('--button-bg', tableHeaderColor);
-        document.documentElement.style.setProperty('--button-hover', tableCellColor);
-    }
-    
-    // Aggiorniamo solo i pulsanti principali
-    const mainButtons = document.querySelectorAll('#listButton, #scrambleButton, #themeButton, #addActivity');
-    mainButtons.forEach(button => {
-        if (isLightTheme) {
-            // Tema light: usiamo l'azzurro
-            button.style.backgroundColor = lightThemeButtonBg;
-            button.style.color = lightThemeTextColor;
-        } else {
-            // Altri temi: usiamo i colori della tabella
-            button.style.backgroundColor = tableHeaderColor;
-            button.style.color = textColor;
+// Prima questa funzione i pulsanti se li dipingeva da sola, e li sbagliava:
+// leggeva --table-header-bg da documentElement, dove nessun tema lo dichiara
+// (i temi dichiarano su body), quindi prendeva sempre il pesca del tema chiaro
+// e lo scriveva come --button-bg inline sul :root — una dichiarazione inline
+// che batte tutto il foglio. Risultato: in quasi ogni tema i pulsanti restavano
+// di un colore che non c'entrava niente col tema scelto.
+//
+// I temi il colore giusto ce l'hanno gia' (--button-bg e --button-text): adesso
+// quello vale, e qui non si dipinge piu' niente. Resta solo un controllo di
+// leggibilita': dove scritta e fondo finiscono troppo vicini, la scritta va a
+// bianco o a nero, quello che stacca di piu'.
+// Il riquadro del titolo e' fatto come una riga di intestazione della tabella,
+// e qui prende da quella i colori veri, quelli calcolati. Le variabili non
+// bastavano: parecchi temi l'intestazione la dipingono con regole proprie, e in
+// onepiece, halloween e pikachu il colore del testo coincideva col fondo del
+// titolo, che spariva.
+function allineaTitoloAllaTabella() {
+    const testa = document.querySelector('#weekTable th');
+    const titolo = document.querySelector('.app-header');
+    if (!testa || !titolo) return;
+    const s = getComputedStyle(testa);
+    titolo.style.backgroundColor = s.backgroundColor;
+    titolo.style.color = s.color;
+}
+
+function adattaTestoPulsanti() {
+    const pezzi = (c) => (c || '').match(/[\d.]+/g);
+
+    const luminanza = (c) => {
+        const m = pezzi(c);
+        if (!m) return 255;
+        return 0.2126 * +m[0] + 0.7152 * +m[1] + 0.0722 * +m[2];
+    };
+
+    // Un fondo trasparente non e' il nero: il colore vero e' quello di chi sta
+    // sotto. Senza questo, ogni pulsante senza fondo proprio riceverebbe la
+    // scritta bianca.
+    const fondoVero = (el) => {
+        let n = el;
+        while (n && n !== document.documentElement) {
+            const c = getComputedStyle(n).backgroundColor;
+            const m = pezzi(c);
+            if (m && (m.length < 4 || +m[3] > 0.15)) return c;
+            n = n.parentElement;
         }
-        button.style.border = '2px solid #000';
-        button.style.fontWeight = 'bold';
-        button.style.padding = '5px 10px';
-        button.style.borderRadius = '5px';
-    });
-    
-    // Aggiorniamo anche i pulsanti elimina in tutti i temi
-    const deleteButtons = document.querySelectorAll('.delete-button');
-    deleteButtons.forEach(button => {
-        if (isLightTheme) {
-            // Tema light: usiamo l'azzurro
-            button.style.backgroundColor = lightThemeButtonBg;
-            button.style.color = lightThemeTextColor;
-        } else if (document.body.classList.contains('dark-theme')) {
-            // Tema dark: usiamo lo stesso colore degli altri pulsanti
-            button.style.backgroundColor = tableHeaderColor;
-            button.style.color = textColor;
+        return getComputedStyle(document.body).backgroundColor;
+    };
+
+    const pulsanti = document.querySelectorAll(
+        '#listButton, #scrambleButton, #addActivity, .theme-toggle, ' +
+        '.delete-button, .weight-button'
+    );
+    pulsanti.forEach((b) => {
+        b.style.removeProperty('color');
+        const s = getComputedStyle(b);
+        const fondo = luminanza(fondoVero(b));
+        if (Math.abs(fondo - luminanza(s.color)) < 60) {
+            b.style.color = fondo > 140 ? '#111111' : '#ffffff';
         }
-        // Per gli altri temi, lasciamo che il CSS gestisca i colori
-        button.style.border = '2px solid #000';
-        button.style.fontWeight = 'bold';
-        button.style.padding = '5px 10px';
-        button.style.borderRadius = '5px';
     });
 }
 
@@ -781,7 +783,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Chiamiamo la funzione all'avvio
-    updateButtonStyles();
+    adattaTestoPulsanti();
     
     // Chiamiamo la funzione ogni volta che cambia il tema
     // Utilizziamo un nome di variabile diverso per evitare conflitti
@@ -789,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
     allThemeSelectors.forEach(option => {
         option.addEventListener('click', function() {
             // Attendiamo che il tema sia cambiato
-            setTimeout(updateButtonStyles, 100);
+            setTimeout(adattaTestoPulsanti, 100);
         });
     });
 

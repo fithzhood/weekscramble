@@ -4642,7 +4642,10 @@ body {
        finivano scritta e fondo dello stesso colore, e le frecce sparivano. */
     --button-bg: var(--card-background);
     --button-text: var(--text-color);
-    --button-text-color: var(--text-color);
+    /* Ogni tema sceglie la coppia --button-bg / --button-text, ma la regola dei
+       pulsanti leggeva --button-text-COLOR, che e' un'altra variabile: il
+       colore scelto dal tema non arrivava mai alla scritta. Ora ci arriva. */
+    --button-text-color: var(--button-text, var(--text-color));
     --stats-text-color: var(--text-color);
     --add-button-bg: var(--table-header-bg);
     --delete-button-bg: var(--table-header-bg);
@@ -4669,32 +4672,38 @@ body {
    Prima il nome lo scriveva la barra nativa del vecchio guscio, quindi nella
    pagina non c'era: nel guscio nuovo, che le barre non le ha, restava senza
    testa. Qui e' in pagina, e prende i colori del tema attivo. */
+/* Il titolo e' fatto come una riga di intestazione della tabella: stesso fondo,
+   stesso colore di testo, stesso bordo nero, stesso raggio. Prima era una fascia
+   a tutta larghezza con gli angoli smussati solo in basso, che non somigliava a
+   niente altro nella pagina. */
 .app-header {
     width: 100%;
-    max-width: 560px;
+    max-width: 600px;
     box-sizing: border-box;
     display: flex;
     align-items: baseline;
     justify-content: center;
     gap: 8px;
-    padding: 10px 16px;
-    margin: 0 0 6px;
+    padding: 8px 16px;
+    margin: 0 auto 8px;
     background-color: var(--table-header-bg);
-    color: var(--card-background);
-    border-radius: 0 0 14px 14px;
-    box-shadow: var(--box-shadow);
+    color: var(--text-color);
+    border: 2px solid #000;
+    border-radius: 12px;
 }
 
 .app-header h1 {
     margin: 0;
-    font-size: 1.4rem;
-    letter-spacing: 0.04em;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     display: flex;
     align-items: baseline;
     gap: 7px;
 }
 
 .build-tag {
+    text-transform: none;
     font-size: 0.5em;
     font-weight: normal;
     opacity: 0.6;
@@ -4702,9 +4711,11 @@ body {
 }
 
 /* Nel guscio Android le barre di sistema sono nascoste, ma il foro della
-   fotocamera resta: sul Galaxy A25 e' alto 77 px fisici, circa 27 CSS. */
-body.capacitor .app-header {
-    padding-top: calc(10px + max(env(safe-area-inset-top, 0px), 34px));
+   fotocamera resta: sul Galaxy A25 e' alto 77 px fisici, circa 27 CSS. Lo
+   spazio si prende sopra il riquadro del titolo, non dentro: dentro allungava
+   il riquadro invece di spostarlo. */
+body.capacitor {
+    padding-top: max(env(safe-area-inset-top, 0px), 34px);
 }
 
 /* Regola di casa: il testo non si seleziona, tranne dove si scrive. */
@@ -4719,4 +4730,155 @@ textarea,
 [contenteditable] {
     -webkit-user-select: text;
     user-select: text;
+}
+
+/* ===== Una schermata sola, senza sprechi ================================
+   L'app occupava due terzi dello schermo e lasciava sotto una fascia vuota
+   grande quanto tre righe. Adesso la tabella si prende lo spazio che avanza:
+   le sette righe crescono insieme, il tocco diventa piu' comodo e la fila dei
+   comandi resta appoggiata al fondo. Se lo schermo e' piccolo o il carattere
+   di sistema grande, la pagina torna a scorrere invece di tagliare. */
+body {
+    /* Altezza definita, non solo minima: e' quella che permette ai pannelli di
+       restringersi per stare nello schermo invece di allungare la pagina. */
+    height: 100svh;
+    min-height: 100svh;
+    padding-bottom: 12px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    top: 0;                 /* annulla il -15px che alzava tutto sotto l'header */
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+/* Titolo e tabella larghi uguali, cosi' i bordi neri si incolonnano. */
+.app-header { width: 99%; }
+
+#weekTable {
+    flex: 1 1 auto;
+    margin: 0;
+}
+
+/* Le sette righe si dividono lo spazio in parti uguali; l'intestazione no. */
+#weekTable tr:not(:first-child) { height: calc((100% - 3em) / 7); }
+
+.button-container {
+    flex: 0 0 auto;
+    margin-top: 0;
+    /* La tavolozza e' un'icona, non ha bisogno di un terzo di riga: le altre
+       due si dividono quello che resta e finiscono larghe uguali. */
+    grid-template-columns: auto 1fr 1fr;
+    align-items: stretch;
+}
+
+.button-container > button {
+    margin-top: 0;
+    justify-self: stretch;
+    width: 100%;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-container > .theme-toggle {
+    width: 64px;
+    min-width: 64px;
+    padding: 10px 0;
+}
+
+/* I pannelli scorrono per conto loro invece di allungare la pagina. */
+#listArea,
+#themeArea {
+    /* Alti quanto serve, non di piu'; se serve piu' schermo, scorrono per conto
+       loro invece di allungare la pagina. Il box-sizing e' il motivo per cui
+       sbordavano a destra: 95% di larghezza piu' 20px di padding per lato. */
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+}
+
+/* ===== Comando di travaso, fuori dai piedi ==============================
+   Il modulo di travaso non mette piu' un pulsante fisso sullo schermo: si
+   raggiunge da qui, dentro il pannello dei temi, che e' il menu di servizio
+   dell'app. (In alternativa: pressione lunga sul titolo.) */
+.travaso-voce {
+    margin-top: 18px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: normal;
+    opacity: 0.75;
+    background: var(--button-bg);
+    color: var(--button-text-color);
+    border: 1px solid var(--text-color);
+    border-radius: 18px;
+}
+
+/* Titolo, conteggi e riga "nuova attivita'" restano fermi: scorre solo l'elenco.
+   Con 42 voci, per aggiungerne una bisognava prima scendere in fondo a tutte. */
+#listArea {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#listArea > h2,
+#listArea > .deck-stats,
+#listArea > #newActivity,
+#listArea > #addActivity {
+    flex: 0 0 auto;
+}
+
+#listArea > #activityList {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 4px 0 10px;
+}
+
+/* Il verde del Game Boy ha quattro toni e il foglio usava i due piu' scuri uno
+   sopra l'altro: intestazione e nomi dei giorni erano quasi illeggibili. La
+   scritta va sul tono piu' chiaro, che e' poi come si leggeva sulla console. */
+.gameboy-theme #weekTable th,
+.gameboy-theme #weekTable td:first-child {
+    color: #9BBC0F;
+}
+
+/* ===== La tabella torna una tabella ====================================
+   Le celle dell'attivita' erano `display: flex`, e una cella dichiarata flex
+   smette di essere una cella: non si allunga piu' fino all'altezza della riga.
+   Con le righe alte uguali restava sotto ognuna una striscia vuota del colore
+   del fondo. Qui tornano celle vere, e l'input col controllo del peso stanno
+   in riga da soli, essendo elementi in linea. */
+#weekTable td:not(:first-child) {
+    display: table-cell !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+#weekTable td input[type="text"] {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-right: 8px !important;
+}
+
+.table-weight-control {
+    display: inline-flex !important;
+    vertical-align: middle !important;
+}
+
+/* Il peso era scritto piccolo come una nota a pie' di pagina, ed e' invece il
+   numero che decide quanto spesso esce l'attivita'. */
+.table-weight-control .weight-display {
+    font-size: 15px !important;
+    font-weight: bold;
 }
