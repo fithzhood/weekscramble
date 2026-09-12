@@ -5133,8 +5133,10 @@ body {
     min-width: 20px !important;
 }
 
+/* Il corpo lo decide `adattaTesti()`: con Press Start 2P o Orbitron il titolo
+   usciva dal riquadro e si leggeva "EEKSCRAMBLE". */
 .app-header h1 {
-    font-size: min(1.75rem, 6.2vw);
+    font-size: var(--corpo-titolo, min(1.75rem, 6.2vw));
 }
 
 .button-container > button {

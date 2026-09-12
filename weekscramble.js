@@ -194,6 +194,7 @@ const GIORNI_SETTIMANA = ['Luned\u00ec', 'Marted\u00ec', 'Mercoled\u00ec',
     'Gioved\u00ec', 'Venerd\u00ec', 'Sabato', 'Domenica'];
 
 // Corpi in rem: quello di partenza, e il piu' piccolo che si accetta.
+const CORPO_TITOLO_BASE = 1.75;
 const CORPO_TESTA_BASE = 1.6;
 const CORPO_GIORNO_BASE = 1.45;
 const CORPO_GIORNO_MIN = 0.95;
@@ -288,6 +289,7 @@ function adattaTesti() {
     if (!tabella || !testa || !cella || !casella) return;
 
     const stile = document.body.style;
+    stile.setProperty('--corpo-titolo', CORPO_TITOLO_BASE + 'rem');
     stile.setProperty('--corpo-testa', CORPO_TESTA_BASE + 'rem');
     stile.setProperty('--corpo-giorno', CORPO_GIORNO_BASE + 'rem');
     stile.setProperty('--corpo-attivita', CORPO_ATTIVITA_BASE + 'rem');
@@ -371,6 +373,20 @@ function adattaTesti() {
     if (fattoreNome < 0.99) {
         stile.setProperty('--corpo-attivita',
             (CORPO_ATTIVITA_BASE * fattoreNome).toFixed(3) + 'rem');
+    }
+
+    // Il titolo: con un carattere largo usciva dal riquadro.
+    const titolo = document.querySelector('.app-header h1');
+    const riquadro = document.querySelector('.app-header');
+    if (titolo && riquadro) {
+        const sr = getComputedStyle(riquadro);
+        const spazio = riquadro.getBoundingClientRect().width
+            - parseFloat(sr.paddingLeft) - parseFloat(sr.paddingRight) - 4;
+        const serve = titolo.scrollWidth;
+        if (serve > spazio && spazio > 0) {
+            stile.setProperty('--corpo-titolo',
+                (CORPO_TITOLO_BASE * (spazio / serve)).toFixed(3) + 'rem');
+        }
     }
 
     // Anche le due intestazioni devono starci: con un carattere largo
