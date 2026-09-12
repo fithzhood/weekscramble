@@ -5091,27 +5091,28 @@ body {
 }
 
 #weekTable th {
-    font-size: min(1.6rem, 5.6vw);
+    font-size: var(--corpo-testa, 1.6rem);
     padding: 12px 4px;
 }
 
 /* A colonne fisse la larghezza la decide la PRIMA riga, che qui e' quella delle
    intestazioni: metterla sulle celle sotto non serve a niente, restavano meta'
-   e meta'. Il 30% basta per "Mercoledi'" e lascia il resto al nome. */
+   e meta'. Questo 30% e' solo il punto di partenza: la larghezza vera la scrive
+   `adattaTesti()` misurando il giorno piu' lungo nel carattere del tema. */
 #weekTable th:first-child {
     width: 30%;
 }
 
 #weekTable td:first-child {
-    font-size: min(1.45rem, 5.2vw) !important;
+    font-size: var(--corpo-giorno, 1.45rem) !important;
     padding: 10px 4px !important;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 #weekTable td input[type="text"] {
-    font-size: min(1.35rem, 4.8vw) !important;
-    width: calc(100% - 88px) !important;
+    font-size: var(--corpo-attivita, 1.35rem) !important;
+    width: calc(100% - 86px) !important;
     min-width: 0 !important;
     padding: 8px 6px !important;
     margin-right: 4px !important;
@@ -5158,6 +5159,13 @@ body {
 #addActivity {
     font-size: min(1.15rem, 4.4vw);
 }
+
+/* ⚠️ I tetti in `vw` non bastavano: la scala del testo di Chrome su Android
+   moltiplica il corpo CALCOLATO, qualunque unita' si sia usata per scriverlo.
+   Nemmeno i `vw` ne escono. Per questo il corpo dei giorni e dei nomi lo decide
+   `adattaTesti()` in weekscramble.js misurando il testo vero nel carattere del
+   tema attivo: e' l'unica cosa che vale su tutti i temi e su qualunque
+   impostazione del telefono. */
 
 /* Rete di sicurezza: qualunque cosa sbordi, la pagina non scorre di lato. */
 html,

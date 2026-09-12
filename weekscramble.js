@@ -15,6 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const tag = document.getElementById('build-tag');
     if (tag) tag.textContent = 'v' + APP_BUILD;
     allineaVersione();
+    requestAnimationFrame(adattaTesti);
+});
+
+// I caratteri dei temi arrivano dalla rete: finche' non ci sono, si misura il
+// ripiego di sistema e la misura non vale. Si rifa' quando arrivano, e quando
+// lo schermo cambia forma.
+if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { requestAnimationFrame(adattaTesti); });
+}
+window.addEventListener('resize', function () {
+    clearTimeout(window.__timerAdatta);
+    window.__timerAdatta = setTimeout(adattaTesti, 150);
 });
 
 // Perche' il telefono restava indietro dopo una pubblicazione.
@@ -156,6 +168,62 @@ function getRandomTheme() {
     return themes[randomIndex];
 }
 
+// I giorni devono restare leggibili sempre; i nomi delle attivita' possono
+// essere tagliati, sono loro a variare.
+//
+// Perche' non basta il foglio di stile: ogni tema ha il suo carattere, e fra
+// "Mountains of Christmas" e "Press Start 2P" la stessa parola cambia larghezza
+// del doppio. In piu' la scala del testo di Chrome su Android moltiplica il
+// corpo calcolato qualunque unita' si sia scritta, `vw` compresi: un tetto
+// fisso non puo' funzionare. Qui si misura il testo vero nel carattere vero e
+// si decide di conseguenza: prima si allarga la colonna quanto serve, entro un
+// limite; solo se non basta si stringe il corpo.
+const GIORNI_SETTIMANA = ['Lunedì', 'Martedì', 'Mercoledì',
+    'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
+const CORPO_GIORNO_BASE = 1.45;   // rem
+const QUOTA_MIN = 0.26;           // della larghezza della tabella
+const QUOTA_MAX = 0.46;
+
+let pennello = null;
+
+function larghezzaTesto(testo, stile) {
+    if (!pennello) pennello = document.createElement('canvas').getContext('2d');
+    pennello.font = stile.fontWeight + ' ' + stile.fontSize + ' ' + stile.fontFamily;
+    return pennello.measureText(testo).width;
+}
+
+function adattaTesti() {
+    const tabella = document.getElementById('weekTable');
+    const cella = document.querySelector('#weekTable td:first-child');
+    const testa = document.querySelector('#weekTable th:first-child');
+    if (!tabella || !cella || !testa) return;
+
+    // Si riparte sempre dal corpo pieno, se no le riduzioni si sommano.
+    document.body.style.setProperty('--corpo-giorno', CORPO_GIORNO_BASE + 'rem');
+    const stile = getComputedStyle(cella);
+    const bordi = parseFloat(stile.paddingLeft) + parseFloat(stile.paddingRight) + 6;
+    const piuLungo = Math.max.apply(null, GIORNI_SETTIMANA.map(function (g) {
+        return larghezzaTesto(g, stile);
+    }));
+
+    const larga = tabella.getBoundingClientRect().width;
+    if (!larga) return;
+    const minima = larga * QUOTA_MIN;
+    const massima = larga * QUOTA_MAX;
+    const servono = piuLungo + bordi;
+
+    if (servono <= massima) {
+        testa.style.width = Math.max(servono, minima).toFixed(0) + 'px';
+    } else {
+        // Nemmeno alla larghezza massima ci sta: si stringe il corpo, che e'
+        // meglio di un giorno tagliato a meta'.
+        testa.style.width = massima.toFixed(0) + 'px';
+        const fattore = (massima - bordi) / piuLungo;
+        document.body.style.setProperty(
+            '--corpo-giorno', (CORPO_GIORNO_BASE * fattore).toFixed(3) + 'rem');
+    }
+}
+
 function setTheme(themeName) {
     // Rimuoviamo tutte le classi di tema precedenti
     document.body.classList.remove(
@@ -203,6 +271,8 @@ function setTheme(themeName) {
     // soltanto che la scritta sopra si legga.
     adattaTestoPulsanti();
     allineaTitoloAllaTabella();
+    // Il carattere cambia col tema, quindi la misura va rifatta.
+    requestAnimationFrame(adattaTesti);
 
     // Salviamo la preferenza originale (salviamo 'random' se è stato selezionato random)
     localStorage.setItem('theme', originalTheme);
