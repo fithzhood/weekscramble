@@ -15,14 +15,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const tag = document.getElementById('build-tag');
     if (tag) tag.textContent = 'v' + APP_BUILD;
     allineaVersione();
-    requestAnimationFrame(adattaTesti);
+    pianificaAdatta();
 });
+
+// ⚠️ Una passata sola all'avvio non basta, e sul telefono si vedeva: la misura
+// cadeva prima che il carattere del tema fosse arrivato e prima che la scala
+// del testo di sistema fosse applicata, quindi tutto sembrava piu' stretto di
+// quello che poi era, e la funzione concludeva che ci stava. Restava "Domenica"
+// tagliata. La funzione riparte sempre dai corpi pieni, quindi rifarla non
+// costa niente: si rifa' finche' la pagina non si e' assestata.
+function pianificaAdatta() {
+    [0, 250, 800, 2000].forEach(function (quando) {
+        setTimeout(function () { requestAnimationFrame(adattaTesti); }, quando);
+    });
+}
 
 // I caratteri dei temi arrivano dalla rete: finche' non ci sono, si misura il
 // ripiego di sistema e la misura non vale. Si rifa' quando arrivano, e quando
 // lo schermo cambia forma.
 if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () { requestAnimationFrame(adattaTesti); });
+    document.fonts.ready.then(pianificaAdatta);
 }
 window.addEventListener('resize', function () {
     clearTimeout(window.__timerAdatta);
@@ -405,8 +417,9 @@ function setTheme(themeName) {
     // soltanto che la scritta sopra si legga.
     adattaTestoPulsanti();
     allineaTitoloAllaTabella();
-    // Il carattere cambia col tema, quindi la misura va rifatta.
-    requestAnimationFrame(adattaTesti);
+    // Il carattere cambia col tema, quindi la misura va rifatta — e il
+    // carattere nuovo potrebbe non essere ancora arrivato.
+    pianificaAdatta();
 
     // Salviamo la preferenza originale (salviamo 'random' se è stato selezionato random)
     localStorage.setItem('theme', originalTheme);
