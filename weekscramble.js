@@ -322,6 +322,21 @@ function adattaAltezza() {
 }
 
 function adattaTesti() {
+    // ⚠️ Mentre si misura la pagina non deve poter mostrare la barra di
+    // scorrimento. Per misurare si rimettono i corpi pieni, la tabella per un
+    // attimo sborda, e sul PC la barra compare e ruba una quindicina di px di
+    // larghezza: il risultato cambiava a seconda di quanto stringeva il tema di
+    // prima, e passando dal pannello la colonna dei giorni veniva larga diversa
+    // che a un avvio a freddo (e il titolo, misurato stretto, si riallargava un
+    // fotogramma dopo). E' tutto nello stesso giro di codice: a schermo la barra
+    // tolta non si vede mai.
+    const radice = document.documentElement;
+    const corpo = document.body;
+    const primaRadice = radice.style.overflowY;
+    const primaCorpo = corpo.style.overflowY;
+    radice.style.overflowY = 'hidden';
+    corpo.style.overflowY = 'hidden';
+
     adattaTitolo();
 
     // Con la tabella nascosta (pannello dei temi o lista aperti) non c'e'
@@ -329,23 +344,11 @@ function adattaTesti() {
     // pannello restavano i corpi di base con la colonna del tema di prima:
     // adesso la rimisura chi la rimostra.
     const tabella = document.getElementById('weekTable');
-    if (!tabella || !tabella.getClientRects().length) return;
+    if (tabella && tabella.getClientRects().length) {
+        adattaLarghezze(tabella);
+        adattaAltezza();
+    }
 
-    // ⚠️ Mentre si misura la pagina non deve poter mostrare la barra di
-    // scorrimento. Per misurare si rimettono i corpi pieni, la tabella per un
-    // attimo sborda, e sul PC la barra compare e ruba una quindicina di px di
-    // larghezza: il risultato cambiava a seconda di quanto stringeva il tema di
-    // prima, e passando dal pannello la colonna dei giorni veniva larga diversa
-    // che a un avvio a freddo. E' tutto nello stesso giro di codice: a schermo
-    // la barra tolta non si vede mai.
-    const radice = document.documentElement;
-    const corpo = document.body;
-    const primaRadice = radice.style.overflowY;
-    const primaCorpo = corpo.style.overflowY;
-    radice.style.overflowY = 'hidden';
-    corpo.style.overflowY = 'hidden';
-    adattaLarghezze(tabella);
-    adattaAltezza();
     radice.style.overflowY = primaRadice;
     corpo.style.overflowY = primaCorpo;
 }
