@@ -36,6 +36,16 @@ function pianificaAdatta() {
 if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(pianificaAdatta);
 }
+// ⚠️ `fonts.ready` da solo non basta: all'avvio e' gia' risolto, perche' i
+// caratteri del tema non sono ancora stati chiesti. Se la rete e' lenta e il
+// carattere arriva dopo l'ultima passata, restava la misura fatta col ripiego
+// di sistema: sul telefono, nel tema ocean, si leggeva "VEEKSCRAMBLE".
+if (document.fonts && document.fonts.addEventListener) {
+    document.fonts.addEventListener('loadingdone', function () {
+        clearTimeout(window.__timerCaratteri);
+        window.__timerCaratteri = setTimeout(adattaTesti, 60);
+    });
+}
 window.addEventListener('resize', function () {
     clearTimeout(window.__timerAdatta);
     window.__timerAdatta = setTimeout(adattaTesti, 150);
@@ -169,13 +179,9 @@ function loadState() {
 }
 
 function getRandomTheme() {
-    const themes = [
-        'light', 'dark', 'ocean', 'forest', 'lavender', 
-        'autumn', 'mono', 'pastel', 'retro', 'vintage',
-        'gold', 'starry', 'christmas', 'dragonball', 
-        'onepiece', 'pikachu', 'halloween', 'gameboy', 'rosa',
-        'neon', 'tropicale', 'nordico', 'lavagna'
-    ];
+    // L'elenco sta nella testa dell'HTML: serve anche allo script che mette il
+    // tema prima che la pagina si disegni.
+    const themes = window.TEMI;
     const randomIndex = Math.floor(Math.random() * themes.length);
     return themes[randomIndex];
 }
@@ -282,15 +288,75 @@ function nascondiNome() {
     if (fumetto) fumetto.classList.remove('visibile');
 }
 
+// Regola fissa: i pulsanti si vedono senza scorrere, in ogni tema. Con i
+// caratteri alti (Pacifico nel tema ocean, Mountains of Christmas) sul
+// telefono sette righe non stavano piu' in 832 px e i comandi finivano sotto
+// il bordo. Si recupera prima dai margini interni delle celle, che sono aria;
+// solo se non basta si stringono i caratteri, tutti nella stessa misura.
+const STRINGI_PASSI = [0.75, 0.5, 0.25];
+const CORPO_PASSI = [0.94, 0.88, 0.82, 0.76, 0.7];
+
+// Di quanto il fondo dei pulsanti esce dalla pagina (zero o meno: ci sta).
+function eccessoVerticale() {
+    const pulsanti = document.querySelector('.button-container');
+    if (!pulsanti || !pulsanti.getClientRects().length) return 0;
+    const fondoPagina = document.body.getBoundingClientRect().bottom
+        - parseFloat(getComputedStyle(document.body).paddingBottom);
+    return pulsanti.getBoundingClientRect().bottom - fondoPagina;
+}
+
+function adattaAltezza() {
+    const stile = document.body.style;
+    stile.setProperty('--stringi', '1');
+    if (eccessoVerticale() <= 0.5) return;
+    for (const k of STRINGI_PASSI) {
+        stile.setProperty('--stringi', String(k));
+        if (eccessoVerticale() <= 0.5) return;
+    }
+    const corpi = ['--corpo-testa', '--corpo-giorno', '--corpo-attivita']
+        .map(v => [v, parseFloat(stile.getPropertyValue(v))]);
+    for (const f of CORPO_PASSI) {
+        corpi.forEach(([v, rem]) => stile.setProperty(v, (rem * f).toFixed(3) + 'rem'));
+        if (eccessoVerticale() <= 0.5) return;
+    }
+}
+
 function adattaTesti() {
+    adattaTitolo();
+
+    // Con la tabella nascosta (pannello dei temi o lista aperti) non c'e'
+    // niente da misurare. Prima i corpi si azzeravano lo stesso, e chiudendo il
+    // pannello restavano i corpi di base con la colonna del tema di prima:
+    // adesso la rimisura chi la rimostra.
     const tabella = document.getElementById('weekTable');
+    if (!tabella || !tabella.getClientRects().length) return;
+
+    // ⚠️ Mentre si misura la pagina non deve poter mostrare la barra di
+    // scorrimento. Per misurare si rimettono i corpi pieni, la tabella per un
+    // attimo sborda, e sul PC la barra compare e ruba una quindicina di px di
+    // larghezza: il risultato cambiava a seconda di quanto stringeva il tema di
+    // prima, e passando dal pannello la colonna dei giorni veniva larga diversa
+    // che a un avvio a freddo. E' tutto nello stesso giro di codice: a schermo
+    // la barra tolta non si vede mai.
+    const radice = document.documentElement;
+    const corpo = document.body;
+    const primaRadice = radice.style.overflowY;
+    const primaCorpo = corpo.style.overflowY;
+    radice.style.overflowY = 'hidden';
+    corpo.style.overflowY = 'hidden';
+    adattaLarghezze(tabella);
+    adattaAltezza();
+    radice.style.overflowY = primaRadice;
+    corpo.style.overflowY = primaCorpo;
+}
+
+function adattaLarghezze(tabella) {
     const testa = document.querySelector('#weekTable th:first-child');
     const cella = document.querySelector('#weekTable td:first-child');
     const casella = document.querySelector('#weekTable td input[type="text"]');
-    if (!tabella || !testa || !cella || !casella) return;
+    if (!testa || !cella || !casella) return;
 
     const stile = document.body.style;
-    stile.setProperty('--corpo-titolo', CORPO_TITOLO_BASE + 'rem');
     stile.setProperty('--corpo-testa', CORPO_TESTA_BASE + 'rem');
     stile.setProperty('--corpo-giorno', CORPO_GIORNO_BASE + 'rem');
     stile.setProperty('--corpo-attivita', CORPO_ATTIVITA_BASE + 'rem');
@@ -385,20 +451,6 @@ function adattaTesti() {
             (CORPO_ATTIVITA_BASE * fattoreNome).toFixed(3) + 'rem');
     }
 
-    // Il titolo: con un carattere largo usciva dal riquadro.
-    const titolo = document.querySelector('.app-header h1');
-    const riquadro = document.querySelector('.app-header');
-    if (titolo && riquadro) {
-        const sr = getComputedStyle(riquadro);
-        const spazio = riquadro.getBoundingClientRect().width
-            - parseFloat(sr.paddingLeft) - parseFloat(sr.paddingRight) - 4;
-        const serve = titolo.scrollWidth;
-        if (serve > spazio && spazio > 0) {
-            stile.setProperty('--corpo-titolo',
-                (CORPO_TITOLO_BASE * (spazio / serve)).toFixed(3) + 'rem');
-        }
-    }
-
     // Anche le due intestazioni devono starci: con un carattere largo
     // "ATTIVITA'" usciva dalla cella e si leggeva "ATTIVIT".
     const teste = document.querySelectorAll('#weekTable th');
@@ -417,77 +469,193 @@ function adattaTesti() {
     }
 }
 
-function setTheme(themeName) {
-    // Rimuoviamo tutte le classi di tema precedenti
-    document.body.classList.remove(
-        // 'light-theme' mancava: la classe non veniva mai messa, e le tredici
-        // regole `.light-theme` del foglio (pulsanti azzurri, bordi, voci di
-        // lista) non hanno mai avuto effetto. Per questo il tema chiaro era il
-        // piu' incoerente di tutti.
-        'light-theme',
-        'dark-theme',
-        'ocean-theme', 
-        'forest-theme', 
-        'lavender-theme', 
-        'autumn-theme', 
-        'mono-theme', 
-        'pastel-theme', 
-        'retro-theme',
-        'vintage-theme',
-        'gold-theme',
-        'starry-theme',
-        'christmas-theme',
-        'dragonball-theme',
-        'onepiece-theme',
-        'pikachu-theme',
-        'halloween-theme',
-        'gameboy-theme',
-        'rosa-theme',
-        'neon-theme',
-        'tropicale-theme',
-        'nordico-theme',
-        'lavagna-theme'
-    );
-    
-    // Salviamo la preferenza originale (per mantenere 'random' se selezionato)
-    const originalTheme = themeName;
-    
-    // Se è il tema random, scegliamo un tema casuale
-    if (themeName === 'random') {
-        themeName = getRandomTheme();
+// Il titolo: con un carattere largo usciva dal riquadro. Sta fuori dalla
+// tabella e resta in vista anche col pannello dei temi aperto: si misura sempre.
+function adattaTitolo() {
+    const stile = document.body.style;
+    stile.setProperty('--corpo-titolo', CORPO_TITOLO_BASE + 'rem');
+    const titolo = document.querySelector('.app-header h1');
+    const riquadro = document.querySelector('.app-header');
+    if (!titolo || !riquadro) return;
+    const sr = getComputedStyle(riquadro);
+    const spazio = riquadro.getBoundingClientRect().width
+        - parseFloat(sr.paddingLeft) - parseFloat(sr.paddingRight) - 4;
+    const serve = titolo.scrollWidth;
+    if (serve > spazio && spazio > 0) {
+        stile.setProperty('--corpo-titolo',
+            (CORPO_TITOLO_BASE * (spazio / serve)).toFixed(3) + 'rem');
     }
-    
-    // Aggiungiamo la classe del nuovo tema, tema chiaro compreso.
-    document.body.classList.add(`${themeName}-theme`);
+}
 
-    // Il colore dei pulsanti lo decide il foglio di stile; qui si controlla
-    // soltanto che la scritta sopra si legga.
-    adattaTestoPulsanti();
-    allineaTitoloAllaTabella();
-    // Il carattere cambia col tema, quindi la misura va rifatta — e il
-    // carattere nuovo potrebbe non essere ancora arrivato.
-    pianificaAdatta();
+// Il cambio di tema deve succedere tutto in un colpo. Prima arrivava a rate, e
+// si vedeva: i colori della tabella subito, i pulsanti che sfumavano per 300 ms
+// (hanno una transizione sul fondo), il carattere del tema quando arrivava
+// dalla rete, e le misure dei testi rimandate a dei timer: per mezzo secondo
+// restavano i corpi e le colonne del tema di prima, poi tutto si ridimensionava.
+//
+// Adesso setTheme() aspetta i caratteri del tema nuovo lasciando in vista il
+// vecchio, e poi applicaTema() fa tutto nello stesso giro di codice: scambia la
+// classe a transizioni spente, ridipinge, rimisura. Il browser dipinge una
+// volta sola, a lavoro finito.
 
-    // Salviamo la preferenza originale (salviamo 'random' se è stato selezionato random)
-    localStorage.setItem('theme', originalTheme);
-    
-    // Aggiorniamo l'elemento attivo nel selettore
-    const themeOptions = document.querySelectorAll('.theme-option');
-    themeOptions.forEach(option => {
-        if (option.dataset.theme === originalTheme) {
-            option.classList.add('active');
-        } else {
-            option.classList.remove('active');
+// Quali caratteri usa ciascun tema lo dice gia' il foglio di stile: si legge da
+// li', cosi' un tema nuovo non va registrato anche qui.
+let caratteriDeiTemi = null;
+
+function caratteriDelTema(tema) {
+    if (!caratteriDeiTemi) {
+        caratteriDeiTemi = { base: new Set() };
+        const leggi = (regole) => {
+            for (const r of regole) {
+                if (r.cssRules && !r.style) { leggi(r.cssRules); continue; }   // @media
+                if (!r.style || !r.selectorText || !r.style.fontFamily) continue;
+                const famiglia = r.style.fontFamily.split(',')[0].trim().replace(/^["']|["']$/g, '');
+                if (/^(inherit|initial|unset|revert)$/.test(famiglia)) continue;
+                const temi = r.selectorText.match(/\.[a-z0-9]+-theme\b/g);
+                (temi ? temi.map(t => t.slice(1, -'-theme'.length)) : ['base']).forEach(t => {
+                    (caratteriDeiTemi[t] = caratteriDeiTemi[t] || new Set()).add(famiglia);
+                });
+            }
+        };
+        // I fogli di Google Fonts sono di un'altra origine e non si lasciano
+        // leggere: i loro caratteri li trova comunque document.fonts.
+        for (const foglio of document.styleSheets) {
+            try { leggi(foglio.cssRules); } catch (e) {}
         }
+    }
+    return [...new Set([...caratteriDeiTemi.base, ...(caratteriDeiTemi[tema] || [])])];
+}
+
+const temiPronti = new Set();
+const TESTO_CAMPIONE = 'WeekScramble GIORNO ATTIVITÀ Lunedì 0123456789';
+
+// Scarica i caratteri di un tema senza doverlo mostrare. Senza rete non
+// arrivano mai: dopo un secondo e mezzo si va avanti lo stesso, col ripiego di
+// sistema, e document.fonts.ready fara' rimisurare quando arrivano.
+function caricaCaratteriTema(tema) {
+    if (temiPronti.has(tema) || !document.fonts || !document.fonts.load) {
+        return Promise.resolve();
+    }
+    const attese = [];
+    caratteriDelTema(tema).forEach(famiglia => {
+        ['400', '700'].forEach(peso => {
+            attese.push(document.fonts
+                .load(peso + ' 20px "' + famiglia + '"', TESTO_CAMPIONE)
+                .catch(() => {}));
+        });
+    });
+    const tutti = Promise.all(attese).then(() => { temiPronti.add(tema); });
+    const tetto = new Promise(ok => setTimeout(ok, 1500));
+    return Promise.race([tutti, tetto]);
+}
+
+// Mostrata la pagina, i caratteri degli altri temi si scaricano con calma, uno
+// alla volta: cosi' uno scramble in modalita' random o un tocco nel pannello
+// dei temi non devono aspettare la rete.
+function scaldaCaratteri() {
+    const coda = window.TEMI.filter(t => !temiPronti.has(t));
+    (function prossimo() {
+        const tema = coda.shift();
+        if (tema) caricaCaratteriTema(tema).then(prossimo);
+    })();
+}
+
+let temaMostrato = null;
+let richiestaTema = 0;
+
+function segnaTemaScelto(scelto) {
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.classList.toggle('active', option.dataset.theme === scelto);
     });
 }
 
-function scrambleActivities() {
-    // Se il tema corrente è random, cambiamo il tema
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'random') {
-        setTheme('random');
+function setTheme(themeName) {
+    // 'random' resta la preferenza salvata; quello che si vede e' un tema vero.
+    const vero = themeName === 'random' ? getRandomTheme() : themeName;
+    const questa = ++richiestaTema;
+    segnaTemaScelto(themeName);
+    return caricaCaratteriTema(vero).then(() => {
+        // Toccati due temi di fila vale l'ultimo, anche se il primo arriva dopo.
+        if (questa === richiestaTema) applicaTema(themeName, vero);
+    });
+}
+
+function applicaTema(scelto, vero) {
+    const radice = document.documentElement;
+    radice.classList.add('senza-transizioni');
+
+    // 'light-theme' un tempo mancava dall'elenco delle classi da togliere, e
+    // non veniva mai messa: le regole `.light-theme` del foglio non avevano
+    // effetto. Adesso l'elenco e' uno solo, window.TEMI.
+    window.TEMI.forEach(t => document.body.classList.remove(t + '-theme'));
+    document.body.classList.add(vero + '-theme');
+    temaMostrato = vero;
+
+    // Uscendo dal rosa si tolgono i suoi stili in linea prima che
+    // adattaTestoPulsanti() legga i colori; entrando si ridipinge anche dopo,
+    // perche' adattaTestoPulsanti() toglie il colore in linea della scritta.
+    updateRosaPinkButtons();
+    // Il colore dei pulsanti lo decide il foglio di stile; qui si controlla
+    // soltanto che la scritta sopra si legga.
+    adattaTestoPulsanti();
+    updateRosaPinkButtons();
+    allineaTitoloAllaTabella();
+    adattaTesti();
+
+    // Lettura forzata: gli stili del tema nuovo si calcolano adesso, con le
+    // transizioni ancora spente. Tolta la classe, non resta niente da sfumare.
+    void document.body.offsetWidth;
+    radice.classList.remove('senza-transizioni');
+
+    localStorage.setItem('theme', scelto);
+    segnaTemaScelto(scelto);
+    // Qualche passata di misura in piu': sul telefono la scala del testo di
+    // sistema puo' arrivare tardi. Danno lo stesso risultato, se non cambia niente.
+    pianificaAdatta();
+}
+
+// Il tema rosa i pulsanti se li dipinge con stili in linea, e prima non li
+// toglieva mai: passando a un altro tema restavano rosa fino al riavvio.
+let rosaDipinto = false;
+
+function updateRosaPinkButtons() {
+    const pulsanti = [
+        document.getElementById('listButton'),
+        document.getElementById('scrambleButton'),
+        document.querySelector('.theme-toggle'),
+        document.getElementById('addActivity')
+    ].filter(Boolean);
+    const voci = Array.from(document.querySelectorAll('#activityList li'));
+
+    if (document.body.classList.contains('rosa-theme')) {
+        const pinkStyle = {
+            backgroundColor: '#ffcdd2',
+            color: '#d81b60',
+            border: '2px solid #f48fb1'
+        };
+        pulsanti.forEach(button => Object.assign(button.style, pinkStyle));
+        voci.forEach(li => {
+            li.style.backgroundColor = '#ffcdd2';
+            li.style.border = '1px solid #f48fb1';
+            li.style.color = '#d81b60';
+        });
+        rosaDipinto = true;
+    } else if (rosaDipinto) {
+        pulsanti.concat(voci).forEach(el => {
+            el.style.removeProperty('background-color');
+            el.style.removeProperty('color');
+            el.style.removeProperty('border');
+        });
+        rosaDipinto = false;
     }
+}
+
+function scrambleActivities() {
+    // In modalita' random il tema nuovo si sceglie subito, e intanto se ne
+    // scaricano i caratteri, ma si mostra solo insieme alle attivita' nuove.
+    // Prima cambiava al tocco, e le misure della tabella lo seguivano a rate.
+    const temaNuovo = localStorage.getItem('theme') === 'random' ? getRandomTheme() : null;
+    const caratteri = temaNuovo ? caricaCaratteriTema(temaNuovo) : Promise.resolve();
     
     // Aggiorniamo i bonus PRIMA dello scramble
     updateBonus();
@@ -495,69 +663,78 @@ function scrambleActivities() {
     // 1. Attiviamo subito tutti i rettangoli coprenti
     activateCovers();
     
-    // 2. Ritardiamo l'assegnazione delle nuove attività e l'aggiornamento dello stato
-    setTimeout(() => {
-        // Creiamo il mazzo completo con tutte le carte
-        let deck = [];
-        activities.forEach(activity => {
-            const totalWeight = activity.weight + (activity.important ? activity.bonus : 0);
-            for (let i = 0; i < totalWeight; i++) {
-                deck.push(activity.name);
-            }
-        });
-        
-        const inputs = document.querySelectorAll('#weekTable input[type="text"]');
-        
-        // Se il mazzo è completamente vuoto, assegniamo FREE DAY a tutti i giorni
-        if (deck.length === 0) {
-            inputs.forEach(input => {
-                input.value = "FREE DAY";
-                input.setAttribute('data-revealed', 'false'); // Assicuriamoci che sia nascosto
-            });
-            saveState(); // Salviamo lo stato dopo aver aggiornato input e cover
-            return; // Usciamo dalla funzione
-        }
-        
-        // Creiamo un array con i 7 giorni della settimana
-        let weekActivities = new Array(7).fill(null);
-        
-        // Determiniamo quanti FREE DAY avremo bisogno
-        const numFreeDays = Math.max(0, 7 - deck.length);
-        
-        // Generiamo le posizioni casuali per i FREE DAY
-        let freeDayPositions = [];
-        if (numFreeDays > 0) {
-            const positions = Array.from({length: 7}, (_, i) => i);
-            for (let i = 0; i < numFreeDays; i++) {
-                const randomIndex = Math.floor(Math.random() * positions.length);
-                freeDayPositions.push(positions[randomIndex]);
-                positions.splice(randomIndex, 1);
-            }
-            freeDayPositions.forEach(position => {
-                weekActivities[position] = "FREE DAY";
-            });
-        }
-        
-        // Riempiamo le posizioni rimanenti con le attività dal mazzo
-        for (let i = 0; i < 7; i++) {
-            if (weekActivities[i] === null) {
-                const randomIndex = Math.floor(Math.random() * deck.length);
-                weekActivities[i] = deck[randomIndex];
-                deck.splice(randomIndex, 1);
-            }
-        }
+    // 2. Le nuove attivita' arrivano dopo 200 ms, il tempo di coprire le
+    //    vecchie, o piu' tardi se i caratteri del tema nuovo tardano.
+    const attesa = new Promise(ok => setTimeout(ok, 200));
+    Promise.all([caratteri, attesa]).then(() => {
+        assegnaSettimana();
+        // Tema, attivita' e misure nello stesso giro di codice: il browser
+        // ridisegna una volta sola, a lavoro finito.
+        if (temaNuovo) applicaTema('random', temaNuovo);
+        else adattaTesti();
+    });
+}
 
-        // Assegniamo le attività agli input e impostiamo data-revealed a false
-        inputs.forEach((input, index) => {
-            input.value = weekActivities[index];
-            input.setAttribute('data-revealed', 'false'); // Nascondi la nuova attività
+function assegnaSettimana() {
+    // Creiamo il mazzo completo con tutte le carte
+    let deck = [];
+    activities.forEach(activity => {
+        const totalWeight = activity.weight + (activity.important ? activity.bonus : 0);
+        for (let i = 0; i < totalWeight; i++) {
+            deck.push(activity.name);
+        }
+    });
+
+    const inputs = document.querySelectorAll('#weekTable input[type="text"]');
+
+    // Se il mazzo è completamente vuoto, assegniamo FREE DAY a tutti i giorni
+    if (deck.length === 0) {
+        inputs.forEach(input => {
+            input.value = "FREE DAY";
+            input.setAttribute('data-revealed', 'false'); // Assicuriamoci che sia nascosto
         });
-        
-        // Aggiorniamo i pesi e salviamo lo stato solo dopo aver assegnato i nuovi valori
-        updateTableWeights();
-        saveState();
-        
-    }, 200); // Ritardo aumentato a 200ms
+        saveState(); // Salviamo lo stato dopo aver aggiornato input e cover
+        return; // Usciamo dalla funzione
+    }
+
+    // Creiamo un array con i 7 giorni della settimana
+    let weekActivities = new Array(7).fill(null);
+
+    // Determiniamo quanti FREE DAY avremo bisogno
+    const numFreeDays = Math.max(0, 7 - deck.length);
+
+    // Generiamo le posizioni casuali per i FREE DAY
+    let freeDayPositions = [];
+    if (numFreeDays > 0) {
+        const positions = Array.from({length: 7}, (_, i) => i);
+        for (let i = 0; i < numFreeDays; i++) {
+            const randomIndex = Math.floor(Math.random() * positions.length);
+            freeDayPositions.push(positions[randomIndex]);
+            positions.splice(randomIndex, 1);
+        }
+        freeDayPositions.forEach(position => {
+            weekActivities[position] = "FREE DAY";
+        });
+    }
+
+    // Riempiamo le posizioni rimanenti con le attività dal mazzo
+    for (let i = 0; i < 7; i++) {
+        if (weekActivities[i] === null) {
+            const randomIndex = Math.floor(Math.random() * deck.length);
+            weekActivities[i] = deck[randomIndex];
+            deck.splice(randomIndex, 1);
+        }
+    }
+
+    // Assegniamo le attività agli input e impostiamo data-revealed a false
+    inputs.forEach((input, index) => {
+        input.value = weekActivities[index];
+        input.setAttribute('data-revealed', 'false'); // Nascondi la nuova attività
+    });
+
+    // Aggiorniamo i pesi e salviamo lo stato solo dopo aver assegnato i nuovi valori
+    updateTableWeights();
+    saveState();
 }
 
 function activateCovers() {
@@ -597,6 +774,9 @@ function toggleListArea() {
         // Nascondiamo la lista e mostriamo la tabella
         listArea.classList.add('hidden');
         container.classList.remove('hidden');
+        // Nascosta non si lasciava misurare: si misura adesso, prima che il
+        // browser la ridisegni.
+        adattaTesti();
     }
 }
 
@@ -903,13 +1083,22 @@ function toggleThemeArea() {
         // Nascondiamo il selettore temi e mostriamo la tabella
         themeArea.classList.add('hidden');
         container.classList.remove('hidden');
+        // Col pannello aperto il tema puo' essere cambiato, e la tabella
+        // nascosta non si lasciava misurare: si misura adesso, prima del disegno.
+        adattaTesti();
     }
 }
 
 // Funzione per caricare il tema salvato
 function loadTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
+    const scelto = localStorage.getItem('theme') || 'light';
+    // Il tema l'ha gia' messo lo script in cima al <body>, prima che la pagina
+    // si disegnasse: qui si riprende la sua scelta invece di rifarla, se no in
+    // modalita' random se ne pescherebbe un secondo, diverso dal primo.
+    const avvio = window.TEMA_AVVIO;
+    const vero = (avvio && avvio.scelto === scelto) ? avvio.vero
+        : (scelto === 'random' ? getRandomTheme() : scelto);
+    applicaTema(scelto, vero);
 }
 
 // Prima questa funzione i pulsanti se li dipingeva da sola, e li sbagliava:
@@ -1052,6 +1241,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Aggiorniamo il listener per le opzioni tema
     const themeOptions = document.querySelectorAll('.theme-option');
+    // Il pannello dimensiona i cerchi sulle file che deve far stare in altezza
+    // (vedi #themeSelector nel foglio): un tema nuovo non va contato a mano.
+    document.getElementById('themeSelector')
+        .style.setProperty('--file-temi', Math.ceil(themeOptions.length / 4));
     themeOptions.forEach(option => {
         option.addEventListener('click', function() {
             setTheme(this.dataset.theme);
@@ -1092,15 +1285,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chiamiamo la funzione all'avvio
     adattaTestoPulsanti();
     
-    // Chiamiamo la funzione ogni volta che cambia il tema
-    // Utilizziamo un nome di variabile diverso per evitare conflitti
-    const allThemeSelectors = document.querySelectorAll('.theme-option, [data-theme]');
-    allThemeSelectors.forEach(option => {
-        option.addEventListener('click', function() {
-            // Attendiamo che il tema sia cambiato
-            setTimeout(adattaTestoPulsanti, 100);
-        });
-    });
+    // Al cambio di tema la chiama gia' applicaTema(), nel momento giusto. Qui
+    // c'era anche un setTimeout di 100 ms sui dischetti: nel tema rosa toglieva
+    // il colore della scritta dei pulsanti un attimo dopo il tocco, e un altro
+    // timer lo rimetteva, quindi la scritta lampeggiava.
 
     // Soluzione definitiva per il colore del selettore temi in Halloween
     document.addEventListener('DOMContentLoaded', function() {
@@ -1184,37 +1372,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     });
 
-    // Modifica la funzione updateRosaPinkButtons per includere anche il pulsante Aggiungi
-    function updateRosaPinkButtons() {
-        if (document.body.classList.contains('rosa-theme')) {
-            // Seleziona i pulsanti principali
-            const listButton = document.getElementById('listButton');
-            const scrambleButton = document.getElementById('scrambleButton');
-            const themeToggle = document.querySelector('.theme-toggle');
-            const addActivityButton = document.getElementById('addActivity');
-            
-            // Stile comune da applicare
-            const pinkStyle = {
-                backgroundColor: '#ffcdd2',
-                color: '#d81b60',
-                border: '2px solid #f48fb1'
-            };
-            
-            // Applica lo stile ai pulsanti
-            [listButton, scrambleButton, themeToggle, addActivityButton].forEach(button => {
-                if (button) {
-                    Object.assign(button.style, pinkStyle);
-                }
-            });
-            
-            // Seleziona tutti gli elementi li nella lista attività
-            document.querySelectorAll('.rosa-theme #activityList li').forEach(li => {
-                li.style.backgroundColor = '#ffcdd2';
-                li.style.border = '1px solid #f48fb1';
-                li.style.color = '#d81b60';
-            });
-        }
-    }
+    // updateRosaPinkButtons() adesso sta fuori, accanto ad applicaTema(), che
+    // la chiama anche per togliere gli stili in linea uscendo dal rosa.
 
     // Assicurati di chiamare questa funzione insieme all'altra per il tema Rosa
     // Aggiungi questa chiamata nelle stesse posizioni in cui chiami forceLightPinkThemeSelector
@@ -1234,4 +1393,13 @@ document.addEventListener('DOMContentLoaded', () => {
             updateRosaPinkButtons();
         }
     }, 100);
+
+    // La pagina e' nata invisibile (vedi la testa dell'HTML). Si mostra quando i
+    // caratteri del tema sono arrivati e le misure sono state rifatte con quelli:
+    // prima si vedeva il ripiego di sistema, e poi tutto si ridimensionava.
+    caricaCaratteriTema(temaMostrato).then(() => {
+        adattaTesti();
+        document.documentElement.classList.remove('ws-avvio');
+        scaldaCaratteri();
+    });
 });

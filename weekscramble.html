@@ -10,9 +10,40 @@
          versione.json e si ricarica una volta sola. -->
     <title>WeekScramble</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="weekscramble.css?v=24">
+    <link rel="stylesheet" href="weekscramble.css?v=25">
+    <!-- All'avvio si vedeva per un attimo il tema di base, poi il tema scelto
+         con tutto che si ridimensionava. Adesso la pagina nasce invisibile
+         (resta solo lo sfondo del tema) e si mostra quando caratteri e misure
+         sono pronti: lo fa weekscramble.js togliendo `ws-avvio`. Il tetto dei
+         2,5 secondi c'e' perche' un intoppo non lasci lo schermo vuoto. -->
+    <style>html.ws-avvio body > * { visibility: hidden !important; }</style>
+    <script>
+        window.TEMI = ['light', 'dark', 'ocean', 'forest', 'lavender',
+            'autumn', 'mono', 'pastel', 'retro', 'vintage',
+            'gold', 'starry', 'christmas', 'dragonball',
+            'onepiece', 'pikachu', 'halloween', 'gameboy', 'rosa',
+            'neon', 'tropicale', 'nordico', 'lavagna'];
+        document.documentElement.classList.add('ws-avvio');
+        setTimeout(function () {
+            document.documentElement.classList.remove('ws-avvio');
+        }, 2500);
+    </script>
 </head>
 <body>
+    <script>
+        // Il tema si mette qui, prima di qualunque contenuto: il primo calcolo
+        // degli stili lo trova gia', e i pulsanti non sfumano piu' dal tema di
+        // base a quello scelto. loadTheme() riprende questa stessa scelta.
+        (function () {
+            var scelto = 'light';
+            try { scelto = localStorage.getItem('theme') || 'light'; } catch (e) {}
+            var vero = scelto === 'random'
+                ? TEMI[Math.floor(Math.random() * TEMI.length)] : scelto;
+            if (TEMI.indexOf(vero) === -1) vero = 'light';
+            window.TEMA_AVVIO = { scelto: scelto, vero: vero };
+            document.body.classList.add(vero + '-theme');
+        })();
+    </script>
     <header class="app-header">
         <h1>WeekScramble<span id="build-tag" class="build-tag"></span></h1>
     </header>
@@ -95,7 +126,7 @@
         <input type="text" id="newActivity" placeholder="Nuova attività">
         <button id="addActivity">Aggiungi</button>
     </div>
-    <script src="weekscramble.js?v=24"></script>
-    <script src="backup.js?v=24"></script>
+    <script src="weekscramble.js?v=25"></script>
+    <script src="backup.js?v=25"></script>
 </body>
 </html>

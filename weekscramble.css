@@ -5230,3 +5230,85 @@ body {
 .gameboy-theme .weight-display {
     font-size: inherit;
 }
+
+/* ===== Cambio di tema senza sfumature ===================================
+   Sfondo, pulsanti e caselle hanno transizioni sui colori: cambiando tema si
+   vedeva il vecchio sfumare nel nuovo per un terzo di secondo. applicaTema()
+   mette questa classe solo per il tempo dello scambio. I tre :not(#...)
+   alzano la specificita' sopra le regole che dichiarano la transizione con
+   !important, che altrimenti vincerebbero. */
+html.senza-transizioni *:not(#ws-x):not(#ws-x):not(#ws-x),
+html.senza-transizioni *:not(#ws-x):not(#ws-x):not(#ws-x)::before,
+html.senza-transizioni *:not(#ws-x):not(#ws-x):not(#ws-x)::after {
+    transition: none !important;
+}
+
+/* ===== I pulsanti si vedono sempre, senza scorrere =======================
+   Sul telefono, con i caratteri alti (Pacifico nel tema ocean, Mountains of
+   Christmas) le sette righe non stavano piu' nello schermo e i comandi
+   finivano sotto il bordo. --stringi lo decide adattaAltezza() misurando: a 1
+   i margini interni sono quelli di sempre (uguali in tutti i temi), verso 0
+   si assottigliano. Solo quelli verticali: gli orizzontali entrano nei conti
+   delle larghezze. Il :not(#ws-x) batte eventuali regole di tema. */
+#weekTable th:not(#ws-x) {
+    padding-top: calc(12px * var(--stringi, 1)) !important;
+    padding-bottom: calc(12px * var(--stringi, 1)) !important;
+}
+
+#weekTable td:first-child:not(#ws-x) {
+    padding-top: calc(10px * var(--stringi, 1)) !important;
+    padding-bottom: calc(10px * var(--stringi, 1)) !important;
+}
+
+#weekTable td:not(:first-child):not(#ws-x) {
+    padding-top: calc(8px * var(--stringi, 1)) !important;
+    padding-bottom: calc(8px * var(--stringi, 1)) !important;
+}
+
+#weekTable td input[type="text"]:not(#ws-x) {
+    padding-top: calc(8px * var(--stringi, 1)) !important;
+    padding-bottom: calc(8px * var(--stringi, 1)) !important;
+}
+
+/* ===== Pannello dei temi: tutti i cerchi, interi, senza scorrere =========
+   Il riquadro dei cerchi aveva overflow-y: auto ed era un elemento flessibile
+   del pannello: dove "Scegli Tema" viene alto (Pacifico, Mountains of
+   Christmas, con la scala dei caratteri del telefono) si restringeva, scorreva
+   per conto suo e l'ultima fila restava tagliata sotto il bordo.
+   Adesso il pannello prende tutto lo spazio sotto il titolo, il riquadro
+   quello che avanza fra "Scegli Tema" e "Travaso dati", e il lato dei cerchi
+   si calcola dalla larghezza E dall'altezza del riquadro (unita' cqw/cqh):
+   le file ci stanno sempre, qualunque tema e qualunque scala del testo.
+   --file-temi lo scrive weekscramble.js contando i dischetti. */
+#themeArea:not(#ws-x) {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+}
+
+#themeArea #themeSelector:not(#ws-x) {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;       /* l'anello del cerchio attivo non si taglia */
+    container-type: size;
+    --gap-temi: 10px;
+    --lato-cerchio: clamp(40px,
+        min((100cqw - 3 * var(--gap-temi)) / 4,
+            (100cqh - (var(--file-temi, 6) - 1) * var(--gap-temi)) / var(--file-temi, 6)),
+        68px);
+    gap: var(--gap-temi) !important;
+    grid-template-rows: repeat(var(--file-temi, 6), auto);
+    align-content: space-evenly;
+    justify-items: center;
+    align-items: center;
+}
+
+#themeSelector .theme-option:not(#ws-x) {
+    width: var(--lato-cerchio) !important;
+    height: var(--lato-cerchio) !important;
+    margin: 0 !important;
+}
+
+#themeSelector .theme-option.random-option::before {
+    font-size: calc(var(--lato-cerchio) * 0.62);
+}
