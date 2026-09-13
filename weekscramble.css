@@ -367,7 +367,11 @@
     --table-day-bg: #ff4e00;
     --input-bg: #ffdb99;
     --input-focus-bg: #ffffff;
-    --cover-bg: linear-gradient(135deg, #f89b29 0%, #ff4e00 100%);
+    /* Un colore, non un gradiente: la variabile finisce in background-color,
+       dove un gradiente non vale, e il rettangolo coprente restava
+       trasparente, con pesi e frecce in vista. Il gradiente sta sulla regola
+       .dragonball-theme .cover, come background-image. */
+    --cover-bg: #ff4e00;
     --list-bg: #ffdb99;
     --list-button-bg: #ff4e00;
     --list-button-hover: #ff8566;
@@ -2981,6 +2985,8 @@ td input[type="text"].important {
     padding: 0;
     width: 100%;
     height: 100%;
+    /* Il gradiente pensato per il tema, sopra il colore pieno di --cover-bg. */
+    background-image: linear-gradient(135deg, #f89b29 0%, #ff4e00 100%);
 }
 
 .dark-theme .cover,
