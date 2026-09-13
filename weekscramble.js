@@ -321,6 +321,39 @@ function adattaAltezza() {
     }
 }
 
+// "Scegli Tema" nel pannello: col carattere largo del tema gameboy finiva sotto
+// la crocetta di chiusura e si leggeva "Scegli Tem". Resta centrato, quindi lo
+// spazio che la crocetta occupa a destra va tolto da tutti e due i lati.
+function adattaTitoloPannello() {
+    const pannello = document.getElementById('themeArea');
+    const titolo = pannello && pannello.querySelector('h2');
+    const croce = pannello && pannello.querySelector('.theme-close');
+    if (!titolo || !croce || !titolo.getClientRects().length) return;
+
+    titolo.style.removeProperty('font-size');
+    // ⚠️ Non la larghezza dell'h2: nel pannello (flex a colonna, centrato) e'
+    // larga quanto il suo testo, e il conto concludeva sempre che non ci stava.
+    // Si parte dal centro del pannello: meta' testo deve finire prima della
+    // crocetta, con 6 px di respiro.
+    const p = pannello.getBoundingClientRect();
+    const sp = getComputedStyle(pannello);
+    const centro = (p.left + parseFloat(sp.borderLeftWidth) + parseFloat(sp.paddingLeft)
+        + p.right - parseFloat(sp.borderRightWidth) - parseFloat(sp.paddingRight)) / 2;
+    const spazio = 2 * (croce.getBoundingClientRect().left - 6 - centro);
+    const testo = document.createRange();
+    testo.selectNodeContents(titolo);
+    const serve = testo.getBoundingClientRect().width;
+    if (serve <= spazio || spazio <= 0) return;
+
+    // ⚠️ Il corpo calcolato comprende gia' la scala dei caratteri del telefono,
+    // e un corpo scritto in linea verrebbe moltiplicato di nuovo: la scala si
+    // ricava con un valore di prova e si toglie.
+    const corpo = parseFloat(getComputedStyle(titolo).fontSize);
+    titolo.style.fontSize = '100px';
+    const scala = parseFloat(getComputedStyle(titolo).fontSize) / 100 || 1;
+    titolo.style.fontSize = (corpo * (spazio / serve) / scala).toFixed(2) + 'px';
+}
+
 function adattaTesti() {
     // ⚠️ Mentre si misura la pagina non deve poter mostrare la barra di
     // scorrimento. Per misurare si rimettono i corpi pieni, la tabella per un
@@ -338,6 +371,7 @@ function adattaTesti() {
     corpo.style.overflowY = 'hidden';
 
     adattaTitolo();
+    adattaTitoloPannello();
 
     // Con la tabella nascosta (pannello dei temi o lista aperti) non c'e'
     // niente da misurare. Prima i corpi si azzeravano lo stesso, e chiudendo il
@@ -1082,6 +1116,9 @@ function toggleThemeArea() {
         themeArea.classList.remove('hidden');
         container.classList.add('hidden');
         listArea.classList.add('hidden');
+        // "Scegli Tema" da nascosto non si lascia misurare: si adatta adesso,
+        // prima che il browser disegni il pannello.
+        adattaTesti();
     } else {
         // Nascondiamo il selettore temi e mostriamo la tabella
         themeArea.classList.add('hidden');
